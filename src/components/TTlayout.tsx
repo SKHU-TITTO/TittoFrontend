@@ -134,7 +134,7 @@ const TTlayout = () => {
     lv: 1,
     id: "",
     email: "",
-  }); // 로그인 유저
+  }); // 로그인 유저 정보
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
 
