@@ -109,15 +109,11 @@ const LoginPage = () => {
     const code = new URLSearchParams(window.location.search).get("code");
     console.log("코드는:", code);
     try {
-      const res = await axios.get(
-        `https://${import.meta.env.BASE_URL}/oauth/kakao`,
-
-        {
-          params: {
-            code: code,
-          },
-        }
-      );
+      const res = await axios.get(`https://titto.store/oauth/kakao`, {
+        params: {
+          code: code,
+        },
+      });
       console.log("카카오 로그인 성공");
       const kakaoAccessToken = res.data.kakaoAccessToken;
       const kakaoRefreshToken = res.data.kakaoRefreshToken;
