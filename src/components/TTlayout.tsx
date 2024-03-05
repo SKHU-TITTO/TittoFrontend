@@ -85,7 +85,7 @@ const Container = styled.div`
   margin: 0 auto;
   width: 1100px;
   text-align: center;
-  height: 700px;
+  min-height: 100vh;
 `;
 
 const PopupContainer = styled.div`

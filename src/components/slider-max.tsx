@@ -9,6 +9,11 @@ const SliderWrap = styled.div`
   border-radius: 10px;
   overflow: hidden;
   margin-top: 20px;
+  // .slick-prev::before,
+  // .slick-next::before {
+  //   opacity: 0;
+  //   display: none;
+  // }
 `;
 
 const Img1 = styled.img`
