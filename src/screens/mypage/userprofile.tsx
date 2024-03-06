@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import userStore from "../../stores/UserStore";
+import NewMessagePopup from "../message/postmsg";
 
 // 유저 정보 타입 정의
 export type UserProfileInfo = {
@@ -89,6 +90,16 @@ const UserProfile = () => {
       default:
         return 0;
     }
+  };
+
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  const openSendMessagePopup = () => {
+    setIsSendingMessage(true);
+  };
+
+  const closeSendMessagePopup = () => {
+    setIsSendingMessage(false);
   };
 
   const acceptanceRate =
@@ -193,7 +204,16 @@ const UserProfile = () => {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h1>{acceptanceRate.toFixed(1)}%</h1>
               {userStore.getUser()?.id !== userProfo.userId && (
-                <div className="btn">쪽지 보내기</div>
+                <div className="btn" onClick={openSendMessagePopup}>
+                  쪽지 보내기
+                </div>
+              )}
+
+              {isSendingMessage && (
+                <NewMessagePopup
+                  onSend={() => {}}
+                  onCancel={closeSendMessagePopup}
+                />
               )}
             </div>
           </UserProfileMainLevelContainer>
