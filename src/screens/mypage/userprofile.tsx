@@ -187,9 +187,6 @@ const UserProfile = () => {
                 {max}
                 내공남았어요.
               </h1>
-              {/* <Progress>
-                <Dealt />
-              </Progress> */}
               <progress
                 className="gage"
                 value={levelStandard[userProfo.level - 1] - max}

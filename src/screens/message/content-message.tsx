@@ -1,22 +1,22 @@
 import styled from "styled-components";
 
-const ReceiverContentMessage = () => {
+const ContentMessage = () => {
   return (
-    <ContentMessage>
+    <MainContentMessage>
       <div className="item">
         <div className="top">
-          <h3>받은 쪽지</h3>
+          <h3> 쪽지</h3>
           <time>시간</time>
         </div>
         <div className="bottom">
           <p>미리보기</p>
         </div>
       </div>
-    </ContentMessage>
+    </MainContentMessage>
   );
 };
 
-const ContentMessage = styled.div`
+const MainContentMessage = styled.div`
   .item {
     padding: 15px;
     border-bottom: 1px solid #ccc;
@@ -42,4 +42,4 @@ const ContentMessage = styled.div`
     margin-top: 20px;
   }
 `;
-export default ReceiverContentMessage;
+export default ContentMessage;

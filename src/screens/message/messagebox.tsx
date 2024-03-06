@@ -4,9 +4,8 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TitleMessage from "./title-message";
-import ReceiverContentMessage from "./receivercontent-message";
-import SenderContentMessage from "./sendercontent-message";
 import NewMessagePopup from "./postmsg";
+import ContentMessage from "./content-message";
 
 const MessageBox = () => {
   const [isSendingMessage, setIsSendingMessage] = useState(false);
@@ -37,8 +36,7 @@ const MessageBox = () => {
               <DeleteIcon />
             </IconsContainer>
           </TitleArea>
-          <ReceiverContentMessage />
-          <SenderContentMessage />
+          <ContentMessage />
         </UserMessageSub2Container>
       </UserMessageSub1Container>
       {isSendingMessage && (

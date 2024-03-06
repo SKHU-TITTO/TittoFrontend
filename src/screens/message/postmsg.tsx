@@ -19,7 +19,6 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({ onSend, onCancel }) => {
         {
           headers: {
             Accept: "application/json",
-            "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
         }
@@ -33,31 +32,44 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({ onSend, onCancel }) => {
       alert("닉네임을 확인해 주세요.");
     }
   };
-
   return (
-    <PopupContainer>
-      <PopupContent>
-        <h2>쪽지 보내기</h2>
-        <label>받는 사람 닉네임</label>
-        <input
-          type="text"
-          value={receiverNickname}
-          onChange={(e) => setReceiverNickname(e.target.value)}
-        />
-        <label>메시지 내용</label>
-        <input
-          type="text"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <ButtonContainer>
-          <CancelButton onClick={onCancel}>취소</CancelButton>
-          <SendButton onClick={handleSend}>전송</SendButton>
-        </ButtonContainer>
-      </PopupContent>
-    </PopupContainer>
+    <>
+      <PopupCover />
+      <PopupContainer>
+        <PopupContent>
+          <h2>쪽지 보내기</h2>
+          <label>보낼 닉네임</label>
+          <input
+            type="text"
+            value={receiverNickname}
+            placeholder={"닉네임을 입력하세요."}
+            onChange={(e) => setReceiverNickname(e.target.value)}
+          />
+          <label>메시지 내용</label>
+          <input
+            type="text"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <ButtonContainer>
+            <CancelButton onClick={onCancel}>취소</CancelButton>
+            <SendButton onClick={handleSend}>전송</SendButton>
+          </ButtonContainer>
+        </PopupContent>
+      </PopupContainer>
+    </>
   );
 };
+
+const PopupCover = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+`;
 
 const PopupContainer = styled.div`
   position: fixed;
@@ -69,22 +81,23 @@ const PopupContainer = styled.div`
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  z-index: 1000;
 `;
 
 const PopupContent = styled.div`
   display: flex;
-
+  text-align: left;
   flex-direction: column;
 
   h2 {
-    font-size: 24px;
+    font-size: 28px;
     color: #007bff;
     font-weight: bold;
     margin-bottom: 20px;
   }
   label {
     font-size: 18px;
-    color: #007bff;
+    color: #bababa;
     font-weight: bold;
     margin-bottom: 20px;
   }
@@ -99,7 +112,6 @@ const PopupContent = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: right;
-
   margin-top: 20px;
 `;
 
@@ -110,6 +122,7 @@ const CancelButton = styled.button`
   padding: 10px 20px;
   margin-right: 10px;
   cursor: pointer;
+  border-radius: 5px;
 `;
 
 const SendButton = styled.button`
@@ -118,6 +131,7 @@ const SendButton = styled.button`
   border: none;
   padding: 10px 20px;
   cursor: pointer;
+  border-radius: 5px;
 `;
 
 export default NewMessagePopup;
