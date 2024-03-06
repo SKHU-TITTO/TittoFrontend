@@ -119,6 +119,7 @@ const PopupMyPage = styled.div`
 
 const PopupLogout = styled.div`
   justify-content: center;
+  text-align: center;
   font-size: 15px;
   cursor: pointer;
   background-color: #3e68ff;
