@@ -1,36 +1,87 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const TitleMessage = () => {
-  const [isActive, setIsActive] = useState(false);
+export type UserMsgInfo = {
+  id: number;
+  content: string;
+  senderNickname: string;
+  sentAt: string;
+};
 
-  const toggleActive = () => {
-    setIsActive(!isActive);
+const TitleMessage = () => {
+  const [activeMessageId, setActiveMessageId] = useState<number | null>(null);
+  const [messages, setMessages] = useState<UserMsgInfo[]>([]);
+  const accessToken = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    fetchMessages();
+  }, []);
+
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch("https://titto.store/message/all", {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch messages");
+      }
+
+      const data = await response.json();
+      setMessages(data);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
   };
 
-  return (
-    <MessageItems>
+  const renderLatestMessageBySender = () => {
+    const latestMessagesBySender: { [key: string]: UserMsgInfo } = {};
+
+    messages.forEach((message) => {
+      if (
+        !latestMessagesBySender[message.senderNickname] ||
+        new Date(message.sentAt) >
+          new Date(latestMessagesBySender[message.senderNickname].sentAt)
+      ) {
+        latestMessagesBySender[message.senderNickname] = message;
+      }
+    });
+
+    return Object.values(latestMessagesBySender).map((message) => (
       <div
-        className={`items ${isActive ? "active" : ""}`}
-        onClick={toggleActive}
+        key={message.id}
+        className={`items ${activeMessageId === message.id ? "active" : ""}`}
+        onClick={() => toggleActive(message.id)}
       >
-        <a href="#" className={`item ${isActive ? "active" : ""}`}>
+        <a
+          href="#"
+          className={`item ${activeMessageId === message.id ? "active" : ""}`}
+        >
           <div className="top">
             <div className="left">
-              <h3>닉네임</h3>
+              <h3>{message.senderNickname}</h3>
             </div>
             <div className="right">
-              <time>시간</time>
+              <time>{new Date(message.sentAt).toLocaleString("ko-KR")}</time>
             </div>
           </div>
 
           <div className="bottom">
-            <p className="text">미리보기</p>
+            <p className="text">{message.content}</p>
           </div>
         </a>
       </div>
-    </MessageItems>
-  );
+    ));
+  };
+
+  const toggleActive = (messageId: number) => {
+    setActiveMessageId(activeMessageId === messageId ? null : messageId);
+  };
+
+  return <MessageItems>{renderLatestMessageBySender()}</MessageItems>;
 };
 
 const MessageItems = styled.div`
@@ -43,6 +94,10 @@ const MessageItems = styled.div`
   }
   h3 {
     font-weight: bold;
+  }
+  time {
+    color: #bababa;
+    font-size: 14px;
   }
 
   .items.active {

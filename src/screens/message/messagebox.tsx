@@ -1,26 +1,39 @@
 import styled from "styled-components";
+import { useState } from "react";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TitleMessage from "./title-message";
 import ReceiverContentMessage from "./receivercontent-message";
 import SenderContentMessage from "./sendercontent-message";
+import NewMessagePopup from "./postmsg";
 
 const MessageBox = () => {
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  const openSendMessagePopup = () => {
+    setIsSendingMessage(true);
+  };
+
+  const closeSendMessagePopup = () => {
+    setIsSendingMessage(false);
+  };
+  const handleRefresh = () => {
+    window.location.reload();
+  };
   return (
     <UserMessageMainContainer>
       <UserMessageSub1Container>
         <UserMessageContainer>
           <h2>메시지 함</h2>
           <TitleMessage />
-          <TitleMessage />
         </UserMessageContainer>
         <UserMessageSub2Container>
           <TitleArea>
             <h2>닉네임</h2>
             <IconsContainer>
-              <TelegramIcon />
-              <RefreshRoundedIcon />
+              <TelegramIcon onClick={openSendMessagePopup} />
+              <RefreshRoundedIcon onClick={handleRefresh} />
               <DeleteIcon />
             </IconsContainer>
           </TitleArea>
@@ -28,6 +41,9 @@ const MessageBox = () => {
           <SenderContentMessage />
         </UserMessageSub2Container>
       </UserMessageSub1Container>
+      {isSendingMessage && (
+        <NewMessagePopup onSend={() => {}} onCancel={closeSendMessagePopup} />
+      )}
     </UserMessageMainContainer>
   );
 };
