@@ -210,6 +210,7 @@ const UserProfile = () => {
                 <NewMessagePopup
                   onSend={() => {}}
                   onCancel={closeSendMessagePopup}
+                  defaultReceiverNickname={userProfo.nickname}
                 />
               )}
             </div>

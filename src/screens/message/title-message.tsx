@@ -11,11 +11,18 @@ export type UserMsgInfo = {
   senderId: number;
 };
 
-const TitleMessage = () => {
-  const [activeMessageId, setActiveMessageId] = useState<number | null>(null);
+interface TitleMessageProps {
+  onSelectMessage: (senderId: number, senderNickname: string) => void;
+}
+
+const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
+  const [selectedMessage, setSelectedMessage] = useState<UserMsgInfo | null>(
+    null
+  );
   const [messages, setMessages] = useState<UserMsgInfo[]>([]);
+  const [selectedSenderId, setSelectedSenderId] = useState<number | null>(null);
   const accessToken = localStorage.getItem("accessToken");
-  // const { senderId } = useParams();
+
   useEffect(() => {
     fetchMessages();
   }, []);
@@ -45,52 +52,51 @@ const TitleMessage = () => {
 
     messages.forEach((message) => {
       if (
-        !latestMessagesBySender[message.senderNickname] ||
+        !latestMessagesBySender[message.senderId] ||
         new Date(message.sentAt) >
-          new Date(latestMessagesBySender[message.senderNickname].sentAt)
+          new Date(latestMessagesBySender[message.senderId].sentAt)
       ) {
-        latestMessagesBySender[message.senderNickname] = message;
+        latestMessagesBySender[message.senderId] = message;
       }
     });
 
     return Object.values(latestMessagesBySender).map((message) => (
       <div
         key={message.id}
-        className={`items ${activeMessageId === message.id ? "active" : ""}`}
-        onClick={() => toggleActive(message.id)}
+        className={`items ${selectedMessage === message ? "active" : ""}`}
       >
-        <Link to={`/message/${message.senderId}`} className="item">
-          <a
-            href="#"
-            className={`item ${activeMessageId === message.id ? "active" : ""}`}
-          >
-            <div className="top">
-              <div className="left">
-                <h3>{message.senderNickname}</h3>
-              </div>
-              <div className="right">
-                <time>{new Date(message.sentAt).toLocaleString("ko-KR")}</time>
-              </div>
+        <MessageLink
+          to={`/message/${message.senderId}`}
+          className="item"
+          onClick={() => {
+            onSelectMessage(message.senderId, message.senderNickname);
+            setSelectedMessage(message);
+            setSelectedSenderId(message.senderId);
+          }}
+        >
+          <div className="top">
+            <div className="left">
+              <h3>{message.senderNickname}</h3>
             </div>
-
-            <div className="bottom">
-              <p className="text">{message.content}</p>
+            <div className="right">
+              <time>
+                {new Date(message.sentAt).toLocaleDateString("ko-KR")}
+              </time>
             </div>
-          </a>
-        </Link>
+          </div>
+          <div className="bottom">
+            <p className="text">{message.content}</p>
+          </div>
+        </MessageLink>
       </div>
     ));
   };
 
-  const toggleActive = (messageId: number) => {
-    setActiveMessageId(activeMessageId === messageId ? null : messageId);
-  };
-
   return <MessageItems>{renderLatestMessageBySender()}</MessageItems>;
 };
+
 const MessageItems = styled.div`
   .items {
-    padding: 15px;
     border-bottom: 1px solid #ccc;
     background-color: transparent;
     display: flex;
@@ -104,17 +110,12 @@ const MessageItems = styled.div`
     font-size: 14px;
   }
 
-  .items.active {
-    background-color: #3e68ff;
-    color: #ffffff;
-  }
-
   .item {
     text-decoration: none;
     color: inherit;
   }
 
-  .item.active {
+  .items.active {
     background-color: #3e68ff;
     color: #ffffff;
   }
@@ -129,6 +130,12 @@ const MessageItems = styled.div`
     margin-top: 20px;
   }
 `;
+
+const MessageLink = styled(Link)`
+  display: block;
+  padding: 15px;
+`;
+
 const NoMessages = styled.p`
   margin: 20px;
   font-size: 20px;

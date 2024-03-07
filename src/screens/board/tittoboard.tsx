@@ -134,6 +134,7 @@ export type TITTOPost = {
   };
   createDate: string;
   status: string;
+  category: string;
   content: string;
   viewCount: number;
   reviewCount: number;
