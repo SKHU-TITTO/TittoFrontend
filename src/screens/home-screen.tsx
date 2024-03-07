@@ -146,7 +146,7 @@ const HomeScreen = () => {
             return (
               <HBoarddetail
                 key={post.matchingPostId}
-                category={"STUDY"}
+                category={post.category}
                 title={post.title}
                 detail={post.content}
                 view={post.viewCount}

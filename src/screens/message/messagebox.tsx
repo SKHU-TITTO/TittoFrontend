@@ -1,14 +1,18 @@
-import styled from "styled-components";
-import { useState } from "react";
+import React, { useState } from "react";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TitleMessage from "./title-message";
 import NewMessagePopup from "./postmsg";
 import ContentMessage from "./content-message";
+import styled from "styled-components";
 
 const MessageBox = () => {
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [selectedSenderId, setSelectedSenderId] = useState<number | null>(null);
+  const [selectedSenderNickname, setSelectedSenderNickname] = useState<
+    string | null
+  >(null);
 
   const openSendMessagePopup = () => {
     setIsSendingMessage(true);
@@ -17,30 +21,41 @@ const MessageBox = () => {
   const closeSendMessagePopup = () => {
     setIsSendingMessage(false);
   };
+
   const handleRefresh = () => {
     window.location.reload();
   };
+
+  const handleSelectMessage = (senderId: number, senderNickname: string) => {
+    setSelectedSenderId(senderId);
+    setSelectedSenderNickname(senderNickname);
+  };
+
   return (
     <UserMessageMainContainer>
-      <UserMessageSub1Container>
-        <UserMessageContainer>
-          <h2>메시지 함</h2>
-          <TitleMessage />
-        </UserMessageContainer>
-        <UserMessageSub2Container>
+      <UserMessageSubContainer>
+        <UserMessageLeftContainer>
+          <h2>쪽지함</h2>
+          <TitleMessage onSelectMessage={handleSelectMessage} />
+        </UserMessageLeftContainer>
+        <UserMessageRightContainer>
           <TitleArea>
-            <h2>닉네임</h2>
+            <h2>대화 내용</h2>
             <IconsContainer>
               <TelegramIcon onClick={openSendMessagePopup} />
               <RefreshRoundedIcon onClick={handleRefresh} />
               <DeleteIcon />
             </IconsContainer>
           </TitleArea>
-          <ContentMessage />
-        </UserMessageSub2Container>
-      </UserMessageSub1Container>
+          <ContentMessage selectedSenderId={selectedSenderId} />
+        </UserMessageRightContainer>
+      </UserMessageSubContainer>
       {isSendingMessage && (
-        <NewMessagePopup onSend={() => {}} onCancel={closeSendMessagePopup} />
+        <NewMessagePopup
+          onSend={() => {}}
+          onCancel={closeSendMessagePopup}
+          defaultReceiverNickname={selectedSenderNickname || ""}
+        />
       )}
     </UserMessageMainContainer>
   );
@@ -50,12 +65,13 @@ const UserMessageMainContainer = styled.div`
   height: 1000px;
 `;
 
-const UserMessageSub1Container = styled.div`
+const UserMessageSubContainer = styled.div`
   text-align: left;
   display: flex;
   flex: 1;
   margin-top: 20px;
-  height: 100%;
+  height: 100vh;
+
   h2 {
     padding: 20px;
     font-size: 18px;
@@ -64,17 +80,19 @@ const UserMessageSub1Container = styled.div`
   }
 `;
 
-const UserMessageContainer = styled.div`
+const UserMessageLeftContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   margin-right: 20px;
+
   flex: 3;
 `;
 
-const UserMessageSub2Container = styled.div`
+const UserMessageRightContainer = styled.div`
   flex: 7;
   border: 1px solid #ccc;
   border-radius: 10px;
+  overflow-y: auto;
 `;
 
 const TitleArea = styled.div`

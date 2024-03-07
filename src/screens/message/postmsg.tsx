@@ -5,9 +5,14 @@ import axios from "axios";
 interface NewMessageProps {
   onSend: (message: { content: string; receiverNickname: string }) => void;
   onCancel: () => void;
+  defaultReceiverNickname: string;
 }
 
-const NewMessagePopup: React.FC<NewMessageProps> = ({ onSend, onCancel }) => {
+const NewMessagePopup: React.FC<NewMessageProps> = ({
+  onSend,
+  onCancel,
+  defaultReceiverNickname,
+}) => {
   const [content, setContent] = useState("");
   const [receiverNickname, setReceiverNickname] = useState("");
   const accessToken = localStorage.getItem("accessToken");
@@ -15,7 +20,7 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({ onSend, onCancel }) => {
     try {
       const response = await axios.post(
         "https://titto.store/message/write",
-        { content, receiverNickname },
+        { content, receiverNickname: defaultReceiverNickname },
         {
           headers: {
             Accept: "application/json",
@@ -25,11 +30,11 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({ onSend, onCancel }) => {
       );
 
       console.log("Message sent successfully:", response.data);
-
+      window.location.reload();
       onCancel();
     } catch (error) {
       console.error("Error sending message:", error);
-      alert("닉네임을 확인해 주세요.");
+      // alert("닉네임을 확인해 주세요.");
     }
   };
   return (
@@ -38,13 +43,13 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({ onSend, onCancel }) => {
       <PopupContainer>
         <PopupContent>
           <h2>쪽지 보내기</h2>
-          <label>보낼 닉네임</label>
+          {/* <label>보낼 닉네임</label>
           <input
             type="text"
-            value={receiverNickname}
+            value={defaultReceiverNickname}
             placeholder={"닉네임을 입력하세요."}
             onChange={(e) => setReceiverNickname(e.target.value)}
-          />
+          /> */}
           <label>메시지 내용</label>
           <input
             type="text"

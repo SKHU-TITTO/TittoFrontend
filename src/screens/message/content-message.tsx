@@ -1,17 +1,77 @@
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import userStore from "../../stores/UserStore";
 
-const ContentMessage = () => {
+export type MessageDetail = {
+  id: number;
+  content: string;
+  senderId: number;
+  receiverId: number;
+  sentAt: string;
+  receiverNickname: string;
+  senderNickname: string;
+};
+
+interface ContentMessageProps {
+  selectedSenderId: number | null;
+}
+
+const ContentMessage = ({ selectedSenderId }: ContentMessageProps) => {
+  const [messages, setMessages] = useState<MessageDetail[]>([]);
+  const accessToken = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    if (selectedSenderId) {
+      fetchMessages(selectedSenderId);
+    }
+  }, [selectedSenderId]);
+
+  const fetchMessages = async (senderId: number) => {
+    try {
+      const response = await axios.get(
+        `https://titto.store/message/${senderId}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const data = response.data;
+      setMessages(data.reverse());
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+
   return (
     <MainContentMessage>
-      <div className="item">
-        <div className="top">
-          <h3> 쪽지</h3>
-          <time>시간</time>
-        </div>
-        <div className="bottom">
-          <p>미리보기</p>
-        </div>
-      </div>
+      {messages.length > 0 ? (
+        messages.map((message) => (
+          <div key={message.id} className="item">
+            <div className="top">
+              <h3
+                style={{
+                  color:
+                    message.senderId === userStore.getUser()?.id
+                      ? "#05bcbc"
+                      : "#ffc900",
+                }}
+              >
+                {message.senderNickname}
+              </h3>
+              <time>{new Date(message.sentAt).toLocaleString("ko-KR")}</time>
+            </div>
+            <div className="bottom">
+              <p>{message.content}</p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <NoMessages>메시지가 없습니다.</NoMessages>
+      )}
     </MainContentMessage>
   );
 };
@@ -31,15 +91,24 @@ const MainContentMessage = styled.div`
   h3 {
     margin: 0;
     font-weight: bold;
-    color: #05bcbc;
   }
 
   time {
     margin: 0;
+    color: #bababa;
   }
 
   .bottom {
     margin-top: 20px;
   }
+  margin-bottom: 30px;
 `;
+
+const NoMessages = styled.p`
+  margin: 20px;
+  font-size: 20px;
+  color: #666;
+  text-align: center;
+`;
+
 export default ContentMessage;
