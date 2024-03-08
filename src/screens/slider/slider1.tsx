@@ -38,6 +38,7 @@ const Title = styled.p`
   font-size: 32px;
   color: #3e68ff;
   font-weight: bold;
+  margin-top: 20px;
   margin-bottom: 20px;
 `;
 
@@ -45,7 +46,7 @@ const SubTitle = styled.p`
   font-size: 24px;
   color: #bababa;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 `;
 
 const DetailContent = styled.div`
@@ -56,6 +57,7 @@ const Header = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  text-align: left;
 `;
 
 const SubHeader = styled.h2`
@@ -83,16 +85,18 @@ const Slider1 = () => {
           <Header>1. 불건전한 콘텐츠 및 행위에 대한 제한</Header>
           <SubHeader>
             티토 커뮤니티는 사용자들이 안전하고 편안하게 이용할 수 있도록
+            <br />
             불건전한 콘텐츠 및 행위에 대한 제한을 두고 있습니다.
           </SubHeader>
           <Description>
             [1] 선정적인 콘텐츠 및 행위: 과도한 성적 노출 및 성희롱, 음란물 등의
-            콘텐츠를 포함하여, 성적인 암시나 의도가 드러나는 행위를 금지합니다.
+            콘텐츠를 포함하여,
+            <br /> 성적인 암시나 의도가 드러나는 행위를 금지합니다.
           </Description>
           <Description>
             [2] 혐오, 차별, 폭력적인 콘텐츠 및 행위: 혐오, 폭력 및 범죄, 신체에
-            위해가 되는 자극적인 콘텐츠를 업로드하거나 간접적으로 조장 및
-            선동하는 행위를 금지합니다.
+            위해가 되는 자극적인 콘텐츠를 업로드하거나 <br />
+            간접적으로 조장 및 선동하는 행위를 금지합니다.
           </Description>
           <Description>
             [3] 불법 행위 및 기타 행위: 서비스 운영 및 커뮤니티 환경을
@@ -103,13 +107,14 @@ const Slider1 = () => {
           <Header>2. 개인정보 보호</Header>
           <SubHeader>
             티토 커뮤니티는 서비스는 이용자의 소중한 개인정보를 보호하기 위해
+            <br />
             노력하고 개인정보 보호와 관련된 법령을 준수합니다.
           </SubHeader>
           <Description>
             [1] 콘텐츠 삭제 기준: 서비스 커뮤니티 가이드라인에 따라 개인정보
-            침해를 처리하고 부적절한 콘텐츠를 삭제합니다. 개인정보란, 그 자체로
-            개인을 식별할 수 있는 정보 뿐 아니라 다른 정보와 결합하여 개인을
-            식별할 수 있는 정보까지 포함합니다.
+            침해를 처리하고 부적절한 콘텐츠를 삭제합니다.
+            <br /> 개인정보란, 개인을 식별할 수 있는 정보 뿐 아니라 다른 정보와
+            결합하여 개인을 식별할 수 있는 정보까지 포함합니다.
           </Description>
           <Description>
             [2] 개인정보 예시: <br />- 본인확인 정보 (이름, 생년월일, 성별,
