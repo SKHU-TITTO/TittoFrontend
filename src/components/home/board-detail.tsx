@@ -3,12 +3,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import SmsIcon from "@mui/icons-material/Sms";
 import { useEffect, useState } from "react";
 
-type HBoardType = {
+export type HBoardType = {
   category: string;
   title: string;
   detail: string;
-  view: number;
-  comment: number;
+  view?: number;
+  comment?: number;
 };
 
 const categoryToString = (category: string) => {

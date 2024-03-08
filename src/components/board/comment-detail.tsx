@@ -68,7 +68,7 @@ const ProfileWrapper = styled.div`
     font-size: 15px;
     font-weight: bold;
     margin-right: 5px;
-    line-height: 10px; /* 버튼의 높이를 조절 */
+    line-height: 10px;
   }
 `;
 

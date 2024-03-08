@@ -5,6 +5,8 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import userStore from "../../stores/UserStore";
 import NewMessagePopup from "../message/postmsg";
+import CategorySelector from "./../../components/board/category-selector";
+import WriteDetail from "../../components/board/mywrite-detail";
 
 // 유저 정보 타입 정의
 export type UserProfileInfo = {
@@ -55,8 +57,9 @@ export type ChosePost = {
 const UserProfile = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
+  const [userPosts, setUserPosts] = useState([]);
+
   const accessToken = localStorage.getItem("accessToken");
-  const [chooseList, setChooseList] = useState<ChosePost[]>([]);
   const [userProfo, setProInfo] = useState<UserProfileInfo>({
     userId: 1,
     profile: "",
@@ -107,24 +110,24 @@ const UserProfile = () => {
       ? (userProfo.countAccept / userProfo.countAnswer) * 100
       : 0;
 
-  const getChooseBoardList = async () => {
+  const fetchUserPosts = async () => {
     try {
-      const res = await axios.get(
-        `https://titto.store/posts/${userId}/all?page=0`,
+      const response = await axios.get(
+        `https://titto.store/user/posts/${userId}`,
         {
+          params: {
+            userId: userId,
+          },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
-
-      const formattedPosts = res.data.content.slice(0, 3);
-      setChooseList(formattedPosts);
-    } catch (e) {
-      console.log(e);
+      setUserPosts(response.data);
+    } catch (error) {
+      console.error("Error fetching user posts:", error);
     }
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -148,8 +151,8 @@ const UserProfile = () => {
       }
     };
 
-    //getChooseBoardList();
     fetchData();
+    fetchUserPosts();
   }, [accessToken]);
 
   return (
@@ -220,24 +223,33 @@ const UserProfile = () => {
         <UserProfileSubContainer>
           <UserProfileStudyContainer>
             <p>답변한 글</p>
-            <UserProfileAcceptInner>
-              {chooseList.map((post) => {
-                return (
-                  <HBoarddetail
-                    key={post.matchingPostId}
-                    category={"STUDY"}
-                    title={post.title}
-                    detail={post.content}
-                    view={post.viewCount}
-                    comment={post.reviewCount}
-                  ></HBoarddetail>
-                );
-              })}
-            </UserProfileAcceptInner>
+            <UserProfileAcceptInner></UserProfileAcceptInner>
           </UserProfileStudyContainer>
           <UserProfileWritePostContainer>
             <p>작성한 글</p>
             <UserProfileWritePostInner>
+              {userPosts.map(
+                (
+                  post: {
+                    category: string;
+                    title: string;
+                    content: string;
+                    viewCount: number;
+                    reviewCount: number;
+                  },
+                  index
+                ) => (
+                  <HBoarddetail
+                    key={index}
+                    category={post.category}
+                    title={post.title}
+                    detail={post.content}
+                    view={post.viewCount}
+                    comment={post.reviewCount}
+                  />
+                )
+              )}
+
               <HBoarddetail
                 category={"STUDY"}
                 title="C++ 한솥밥 하실분구해요!"
@@ -245,41 +257,8 @@ const UserProfile = () => {
                 view={41}
                 comment={4}
               />
-              <HBoarddetail
-                category={"STUDY"}
-                title="C++ 한솥밥 하실분구해요!"
-                detail="안녕하세요, 혹시 C++한솥밥 하실 분 계신가요? 저는 저번학기 김학수 C++ 1등 으로 수...."
-                view={41}
-                comment={4}
-              />
-              <HBoarddetail
-                category={"STUDY"}
-                title="C++ 한솥밥 하실분구해요!"
-                detail="안녕하세요, 혹시 C++한솥밥 하실 분 계신가요? 저는 저번학기 김학수 C++ 1등 으로 수...."
-                view={41}
-                comment={4}
-              />{" "}
-              <HBoarddetail
-                category={"STUDY"}
-                title="C++ 한솥밥 하실분구해요!"
-                detail="안녕하세요, 혹시 C++한솥밥 하실 분 계신가요? 저는 저번학기 김학수 C++ 1등 으로 수...."
-                view={41}
-                comment={4}
-              />
-              <HBoarddetail
-                category={"STUDY"}
-                title="C++ 한솥밥 하실분구해요!"
-                detail="안녕하세요, 혹시 C++한솥밥 하실 분 계신가요? 저는 저번학기 김학수 C++ 1등 으로 수...."
-                view={41}
-                comment={4}
-              />
-              <HBoarddetail
-                category={"STUDY"}
-                title="C++ 한솥밥 하실분구해요!"
-                detail="안녕하세요, 혹시 C++한솥밥 하실 분 계신가요? 저는 저번학기 김학수 C++ 1등 으로 수...."
-                view={41}
-                comment={4}
-              />
+
+              <WriteDetail />
             </UserProfileWritePostInner>
           </UserProfileWritePostContainer>
         </UserProfileSubContainer>

@@ -28,6 +28,7 @@ const AccountManagementContent = () => {
     studentNo: "",
     department: "SOFTWARE",
   });
+
   const [isCheckNick, setIsCheckNick] = useState(false);
   const [isCheckStudentNo, setIsCheckStudentNo] = useState(false);
   const [nicknameError, setNicknameError] = useState("");
@@ -128,38 +129,67 @@ const AccountManagementContent = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!userSignfo.nickname || !userSignfo.studentNo) {
-      alert("모든 입력란을 채워주세요.");
+    if (!userSignfo.nickname && !userSignfo.studentNo) {
+      // 닉네임이나 학번 둘 다 입력되지 않은 경우
+      alert("닉네임 또는 학번을 입력해주세요.");
       return;
     }
-    if (userSignfo.nickname.length === 0 || userSignfo.studentNo.length !== 9) {
-      alert("닉네임과 학번을 올바르게 입력해주세요.");
-      alert("학번은 9글자입니다.");
-      return;
+
+    try {
+      const updatedInfo: Partial<UserSignfo> = {};
+
+      if (userSignfo.nickname !== "") {
+        updatedInfo.nickname = userSignfo.nickname;
+      }
+
+      if (userSignfo.studentNo !== "") {
+        updatedInfo.studentNo = userSignfo.studentNo;
+      }
+
+      if (userSignfo.department !== "") {
+        updatedInfo.department = userSignfo.department;
+      }
+
+      const res = await axios.put(
+        "https://titto.store/user/signup",
+        updatedInfo,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        alert("저장되었습니다.");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
     }
-    if (!isCheckNick === true || isCheckNick === null) {
-      alert("닉네임 중복확인을 해주세요.");
-    } else if (!isCheckStudentNo === true || isCheckStudentNo === null) {
-      alert("학번 중복확인을 해주세요.");
-    } else {
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm("티토 회원 탈퇴하시겠습니까?");
+    if (confirmDelete) {
       try {
-        const res = await axios.put(
-          "https://titto.store/user/signup",
-          userSignfo,
+        const res = await axios.delete(
+          `https://titto.store/user/${userMyfo.id}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
+              Accept: "application/json",
             },
           }
         );
 
         if (res.status === 200) {
-          alert("저장되었습니다.");
-          window.location.reload();
+          alert("회원 탈퇴가 완료되었습니다.");
+          navigate("/login/sign_in");
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error deleting account:", error);
       }
     }
   };
@@ -281,8 +311,10 @@ const AccountManagementContent = () => {
           <AccountDeleteDiv>
             <p>계정 삭제</p>
             <div className="DeleteContainer">
-              <p className="subname">계정 삭제 내용</p>
-              <button className="btn" onClick={() => navigate("/")}>
+              <p className="subname">
+                계정 삭제 시 프로필 및 정보가 삭제 됩니다.
+              </p>
+              <button className="btn" onClick={handleDeleteAccount}>
                 삭제
               </button>
             </div>
