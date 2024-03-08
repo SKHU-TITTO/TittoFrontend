@@ -56,6 +56,7 @@ const Header = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  text-align: left;
 `;
 
 const SubHeader = styled.h2`
@@ -108,8 +109,9 @@ const Slider2 = () => {
           </SubHeader>
           <Description>
             질문있어요 게시판은 여러분이 가지고 있는 궁금증을 해결할 수 있도록
-            도와주는 곳입니다. 궁금한 점이 있다면 언제든지 질문해주세요! 다른
-            사용자들과 함께 문제를 해결하고 지식을 공유할 수 있습니다.
+            도와주는 곳입니다. <br />
+            궁금한 점이 있다면 언제든지 질문해주세요! 다른 사용자들과 함께
+            문제를 해결하고 지식을 공유할 수 있습니다
             <br />
             1. 먼저 글쓰기를 누른 후, 원하는 카테고리와 내공을 선택합니다.
             <br />
