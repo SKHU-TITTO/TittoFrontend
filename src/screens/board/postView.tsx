@@ -13,8 +13,9 @@ import axios from "axios";
 export type UserInfo = {
   name: string;
   profileImg: string;
-  lv: number;
+  lv?: number;
   id?: number | string;
+  level?: number;
   email: string;
   department?: string;
   matchingPostAuthorId?: number;
@@ -205,6 +206,7 @@ const PostView = () => {
   const [userWriteInfo, setWriteInfo] = useState<UserInfo>({
     name: "",
     profileImg: "",
+    level: 1,
     lv: 1,
     matchingPostAuthorId: 0,
     email: "",
@@ -292,7 +294,7 @@ const PostView = () => {
         setWriteInfo({
           name: data.authorNickName,
           profileImg: data.profile,
-          lv: 1,
+          level: data.level,
           id: "id",
           email: "email",
           matchingPostAuthorId: data.matchingPostAuthorId,
@@ -415,7 +417,7 @@ const PostView = () => {
           <div className="userdiv">
             <div className="nick">{userWriteInfo.name}</div>
             <div className="lv">
-              LV.{userWriteInfo.lv} | {date}
+              LV.{userWriteInfo.level} | {date}
             </div>
           </div>
         </div>
