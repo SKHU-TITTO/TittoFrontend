@@ -2,6 +2,7 @@ import styled from "styled-components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SmsIcon from "@mui/icons-material/Sms";
 import { useEffect, useState } from "react";
+import NumberSelector from "./number-selector";
 
 export type MyWriteType = {
   category: string;
@@ -10,6 +11,7 @@ export type MyWriteType = {
   detail: string;
   view?: number;
   comment?: number;
+  answerCount?: number;
 };
 
 const categoryToString = (category: string) => {
@@ -56,9 +58,10 @@ const BoardWrapper = styled.div`
     color: #bababa;
   }
   .category {
-    color: #444;
+    color: #3e68ff;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
+    display: flex;
   }
   .title {
     color: black;
@@ -74,6 +77,7 @@ const BoardWrapper = styled.div`
     display: flex;
     align-items: center;
     font-size: 14px;
+    color: #bababa;
 
     svg {
       font-size: 1.2em;
@@ -85,6 +89,21 @@ const BoardWrapper = styled.div`
     }
   }
 `;
+const CategoryDiv = styled.div`
+  padding: 10px 20px 10px 20px;
+  background-color: #3e68ff;
+
+  font-size: 14px;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  width: 33%;
+  height: 35px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+`;
 
 const WriteDetail = ({
   category,
@@ -92,7 +111,8 @@ const WriteDetail = ({
   title,
   detail,
   view,
-  comment,
+  comment = 0,
+  answerCount = 0,
 }: MyWriteType) => {
   const [htmldetail, setDetail] = useState<string>("");
 
@@ -107,26 +127,26 @@ const WriteDetail = ({
   return (
     <BoardWrapper>
       <div className="cover">
-        <p className="category">
+        <CategoryDiv>
+          {department ? "질문있어요" : "티토찾아요"} |&nbsp;
           {department
             ? departmentToString(department)
             : categoryToString(category)}
-        </p>
+        </CategoryDiv>
         <br />
         <p className="title">{title}</p>
-        <br />
+
         <p
           className="detail"
           dangerouslySetInnerHTML={{ __html: htmldetail }}
-        ></p>
+        />
         <br />
         <div className="show-comment">
           <VisibilityIcon />
           <p>{view}</p>
           <p>|</p>
-          <p>
-            <SmsIcon /> {comment}
-          </p>
+          <SmsIcon />
+          <p>{answerCount ? answerCount : comment}</p>
         </div>
       </div>
     </BoardWrapper>

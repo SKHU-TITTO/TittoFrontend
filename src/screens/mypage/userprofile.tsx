@@ -7,6 +7,7 @@ import userStore from "../../stores/UserStore";
 import NewMessagePopup from "../message/postmsg";
 import CategorySelector from "./../../components/board/category-selector";
 import WriteDetail from "../../components/board/mywrite-detail";
+import WriteAnswerDetail from "../../components/board/writeanswer-detail";
 
 // 유저 정보 타입 정의
 export type UserProfileInfo = {
@@ -59,6 +60,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const [userPosts, setUserPosts] = useState([]);
+  const [userAnswers, setUserAnswers] = useState([]);
 
   const accessToken = localStorage.getItem("accessToken");
   const [userProfo, setProInfo] = useState<UserProfileInfo>({
@@ -131,8 +133,29 @@ const UserProfile = () => {
     }
   };
 
+  const fetchUserAnswers = async (userId: string | undefined) => {
+    try {
+      const response = await axios.get(
+        `https://titto.store/user/answers/${userId}`,
+        {
+          params: {
+            userId: userId,
+          },
+
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setUserAnswers(response.data);
+    } catch (error) {
+      console.error("Error fetching user posts:", error);
+    }
+  };
+
   useEffect(() => {
     fetchUserPosts(userId);
+    fetchUserAnswers(userId);
   }, [userId]);
 
   useEffect(() => {
@@ -228,36 +251,58 @@ const UserProfile = () => {
 
         <UserProfileSubContainer>
           <UserProfileStudyContainer>
-            <p>답변한 글</p>
-            <UserProfileAcceptInner></UserProfileAcceptInner>
+            <p className="wirteanswer">답변한 글</p>
+            <UserProfileAcceptInner>
+              {userAnswers.map(
+                (
+                  answer: {
+                    department: string;
+                    questionTitle: string;
+                    content: string;
+                  },
+                  index
+                ) => (
+                  <WriteAnswerDetail
+                    key={index}
+                    department={answer.department}
+                    title={answer.questionTitle}
+                    detail={answer.content}
+                  />
+                )
+              )}
+            </UserProfileAcceptInner>
           </UserProfileStudyContainer>
           <UserProfileWritePostContainer>
             <p className="writepost">작성한 글</p>
             <UserProfileWritePostInner>
-              {Array.isArray(userPosts) &&
-                userPosts.map(
-                  (
-                    post: {
-                      category: string;
-                      department: string;
-                      title: string;
-                      content: string;
-                      viewCount: number;
-                      reviewCount: number;
-                    },
-                    index
-                  ) => (
-                    <WriteDetail
-                      key={index}
-                      category={post.category}
-                      department={post.department}
-                      title={post.title}
-                      detail={post.content}
-                      view={post.viewCount}
-                      comment={post.reviewCount}
-                    />
-                  )
-                )}
+              <div className="post">
+                {Array.isArray(userPosts) &&
+                  userPosts.map(
+                    (
+                      post: {
+                        category: string;
+                        department: string;
+                        title: string;
+                        content: string;
+                        viewCount: number;
+                        reviewCount: number;
+                        answerCount: number;
+                      },
+                      index
+                    ) => (
+                      <WriteDetail
+                        key={index}
+                        category={post.category}
+                        department={post.department}
+                        title={post.title}
+                        detail={post.content}
+                        view={post.viewCount}
+                        comment={post.reviewCount}
+                        answerCount={post.answerCount}
+                      />
+                    )
+                  )}
+              </div>
             </UserProfileWritePostInner>
           </UserProfileWritePostContainer>
         </UserProfileSubContainer>
@@ -425,7 +470,7 @@ const UserProfileStudyContainer = styled.div`
 
   margin-right: 20px;
   flex: 2.6;
-  p {
+  .wirteanswer {
     padding: 20px;
     font-size: 18px;
     font-weight: bold;
