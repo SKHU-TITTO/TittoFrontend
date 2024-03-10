@@ -7,6 +7,7 @@ import userStore from "../../stores/UserStore";
 import NewMessagePopup from "../message/postmsg";
 import CategorySelector from "./../../components/board/category-selector";
 import WriteDetail from "../../components/board/mywrite-detail";
+import WriteAnswerDetail from "../../components/board/writeanswer-detail";
 
 // 유저 정보 타입 정의
 export type UserProfileInfo = {
@@ -46,6 +47,7 @@ export type ChosePost = {
   title: string;
   user: {
     nickname: string;
+    id: number;
   };
   createDate: string;
   status: string;
@@ -58,10 +60,11 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const [userPosts, setUserPosts] = useState([]);
+  const [userAnswers, setUserAnswers] = useState([]);
 
   const accessToken = localStorage.getItem("accessToken");
   const [userProfo, setProInfo] = useState<UserProfileInfo>({
-    userId: 1,
+    userId: 0,
     profile: "",
     name: "",
     nickname: "",
@@ -110,7 +113,7 @@ const UserProfile = () => {
       ? (userProfo.countAccept / userProfo.countAnswer) * 100
       : 0;
 
-  const fetchUserPosts = async () => {
+  const fetchUserPosts = async (userId: string | undefined) => {
     try {
       const response = await axios.get(
         `https://titto.store/user/posts/${userId}`,
@@ -118,6 +121,7 @@ const UserProfile = () => {
           params: {
             userId: userId,
           },
+
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -128,10 +132,36 @@ const UserProfile = () => {
       console.error("Error fetching user posts:", error);
     }
   };
+
+  const fetchUserAnswers = async (userId: string | undefined) => {
+    try {
+      const response = await axios.get(
+        `https://titto.store/user/answers/${userId}`,
+        {
+          params: {
+            userId: userId,
+          },
+
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setUserAnswers(response.data);
+    } catch (error) {
+      console.error("Error fetching user posts:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserPosts(userId);
+    fetchUserAnswers(userId);
+  }, [userId]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://titto.store/user/profile", {
+        const response = await axios.get(`https://titto.store/user/profile`, {
           params: {
             userId: userId,
           },
@@ -152,7 +182,6 @@ const UserProfile = () => {
     };
 
     fetchData();
-    fetchUserPosts();
   }, [accessToken]);
 
   return (
@@ -222,43 +251,58 @@ const UserProfile = () => {
 
         <UserProfileSubContainer>
           <UserProfileStudyContainer>
-            <p>답변한 글</p>
-            <UserProfileAcceptInner></UserProfileAcceptInner>
-          </UserProfileStudyContainer>
-          <UserProfileWritePostContainer>
-            <p>작성한 글</p>
-            <UserProfileWritePostInner>
-              {userPosts.map(
+            <p className="wirteanswer">답변한 글</p>
+            <UserProfileAcceptInner>
+              {userAnswers.map(
                 (
-                  post: {
-                    category: string;
-                    title: string;
+                  answer: {
+                    department: string;
+                    questionTitle: string;
                     content: string;
-                    viewCount: number;
-                    reviewCount: number;
                   },
                   index
                 ) => (
-                  <HBoarddetail
+                  <WriteAnswerDetail
                     key={index}
-                    category={post.category}
-                    title={post.title}
-                    detail={post.content}
-                    view={post.viewCount}
-                    comment={post.reviewCount}
+                    department={answer.department}
+                    title={answer.questionTitle}
+                    detail={answer.content}
                   />
                 )
               )}
-
-              <HBoarddetail
-                category={"STUDY"}
-                title="C++ 한솥밥 하실분구해요!"
-                detail="안녕하세요, 혹시 C++한솥밥 하실 분 계신가요? 저는 저번학기 김학수 C++ 1등 으로 수...."
-                view={41}
-                comment={4}
-              />
-
-              <WriteDetail />
+            </UserProfileAcceptInner>
+          </UserProfileStudyContainer>
+          <UserProfileWritePostContainer>
+            <p className="writepost">작성한 글</p>
+            <UserProfileWritePostInner>
+              <div className="post">
+                {Array.isArray(userPosts) &&
+                  userPosts.map(
+                    (
+                      post: {
+                        category: string;
+                        department: string;
+                        title: string;
+                        content: string;
+                        viewCount: number;
+                        reviewCount: number;
+                        answerCount: number;
+                      },
+                      index
+                    ) => (
+                      <WriteDetail
+                        key={index}
+                        category={post.category}
+                        department={post.department}
+                        title={post.title}
+                        detail={post.content}
+                        view={post.viewCount}
+                        comment={post.reviewCount}
+                        answerCount={post.answerCount}
+                      />
+                    )
+                  )}
+              </div>
             </UserProfileWritePostInner>
           </UserProfileWritePostContainer>
         </UserProfileSubContainer>
@@ -370,6 +414,14 @@ const UserProfileMainLevelContainer = styled.div`
   padding: 20px;
   text-align: left;
 
+  progress {
+    width: 300px;
+    height: 10px;
+    background-color: #ccc;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
   p {
     font-size: 16px;
     font-weight: bold;
@@ -404,28 +456,21 @@ const UserProfileMainLevelContainer = styled.div`
     color: #3e68ff;
   }
 `;
-const Progress = styled.div`
-  width: 300px;
-  height: 10px;
-  background-color: #ccc;
-  overflow: hidden;
-  margin-bottom: 20px;
-`;
-const Dealt = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #3e68ff;
-  transform: scaleX(0.3);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-`;
 const UserProfileSubContainer = styled.div`
   text-align: left;
   display: flex;
   flex: 1;
   margin-top: 20px;
+`;
 
-  p {
+const UserProfileStudyContainer = styled.div`
+  border: 2px solid #ccc;
+
+  border-radius: 10px;
+
+  margin-right: 20px;
+  flex: 2.6;
+  .wirteanswer {
     padding: 20px;
     font-size: 18px;
     font-weight: bold;
@@ -433,24 +478,26 @@ const UserProfileSubContainer = styled.div`
   }
 `;
 
-const UserProfileStudyContainer = styled.div`
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  margin-right: 20px;
-  flex: 2.6;
-`;
-
 const UserProfileWritePostContainer = styled.div`
   flex: 7.4;
   border: 2px solid #ccc;
   border-radius: 10px;
+  .writepost {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
 `;
-
 const UserProfileWritePostInner = styled.div`
   padding: 20px;
+  height: 800px;
+  overflow-y: auto;
 `;
 
 const UserProfileAcceptInner = styled.div`
+  height: 800px;
+  overflow-y: auto;
   padding: 10px;
 `;
 export default UserProfile;
