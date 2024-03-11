@@ -45,7 +45,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
 
   const renderLatestMessageBySender = () => {
     if (messages.length === 0) {
-      return <NoMessages>메시지가 없습니다.</NoMessages>;
+      return <NoMessages> 받은 메시지가 없습니다.</NoMessages>;
     }
 
     const latestMessagesBySender: { [key: string]: UserMsgInfo } = {};
