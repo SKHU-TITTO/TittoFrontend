@@ -208,7 +208,7 @@ const UserProfile = () => {
             <UserProfileMainIntroduceBottomContainer>
               <h1>보유 뱃지</h1>
               <img src="/imgs/bg.png" alt="User-Profile"></img>
-              <img src="/imgs/UserProfile.png" alt="User-Profile"></img>
+              <img src="/imgs/bg.png" alt="User-Profile"></img>
             </UserProfileMainIntroduceBottomContainer>
           </UserProfileMainIntroduceContainer>
 

@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import userStore from "../../stores/UserStore";
+import axios from "axios";
 
 export type MessageDetail = {
   id: number;
@@ -15,14 +15,18 @@ export type MessageDetail = {
 
 interface ContentMessageProps {
   selectedSenderId: number | null;
+  onSelectedSenderIdChange: (senderId: number | null) => void;
 }
 
-const ContentMessage = ({ selectedSenderId }: ContentMessageProps) => {
+const ContentMessage = ({
+  selectedSenderId,
+  onSelectedSenderIdChange,
+}: ContentMessageProps) => {
   const [messages, setMessages] = useState<MessageDetail[]>([]);
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    if (selectedSenderId) {
+    if (selectedSenderId !== null) {
       fetchMessages(selectedSenderId);
     }
   }, [selectedSenderId]);

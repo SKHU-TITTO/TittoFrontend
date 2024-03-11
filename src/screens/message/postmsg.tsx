@@ -34,7 +34,7 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
       onCancel();
     } catch (error) {
       console.error("Error sending message:", error);
-      // alert("닉네임을 확인해 주세요.");
+      alert("잘못 된 시도입니다.");
     }
   };
   return (

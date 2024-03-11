@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TitleMessage from "./title-message";
 import NewMessagePopup from "./postmsg";
-import ContentMessage from "./content-message";
+import ContentMessage, { MessageDetail } from "./content-message";
 import styled from "styled-components";
+import axios from "axios";
 
 const MessageBox = () => {
   const [isSendingMessage, setIsSendingMessage] = useState(false);
@@ -13,7 +14,16 @@ const MessageBox = () => {
   const [selectedSenderNickname, setSelectedSenderNickname] = useState<
     string | null
   >(null);
+  const [messages, setMessages] = useState<MessageDetail[]>([]);
+  const accessToken = localStorage.getItem("accessToken");
 
+  useEffect(() => {
+    if (selectedSenderId !== null) {
+      fetchMessages(selectedSenderId);
+    } else {
+      setMessages([]);
+    }
+  }, [selectedSenderId]);
   const openSendMessagePopup = () => {
     setIsSendingMessage(true);
   };
@@ -31,6 +41,56 @@ const MessageBox = () => {
     setSelectedSenderNickname(senderNickname);
   };
 
+  const fetchMessages = async (senderId: number | null) => {
+    try {
+      if (senderId !== null) {
+        const response = await axios.get(
+          `https://titto.store/message/${senderId}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        const data = response.data;
+        setMessages(data.reverse());
+      } else {
+        setMessages([]);
+      }
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+
+  const handleDeleteMessage = async () => {
+    try {
+      if (selectedSenderId !== null) {
+        const confirmDelete = window.confirm(
+          "정말로 모든 메시지를 삭제하시겠습니까?"
+        );
+        if (confirmDelete) {
+          await axios.put(
+            `https://titto.store/message/delete-all/${selectedSenderId}`,
+            null,
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          );
+          console.log("Message 삭제");
+          window.location.reload();
+          setMessages([]);
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  };
+
   return (
     <UserMessageMainContainer>
       <UserMessageSubContainer>
@@ -44,10 +104,13 @@ const MessageBox = () => {
             <IconsContainer>
               <TelegramIcon onClick={openSendMessagePopup} />
               <RefreshRoundedIcon onClick={handleRefresh} />
-              <DeleteIcon />
+              <DeleteIcon onClick={handleDeleteMessage} />
             </IconsContainer>
           </TitleArea>
-          <ContentMessage selectedSenderId={selectedSenderId} />
+          <ContentMessage
+            selectedSenderId={selectedSenderId}
+            onSelectedSenderIdChange={setSelectedSenderId}
+          />
         </UserMessageRightContainer>
       </UserMessageSubContainer>
       {isSendingMessage && (
