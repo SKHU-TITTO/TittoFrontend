@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import HBoarddetail from "../../components/home/board-detail";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,6 +6,26 @@ import userStore from "../../stores/UserStore";
 import NewMessagePopup from "../../components/board/postmsg";
 import WriteDetail from "../../components/board/mywrite-detail";
 import WriteAnswerDetail from "../../components/board/writeanswer-detail";
+
+const badgeImageMap: { [key: string]: string } = {
+  NOVICE_INQUIRER: "/imgs/bg/NOVICE_INQUIRER.png",
+  BEGINNER_INQUIRER: "/imgs/bg/BEGINNER_INQUIRER.png",
+  TRAINEE_INQUIRER: "/imgs/bg/TRAINEE_INQUIRER.png",
+  PROFESSIONAL_INQUIRER: "/imgs/bg/PROFESSIONAL_INQUIRER.png",
+  EXPERT_INQUIRER: "/imgs/bg/EXPERT_INQUIRER.png",
+  NOVICE_RESPONDER: "/imgs/bg/NOVICE_RESPONDER.png",
+  BEGINNER_RESPONDER: "/imgs/bg/BEGINNER_RESPONDER.png",
+  TRAINEE_RESPONDER: "/imgs/bg/TRAINEE_RESPONDER.png",
+  PROFESSIONAL_RESPONDER: "/imgs/bg/PROFESSIONAL_RESPONDER.png",
+  EXPERT_RESPONDER: "/imgs/bg/EXPERT_RESPONDER.png",
+  NOVICE_SOLVER: "/imgs/bg/NOVICE_SOLVER.png",
+  BEGINNER_SOLVER: "/imgs/bg/BEGINNER_SOLVER.png",
+  TRAINEE_SOLVER: "/imgs/bg/TRAINEE_SOLVER.png",
+  PROFESSIONAL_SOLVER: "/imgs/bg/PROFESSIONAL_SOLVER.png",
+  EXPERT_SOLVER: "/imgs/bg/EXPERT_SOLVER.png",
+  TITTO_MASTER: "/imgs/bg/TITTO_MASTER.png",
+  TITTO_AUTHORITY: "/imgs/bg/TITTO_AUTHORITY.png",
+};
 
 // 유저 정보 타입 정의
 export type UserProfileInfo = {
@@ -60,7 +79,6 @@ const UserProfile = () => {
   const { userId } = useParams();
   const [userPosts, setUserPosts] = useState([]);
   const [userAnswers, setUserAnswers] = useState([]);
-
   const accessToken = localStorage.getItem("accessToken");
   const [userProfo, setProInfo] = useState<UserProfileInfo>({
     userId: 0,
@@ -80,8 +98,8 @@ const UserProfile = () => {
   }); // 프로필 유저 정보
   const [max, setMax] = useState(0);
 
-  const levelStandard = [100, 300, 600, 1000];
-
+  const levelStandard = [100, 300, 600, 1000, Infinity];
+  const [isMaxLevel, setIsMaxLevel] = useState(false);
   const checkNextLevel = (totalExp: number, userLevel: number) => {
     switch (userLevel) {
       case 1:
@@ -169,12 +187,22 @@ const UserProfile = () => {
           },
         });
 
+        if (response.data.badges) {
+          const badgesArray = response.data.badges
+            .replace("[", "")
+            .replace("]", "")
+            .split(", ")
+            .map((badge: string) => badge.trim());
+          response.data.badges = badgesArray;
+        }
         setProInfo(response.data);
         const maxValue = checkNextLevel(
           response.data.totalExperience,
           response.data.level
         );
+        console.log(userProfo.badges);
         setMax(maxValue);
+        setIsMaxLevel(response.data.level === levelStandard.length);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -206,8 +234,16 @@ const UserProfile = () => {
             </UserProfileMainIntroduceTopContainer>
             <UserProfileMainIntroduceBottomContainer>
               <h1>보유 뱃지</h1>
-              <img src="/imgs/bg/01.png" alt="User-Profile"></img>
-              <img src="/imgs/bg/02.png" alt="User-Profile"></img>
+
+              <div className="imgcnt">
+                {userProfo.badges && userProfo.badges.length > 0 ? (
+                  userProfo.badges.map((badge: string) => (
+                    <img key={badge} src={badgeImageMap[badge]} alt={badge} />
+                  ))
+                ) : (
+                  <p>아직 획득한 뱃지가 없습니다!</p>
+                )}
+              </div>
             </UserProfileMainIntroduceBottomContainer>
           </UserProfileMainIntroduceContainer>
 
@@ -215,14 +251,14 @@ const UserProfile = () => {
             <div>
               <p>다음 레벨까지</p>
               <h1>
-                {max}
-                내공남았어요.
+                {isMaxLevel ? "남은 내공이 없습니다" : ` ${max} 내공남았어요.`}
               </h1>
               <progress
                 className="gage"
                 value={levelStandard[userProfo.level - 1] - max}
                 max={levelStandard[userProfo.level - 1]}
               ></progress>
+
               <p>답변한 글 수</p>
               <h1>총 {userProfo.countAnswer}개 답변했어요.</h1>
               <p>채택된 글 수</p>
@@ -307,7 +343,6 @@ const UserProfile = () => {
     </>
   );
 };
-
 const UserProfileWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -400,6 +435,9 @@ const UserProfileMainIntroduceBottomContainer = styled.div`
     border-radius: 50%;
     position: relative;
   }
+  .imgcnt {
+    overflow-y: auto;
+  }
 `;
 
 const UserProfileMainLevelContainer = styled.div`
@@ -416,7 +454,9 @@ const UserProfileMainLevelContainer = styled.div`
     overflow: hidden;
     margin-bottom: 20px;
   }
-
+  div {
+    margin-top: 15px;
+  }
   progress ::-webkit-progress-value {
     background-color: #3e68ff;
   }
