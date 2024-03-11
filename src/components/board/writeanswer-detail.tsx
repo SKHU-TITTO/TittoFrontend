@@ -28,7 +28,6 @@ const departmentToString = (department: string) => {
 
 const BoardWrapper = styled.div`
   width: 100%;
-  margin-bottom: 10px;
   text-align: left;
   .cover {
     border-bottom: 2px solid #ccc;

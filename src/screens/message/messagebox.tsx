@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
-import TitleMessage from "./title-message";
-import NewMessagePopup from "./postmsg";
-import ContentMessage, { MessageDetail } from "./content-message";
+import TitleMessage from "../../components/board/title-message";
+import NewMessagePopup from "../../components/board/postmsg";
+import ContentMessage, {
+  MessageDetail,
+} from "../../components/board/content-message";
 import styled from "styled-components";
 import axios from "axios";
 

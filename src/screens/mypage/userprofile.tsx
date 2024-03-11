@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import userStore from "../../stores/UserStore";
-import NewMessagePopup from "../message/postmsg";
+import NewMessagePopup from "../../components/board/postmsg";
 import CategorySelector from "./../../components/board/category-selector";
 import WriteDetail from "../../components/board/mywrite-detail";
 import WriteAnswerDetail from "../../components/board/writeanswer-detail";
