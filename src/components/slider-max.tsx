@@ -3,17 +3,52 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
+import { ComponentProps } from "react";
 
 const SliderWrap = styled.div`
   width: 100%;
   border-radius: 10px;
   overflow: hidden;
   margin-top: 20px;
-  // .slick-prev::before,
-  // .slick-next::before {
-  //   opacity: 0;
-  //   display: none;
-  // }
+
+  .slick-prev {
+    left: 10px;
+    z-index: 1;
+    width: 70px;
+    height: 70px;
+    &:before {
+      content: "";
+      width: 50px;
+      height: 50px;
+      background-color: #000;
+      opacity: 0.5;
+      border-radius: 50%;
+    }
+  }
+  .slick-next {
+    right: 10px;
+    z-index: 1;
+
+    width: 70px;
+    height: 70px;
+
+    &:before {
+      content: "";
+      width: 50px;
+      height: 50px;
+      background-color: #000;
+      opacity: 0.5;
+      border-radius: 50%;
+    }
+  }
+  .slick-prev:hover:before,
+  .slick-next:hover:before {
+    opacity: 1;
+  }
+  .slick-prev:hover,
+  .slick-next:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 `;
 
 const Img1 = styled.img`
@@ -23,6 +58,18 @@ const Img1 = styled.img`
   border-radius: 10px;
 `;
 
+const PrevArrow = (props: ComponentProps<"button">) => (
+  <button {...props} className="slick-prev" aria-label="Previous">
+    Previous
+  </button>
+);
+
+const NextArrow = (props: ComponentProps<"button">) => (
+  <button {...props} className="slick-next" aria-label="Next">
+    Next
+  </button>
+);
+
 const MaxSlider = () => {
   const settings = {
     dots: false,
@@ -30,6 +77,9 @@ const MaxSlider = () => {
     speed: 500,
     autoplay: true,
     autoplaySpeed: 3000,
+    // 추가: 이전 및 다음 화살표 표시
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
   };
   const navigate = useNavigate();
 

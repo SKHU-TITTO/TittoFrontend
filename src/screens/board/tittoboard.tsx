@@ -38,16 +38,19 @@ const SearchDiv = styled.div`
   border: 1px solid #bababa;
   border-radius: 10px;
   text-align: left;
-  padding-left: 10px;
+  height: 50px;
+
   justify-content: space-around;
   margin-bottom: 10px;
   input {
     width: 90%;
-    height: 60px;
+    height: 40px;
+    margin-left: 10px;
     font-size: 20px;
     font-weight: 300;
     color: #bababa;
     border: none;
+    text-align: left;
   }
   input:focus {
     outline: none;
@@ -254,7 +257,7 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
                 window.location.reload();
               }}
             >
-              <SearchIcon style={{ fontSize: "50px" }}></SearchIcon>
+              <SearchIcon style={{ fontSize: "43px" }}></SearchIcon>
             </button>
           </SearchDiv>
           <span
