@@ -5,7 +5,6 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import userStore from "../../stores/UserStore";
 import NewMessagePopup from "../../components/board/postmsg";
-import CategorySelector from "./../../components/board/category-selector";
 import WriteDetail from "../../components/board/mywrite-detail";
 import WriteAnswerDetail from "../../components/board/writeanswer-detail";
 
@@ -207,8 +206,8 @@ const UserProfile = () => {
             </UserProfileMainIntroduceTopContainer>
             <UserProfileMainIntroduceBottomContainer>
               <h1>보유 뱃지</h1>
-              <img src="/imgs/bg.png" alt="User-Profile"></img>
-              <img src="/imgs/bg.png" alt="User-Profile"></img>
+              <img src="/imgs/bg/01.png" alt="User-Profile"></img>
+              <img src="/imgs/bg/02.png" alt="User-Profile"></img>
             </UserProfileMainIntroduceBottomContainer>
           </UserProfileMainIntroduceContainer>
 
@@ -275,34 +274,32 @@ const UserProfile = () => {
           <UserProfileWritePostContainer>
             <p className="writepost">작성한 글</p>
             <UserProfileWritePostInner>
-              <div className="post">
-                {Array.isArray(userPosts) &&
-                  userPosts.map(
-                    (
-                      post: {
-                        category: string;
-                        department: string;
-                        title: string;
-                        content: string;
-                        viewCount: number;
-                        reviewCount: number;
-                        answerCount: number;
-                      },
-                      index
-                    ) => (
-                      <WriteDetail
-                        key={index}
-                        category={post.category}
-                        department={post.department}
-                        title={post.title}
-                        detail={post.content}
-                        view={post.viewCount}
-                        comment={post.reviewCount}
-                        answerCount={post.answerCount}
-                      />
-                    )
-                  )}
-              </div>
+              {Array.isArray(userPosts) &&
+                userPosts.map(
+                  (
+                    post: {
+                      category: string;
+                      department: string;
+                      title: string;
+                      content: string;
+                      viewCount: number;
+                      reviewCount: number;
+                      answerCount: number;
+                    },
+                    index
+                  ) => (
+                    <WriteDetail
+                      key={index}
+                      category={post.category}
+                      department={post.department}
+                      title={post.title}
+                      detail={post.content}
+                      view={post.viewCount}
+                      comment={post.reviewCount}
+                      answerCount={post.answerCount}
+                    />
+                  )
+                )}
             </UserProfileWritePostInner>
           </UserProfileWritePostContainer>
         </UserProfileSubContainer>
@@ -330,35 +327,35 @@ const UserProfileMainProfileContainer = styled.div`
   border-radius: 10px 0 0 10px;
   border: 3px solid #3e68ff;
   border-right: none;
-  padding: 20px;
+  padding: 15px;
   img {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     position: relative;
   }
 `;
 
 const UserProfileMainTextContainer = styled.div`
-  padding: 20px;
+  padding: 10px;
   text-align: left;
 
   h1 {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
   }
   h2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     color: #3e68ff;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   p {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 `;
 
@@ -410,16 +407,18 @@ const UserProfileMainLevelContainer = styled.div`
   border: 3px solid #ccc;
   border-left: 2px solid #ccc;
   flex: 3;
-
   padding: 20px;
   text-align: left;
 
   progress {
     width: 300px;
-    height: 10px;
-    background-color: #ccc;
+    height: 35px;
     overflow: hidden;
     margin-bottom: 20px;
+  }
+
+  progress ::-webkit-progress-value {
+    background-color: #3e68ff;
   }
 
   p {
@@ -431,7 +430,7 @@ const UserProfileMainLevelContainer = styled.div`
   h1 {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
   .btn {
     width: 100px;
@@ -446,14 +445,6 @@ const UserProfileMainLevelContainer = styled.div`
     font-size: 15px;
     font-weight: bold;
     margin-left: 10px;
-  }
-
-  .gage {
-    width: 100%;
-    height: 10px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    color: #3e68ff;
   }
 `;
 const UserProfileSubContainer = styled.div`
@@ -474,7 +465,7 @@ const UserProfileStudyContainer = styled.div`
     padding: 20px;
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 `;
 
@@ -490,14 +481,15 @@ const UserProfileWritePostContainer = styled.div`
   }
 `;
 const UserProfileWritePostInner = styled.div`
-  padding: 20px;
-  height: 800px;
+  padding: 10px;
+  height: 500px;
   overflow-y: auto;
 `;
 
 const UserProfileAcceptInner = styled.div`
-  height: 800px;
+  height: 500px;
   overflow-y: auto;
   padding: 10px;
+  margin-bottom: 20px;
 `;
 export default UserProfile;

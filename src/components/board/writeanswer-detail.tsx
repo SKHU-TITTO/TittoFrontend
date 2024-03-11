@@ -31,7 +31,7 @@ const BoardWrapper = styled.div`
   text-align: left;
   .cover {
     border-bottom: 2px solid #ccc;
-    padding: 10px;
+    padding: 5px;
     color: #bababa;
   }
   .title {
@@ -73,7 +73,6 @@ const WriteAnswerDetail = ({ department, title, detail }: MyWriteType) => {
           className="detail"
           dangerouslySetInnerHTML={{ __html: htmldetail }}
         ></p>
-        <br />
       </div>
     </BoardWrapper>
   );

@@ -111,7 +111,7 @@ const QnaTitle = ({
       <MainTitle>
         <div style={{ display: "flex", alignItems: "center" }}>
           <SolveDiv className={solve ? "solve" : "not-solve"}>
-            {solve ? "해결됨" : "미해결"}
+            {solve ? "해결" : "미해결"}
           </SolveDiv>
           <span className="title">{title}</span>
         </div>
