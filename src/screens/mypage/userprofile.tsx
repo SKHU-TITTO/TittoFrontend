@@ -7,7 +7,7 @@ import NewMessagePopup from "../../components/board/postmsg";
 import WriteDetail from "../../components/board/mywrite-detail";
 import WriteAnswerDetail from "../../components/board/writeanswer-detail";
 
-const badgeImageMap: { [key: string]: string } = {
+export const badgeImageMap: { [key: string]: string } = {
   NOVICE_INQUIRER: "/imgs/bg/NOVICE_INQUIRER.png",
   BEGINNER_INQUIRER: "/imgs/bg/BEGINNER_INQUIRER.png",
   TRAINEE_INQUIRER: "/imgs/bg/TRAINEE_INQUIRER.png",
