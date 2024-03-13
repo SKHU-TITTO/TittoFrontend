@@ -234,14 +234,20 @@ const UserProfile = () => {
             </UserProfileMainIntroduceTopContainer>
             <UserProfileMainIntroduceBottomContainer>
               <h1>보유 뱃지</h1>
-
               <div className="imgcnt">
-                {userProfo.badges && userProfo.badges.length > 1 ? (
+                {userProfo.badges &&
+                Array.isArray(userProfo.badges) &&
+                userProfo.badges.length > 0 &&
+                userProfo.badges[0] !== "" ? (
                   userProfo.badges.map((badge: string) => (
                     <img key={badge} src={badgeImageMap[badge]} alt="" />
                   ))
-                ) : (
+                ) : userProfo.badges &&
+                  Array.isArray(userProfo.badges) &&
+                  userProfo.badges.length > 0 ? (
                   <p>보유한 뱃지가 없습니다.</p>
+                ) : (
+                  <p>뱃지 정보가 없습니다.</p>
                 )}
               </div>
             </UserProfileMainIntroduceBottomContainer>
