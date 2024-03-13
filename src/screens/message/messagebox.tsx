@@ -83,7 +83,7 @@ const MessageBox = () => {
               },
             }
           );
-          console.log("Message 삭제");
+
           window.location.reload();
           setMessages([]);
         }
@@ -109,6 +109,7 @@ const MessageBox = () => {
               <DeleteIcon onClick={handleDeleteMessage} />
             </IconsContainer>
           </TitleArea>
+
           <ContentMessage
             selectedSenderId={selectedSenderId}
             onSelectedSenderIdChange={setSelectedSenderId}
@@ -149,20 +150,21 @@ const UserMessageLeftContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   margin-right: 20px;
-
+  overflow-y: auto;
   flex: 3;
 `;
 
 const UserMessageRightContainer = styled.div`
   flex: 7;
   border: 1px solid #ccc;
-  border-radius: 10px;
   overflow-y: auto;
+  border-radius: 10px;
 `;
 
 const TitleArea = styled.div`
   display: flex;
   align-items: center;
+
   justify-content: space-between;
 `;
 

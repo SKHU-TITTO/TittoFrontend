@@ -155,7 +155,6 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
   useEffect(() => {
     const fetchPosts = async () => {
       if (searchParams.has("search")) {
-        console.log(searchParams.get("search"));
         try {
           const response = await axios.get(
             `https://titto.store/matching-board/search?page=${
@@ -248,7 +247,6 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
               value={searchValue}
               onChange={(e) => {
                 setSearchValue(e.target.value);
-                console.log(searchValue);
               }}
             />
             <button

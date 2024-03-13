@@ -241,7 +241,6 @@ const PostForm = () => {
 
       if (postId) {
         try {
-          console.log(title, htmlContent, selectedCategory);
           const response = await axios.put(
             `https://titto.store/questions/${postId}`,
             {
@@ -258,7 +257,7 @@ const PostForm = () => {
               },
             }
           );
-          console.log("Success:", response.data);
+
           navigate(`/board/lists/${boardId}/1`);
         } catch (error) {
           console.error("Error:", error);

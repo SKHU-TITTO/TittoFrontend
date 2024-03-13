@@ -71,7 +71,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     for (let i = 1; i <= levelStandard.length; i++) {
       if (currentExp > levelStandard[i - 1] && userLevel === i) {
-        console.log("유저 레벨업:", i);
         await updateUserLevel(userId, accessToken);
       }
     }
