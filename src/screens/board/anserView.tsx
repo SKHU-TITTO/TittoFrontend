@@ -3,14 +3,10 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SmsIcon from "@mui/icons-material/Sms";
-import CommentDetail, {
-  CommentInfo,
-} from "../../components/board/comment-detail";
 import ReactQuill from "react-quill";
 import axios from "axios";
 import userStore from "../../stores/UserStore";
-import AnserDetail from "../../components/board/answer-detail";
-import { set } from "mobx";
+import AnswerDeail from "../../components/board/answer-detail";
 
 // 유저 정보 타입 정의
 export type UserInfo = {
@@ -430,23 +426,15 @@ const AnswerView = () => {
           답변 {view.answerList.length}개
         </span>
       </CommentWrapper>
-      {view.answerList.map((answer) => (
-        <AnserDetail
-          key={answer.id}
-          updateDate={answer.updateDate}
-          isEditable={userStore.getUser()?.id === Number(view.authorId)}
-          isSolved={view.accepted}
-          accepted={answer.accepted}
-          authorId={answer.authorId}
-          authorNickname={answer.authorNickname}
-          content={answer.content}
-          level={answer.level}
-          id={answer.id}
-          postId={answer.postId}
-          profile={answer.profile}
-        />
-      ))}
-
+      {[...view.answerList]
+        .sort((a, b) => (a.accepted === b.accepted ? 0 : a.accepted ? -1 : 1))
+        .map((answer) => (
+          <AnswerDeail
+            key={answer.id}
+            answer={answer}
+            accepted={answer.accepted}
+          />
+        ))}
       {userStore.getUser()?.nickname === view.authorNickname ? (
         <div></div>
       ) : (
@@ -455,8 +443,8 @@ const AnswerView = () => {
             <ReactQuill
               modules={modules}
               style={{ height: "200px" }}
-              value={reviewContent} // Quill 에디터의 값 설정
-              onChange={setReviewContent} // 사용자 입력 내용 업데이트
+              value={reviewContent}
+              onChange={setReviewContent}
             ></ReactQuill>
           </QuillWrapper>
           {/* 등록 버튼 */}

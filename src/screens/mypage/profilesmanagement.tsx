@@ -91,11 +91,11 @@ const ProfileManagementContent = () => {
   return (
     <>
       <ProfileManagementDiv>
-        <p>프로필 관리</p>
-        <p className="subname">기본 정보</p>
+        <h2>프로필 관리</h2>
+        <h2 className="subname">기본 정보</h2>
         <div className="ManagementContainer">
           <OneLineDiv>
-            <p className="subname">한줄 소개</p>
+            <h2 className="subname">한줄 소개</h2>
             <QuillWrapper>
               <ReactQuill
                 modules={modules}
@@ -109,7 +109,7 @@ const ProfileManagementContent = () => {
             </QuillWrapper>
           </OneLineDiv>
           <ManyLineDiv>
-            <p className="subname">자기 소개글</p>
+            <h2 className="subname">자기 소개글</h2>
             <QuillWrapper>
               <ReactQuill
                 modules={modules}
@@ -129,14 +129,14 @@ const ProfileManagementContent = () => {
       </ProfileManagementDiv>
       <ProfileBadgeDiv>
         <div className="BadgeContainer">
-          <p className="subname">획득 뱃지</p>{" "}
+          <h2 className="subname">획득 뱃지</h2>{" "}
           <div className="imgcnt">
-            {userProfo.badges && userProfo.badges.length > 0 ? (
+            {userProfo.badges && userProfo.badges.length > 1 ? (
               userProfo.badges.map((badge: string) => (
-                <img key={badge} src={badgeImageMap[badge]} alt={badge} />
+                <img key={badge} src={badgeImageMap[badge]} alt="" />
               ))
             ) : (
-              <p>아직 획득한 뱃지가 없습니다!</p>
+              <h2>보유한 뱃지가 없습니다.</h2>
             )}
           </div>
         </div>
@@ -158,6 +158,11 @@ const ProfileManagementDiv = styled.div`
     display: flex;
     align-items: left;
     flex-direction: column;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
   }
 `;
 

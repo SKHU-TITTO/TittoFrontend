@@ -203,86 +203,88 @@ const AccountManagementContent = () => {
     <>
       {isEditing ? (
         <>
-          <p>계정 관리</p>
-          <p className="subname">기본 정보</p>
-          <EditAccountDiv onClick={(e) => e.stopPropagation()}>
-            <img src={userMyfo.profileImg} alt="User-Profile" />
+          <AccountManagementDiv>
+            <p>계정 관리</p>
+            <p className="subname">기본 정보</p>
+            <EditAccountDiv onClick={(e) => e.stopPropagation()}>
+              <img src={userMyfo.profileImg} alt="User-Profile" />
 
-            <FormContainer onSubmit={handleSubmit}>
-              <p className="subname">
-                닉네임 <span style={{ color: "red" }}>*</span>
-              </p>
-              <InputContainer>
-                <input
-                  type="text"
-                  id="nickname"
-                  placeholder={userSignfo.nickname}
-                  value={userSignfo.nickname}
-                  onChange={handleChange}
-                />
-                <button
-                  onClick={handleNicknameCheck}
-                  type="button"
-                  className="checkbtn"
+              <FormContainer onSubmit={handleSubmit}>
+                <p className="subname">
+                  닉네임 <span style={{ color: "red" }}>*</span>
+                </p>
+                <InputContainer>
+                  <input
+                    type="text"
+                    id="nickname"
+                    placeholder={userSignfo.nickname}
+                    value={userSignfo.nickname}
+                    onChange={handleChange}
+                  />
+                  <button
+                    onClick={handleNicknameCheck}
+                    type="button"
+                    className="checkbtn"
+                  >
+                    중복 확인
+                  </button>
+                </InputContainer>
+                <FormError color={errorcolor}>{nicknameError}</FormError>
+
+                <p className="subname">
+                  학번 <span style={{ color: "red" }}>*</span>
+                </p>
+                <InputContainer>
+                  <input
+                    type="text"
+                    id="studentNo"
+                    placeholder={userSignfo.studentNo}
+                    value={userSignfo.studentNo}
+                    onChange={handleChange}
+                  />
+                  <button
+                    onClick={handleStudentNoCheck}
+                    type="button"
+                    className="checkbtn"
+                  >
+                    중복 확인
+                  </button>
+                </InputContainer>
+                <FormError color={errorcolor}>{studentNoError}</FormError>
+
+                <p className="subname">
+                  학과 <span style={{ color: "red" }}>*</span>
+                </p>
+                <SelectDepartMent
+                  name="department"
+                  value={userSignfo.department}
+                  onChange={(e) =>
+                    setSignInfo({ ...userSignfo, department: e.target.value })
+                  }
                 >
-                  중복 확인
-                </button>
-              </InputContainer>
-              <FormError color={errorcolor}>{nicknameError}</FormError>
-
-              <p className="subname">
-                학번 <span style={{ color: "red" }}>*</span>
-              </p>
-              <InputContainer>
-                <input
-                  type="text"
-                  id="studentNo"
-                  placeholder={userSignfo.studentNo}
-                  value={userSignfo.studentNo}
-                  onChange={handleChange}
-                />
-                <button
-                  onClick={handleStudentNoCheck}
-                  type="button"
-                  className="checkbtn"
-                >
-                  중복 확인
-                </button>
-              </InputContainer>
-              <FormError color={errorcolor}>{studentNoError}</FormError>
-
-              <p className="subname">
-                학과 <span style={{ color: "red" }}>*</span>
-              </p>
-              <SelectDepartMent
-                name="department"
-                value={userSignfo.department}
-                onChange={(e) =>
-                  setSignInfo({ ...userSignfo, department: e.target.value })
-                }
-              >
-                <option value="HUMANITIES">인문융합콘텐츠</option>
-                <option value="MANAGEMENT">경영</option>
-                <option value="SOCIETY">사회융합</option>
-                <option value="MEDIA_CONTENT">미디어콘텐츠융합</option>
-                <option value="FUTURE_FUSION">미래융합</option>
-                <option value="SOFTWARE">소프트웨어융합</option>
-              </SelectDepartMent>
-              <div className="btn-container">
-                <button className="btn" type="submit">
-                  저장
-                </button>
-                <button onClick={handleEditClick} className="btn">
-                  취소
-                </button>
-              </div>
-            </FormContainer>
-          </EditAccountDiv>
+                  <option value="HUMANITIES">인문융합콘텐츠</option>
+                  <option value="MANAGEMENT">경영</option>
+                  <option value="SOCIETY">사회융합</option>
+                  <option value="MEDIA_CONTENT">미디어콘텐츠융합</option>
+                  <option value="FUTURE_FUSION">미래융합</option>
+                  <option value="SOFTWARE">소프트웨어융합</option>
+                </SelectDepartMent>
+                <div className="btn-container">
+                  <button className="btn" type="submit">
+                    저장
+                  </button>
+                  <button onClick={handleEditClick} className="btn">
+                    취소
+                  </button>
+                </div>
+              </FormContainer>
+            </EditAccountDiv>
+          </AccountManagementDiv>
         </>
       ) : (
         <>
           <AccountManagementDiv>
-            <p>계정 관리</p>
+            <p className="p1">계정 관리</p>
             <p className="subname">기본 정보</p>
             <div className="ManagementContainer">
               <img src={userMyfo.profileImg} alt="User-Profile" />
@@ -339,7 +341,11 @@ const AccountManagementDiv = styled.div`
     align-items: center;
     flex-direction: column;
   }
-
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
   img {
     width: 200px;
     height: 200px;
@@ -355,6 +361,11 @@ const AccountManagementDiv = styled.div`
 const AccountOauthDiv = styled.div`
   margin-top: 30px;
 
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
   & .OauthContainer {
     width: 100%;
     border: 1px solid #bababa;
@@ -374,6 +385,11 @@ const AccountOauthDiv = styled.div`
 
 const AccountDeleteDiv = styled.div`
   margin-top: 30px;
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
   & .DeleteContainer {
     width: 100%;
     border: 1px solid #bababa;
