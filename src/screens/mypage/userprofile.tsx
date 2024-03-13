@@ -7,7 +7,7 @@ import NewMessagePopup from "../../components/board/postmsg";
 import WriteDetail from "../../components/board/mywrite-detail";
 import WriteAnswerDetail from "../../components/board/writeanswer-detail";
 
-const badgeImageMap: { [key: string]: string } = {
+export const badgeImageMap: { [key: string]: string } = {
   NOVICE_INQUIRER: "/imgs/bg/NOVICE_INQUIRER.png",
   BEGINNER_INQUIRER: "/imgs/bg/BEGINNER_INQUIRER.png",
   TRAINEE_INQUIRER: "/imgs/bg/TRAINEE_INQUIRER.png",
@@ -200,7 +200,7 @@ const UserProfile = () => {
           response.data.totalExperience,
           response.data.level
         );
-        console.log(userProfo.badges);
+
         setMax(maxValue);
         setIsMaxLevel(response.data.level === levelStandard.length);
       } catch (error) {
@@ -238,10 +238,10 @@ const UserProfile = () => {
               <div className="imgcnt">
                 {userProfo.badges && userProfo.badges.length > 0 ? (
                   userProfo.badges.map((badge: string) => (
-                    <img key={badge} src={badgeImageMap[badge]} alt={badge} />
+                    <img key={badge} src={badgeImageMap[badge]} alt="" />
                   ))
                 ) : (
-                  <p>아직 획득한 뱃지가 없습니다!</p>
+                  <p>보유한 뱃지가 없습니다.</p>
                 )}
               </div>
             </UserProfileMainIntroduceBottomContainer>
@@ -434,6 +434,7 @@ const UserProfileMainIntroduceBottomContainer = styled.div`
     height: 60px;
     border-radius: 50%;
     position: relative;
+    border: 0;
   }
   .imgcnt {
     overflow-y: auto;

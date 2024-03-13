@@ -1,19 +1,38 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ReactQuill from "react-quill";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { UserProfileInfo, badgeImageMap } from "./userprofile";
+import userStore from "../../stores/UserStore";
 
 const ProfileManagementContent = () => {
   const navigate = useNavigate();
 
   const [oneLineIntro, setOneLineIntro] = useState("");
   const [selfIntro, setSelfIntro] = useState("");
+  const accessToken = localStorage.getItem("accessToken");
   const modules = useMemo(() => {
     return {
       toolbar: false,
     };
   }, []);
+  const [userProfo, setProInfo] = useState<UserProfileInfo>({
+    userId: 0,
+    profile: "",
+    name: "",
+    nickname: "",
+    studentNo: "",
+    department: "",
+    oneLineIntro: "",
+    selfIntro: "",
+    badges: [],
+    totalExperience: 0,
+    currentExperience: 0,
+    countAnswer: 0,
+    countAccept: 0,
+    level: 0,
+  }); // 프로필 유저 정보
   const handleSaveProfile = () => {
     const accessToken = localStorage.getItem("accessToken");
 
@@ -39,6 +58,35 @@ const ProfileManagementContent = () => {
         console.error("Error saving profile:", error);
       });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://titto.store/user/profile`, {
+          params: {
+            userId: userStore.getUser()?.id,
+          },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.data.badges) {
+          const badgesArray = response.data.badges
+            .replace("[", "")
+            .replace("]", "")
+            .split(", ")
+            .map((badge: string) => badge.trim());
+          response.data.badges = badgesArray;
+        }
+        setProInfo(response.data);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchData();
+  }, [accessToken]);
 
   return (
     <>
@@ -81,9 +129,16 @@ const ProfileManagementContent = () => {
       </ProfileManagementDiv>
       <ProfileBadgeDiv>
         <div className="BadgeContainer">
-          <p className="subname">획득 뱃지</p>
-          <img src="/imgs/bg.png" alt="User-Profile" />
-          <img src="/imgs/UserProfile.png" alt="User-Profile" />
+          <p className="subname">획득 뱃지</p>{" "}
+          <div className="imgcnt">
+            {userProfo.badges && userProfo.badges.length > 0 ? (
+              userProfo.badges.map((badge: string) => (
+                <img key={badge} src={badgeImageMap[badge]} alt={badge} />
+              ))
+            ) : (
+              <p>아직 획득한 뱃지가 없습니다!</p>
+            )}
+          </div>
         </div>
       </ProfileBadgeDiv>
     </>
@@ -117,7 +172,7 @@ const ProfileBadgeDiv = styled.div`
     padding: 20px;
 
     img {
-      width: 60px;
+      width: 80px;
       height: 80px;
       border-radius: 10%;
       margin-right: 20px;

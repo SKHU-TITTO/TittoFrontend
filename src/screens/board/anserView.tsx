@@ -266,7 +266,6 @@ const AnswerView = () => {
   }, []);
 
   const handleAnswerSubmit = () => {
-    console.log(reviewContent);
     axios
       .post(
         `https://titto.store/answers/create`,

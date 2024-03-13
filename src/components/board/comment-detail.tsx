@@ -218,7 +218,6 @@ const CommentDetail = ({ postId }: { postId: string }) => {
         }
       )
       .then((response) => {
-        console.log("댓글 수정 성공:", response.data);
         setIsModify(false);
         window.location.reload();
       })

@@ -29,7 +29,6 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
         }
       );
 
-      console.log("Message sent successfully:", response.data);
       window.location.reload();
       onCancel();
     } catch (error) {

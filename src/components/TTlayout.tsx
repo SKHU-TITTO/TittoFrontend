@@ -167,9 +167,6 @@ const TTlayout = () => {
         }
       )
       .then((response) => {
-        // 로그아웃 성공 시 처리
-        console.log("로그아웃 완료");
-        //로컬에서 토큰 삭제
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         navigate("/login/sign_in");

@@ -107,14 +107,14 @@ const LoginPage = () => {
 
   const handleKakaoCallback = async () => {
     const code = new URLSearchParams(window.location.search).get("code");
-    console.log("코드는:", code);
+
     try {
       const res = await axios.get(`https://titto.store/oauth/kakao`, {
         params: {
           code: code,
         },
       });
-      console.log("카카오 로그인 성공");
+
       const kakaoAccessToken = res.data.kakaoAccessToken;
       const kakaoRefreshToken = res.data.kakaoRefreshToken;
       console.log(
@@ -139,7 +139,6 @@ const LoginPage = () => {
         }
       );
       if (loginRes.status === 200) {
-        console.log("로그인 성공");
         localStorage.setItem("accessToken", loginRes.data.accessToken);
         localStorage.setItem("refreshToken", loginRes.data.refreshToken);
         navigate("/");
@@ -153,8 +152,6 @@ const LoginPage = () => {
   useEffect(() => {
     if (window.location.pathname === "/login/oauth2/code/kakao") {
       handleKakaoCallback();
-    } else {
-      console.log("그냥 로그인.");
     }
   }, []);
 

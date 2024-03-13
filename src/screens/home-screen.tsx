@@ -92,7 +92,6 @@ const HomeScreen = () => {
       );
       const formattedPosts = res.data.content.slice(0, 3);
       setQnaList(formattedPosts);
-      console.log(formattedPosts);
     } catch (e) {
       console.log(e);
     }
