@@ -236,7 +236,7 @@ const UserProfile = () => {
               <h1>보유 뱃지</h1>
 
               <div className="imgcnt">
-                {userProfo.badges && userProfo.badges.length > 0 ? (
+                {userProfo.badges && userProfo.badges.length > 1 ? (
                   userProfo.badges.map((badge: string) => (
                     <img key={badge} src={badgeImageMap[badge]} alt="" />
                   ))
@@ -248,7 +248,7 @@ const UserProfile = () => {
           </UserProfileMainIntroduceContainer>
 
           <UserProfileMainLevelContainer>
-            <div>
+            <div className="levelcon">
               <p>다음 레벨까지</p>
               <h1>
                 {isMaxLevel ? "남은 내공이 없습니다" : ` ${max} 내공남았어요.`}
@@ -259,6 +259,7 @@ const UserProfile = () => {
                 max={levelStandard[userProfo.level - 1]}
               ></progress>
 
+              <h1>현재 내공은 {userProfo.currentExperience}입니다.</h1>
               <p>답변한 글 수</p>
               <h1>총 {userProfo.countAnswer}개 답변했어요.</h1>
               <p>채택된 글 수</p>
@@ -439,6 +440,13 @@ const UserProfileMainIntroduceBottomContainer = styled.div`
   .imgcnt {
     overflow-y: auto;
   }
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    margin: 50px;
+  }
 `;
 
 const UserProfileMainLevelContainer = styled.div`
@@ -446,18 +454,18 @@ const UserProfileMainLevelContainer = styled.div`
   border: 3px solid #ccc;
   border-left: 2px solid #ccc;
   flex: 3;
-  padding: 20px;
+  padding: 10px;
   text-align: left;
-
+  .levelcon {
+    margin-top: 10px;
+  }
   progress {
     width: 300px;
-    height: 35px;
+    height: 30px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
-  div {
-    margin-top: 15px;
-  }
+
   progress ::-webkit-progress-value {
     background-color: #3e68ff;
   }

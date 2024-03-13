@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import userStore from "../../stores/UserStore";
 import { AnswerInfo } from "../../screens/board/anserView";
 import axios from "axios";
@@ -6,12 +6,18 @@ import { useMemo, useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ accepted?: boolean }>`
   width: 100%;
   margin-top: 30px;
   padding: 20px;
-  border: 1px solid #bababa;
+  border: 2px solid #bababa;
   border-radius: 5px;
+
+  ${(props) =>
+    props.accepted &&
+    css`
+      border: 2px solid #3e68ff;
+    `}
 `;
 const ProfileWrapper = styled.div`
   width: 100%;
@@ -41,6 +47,19 @@ const ProfileWrapper = styled.div`
         color: #ccc;
       }
     }
+  }
+
+  .ctanswer {
+    width: auto;
+    padding: 10px 15px 10px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #3e68ff;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 10px;
+    display: inline-block;
   }
 
   button {
@@ -99,7 +118,13 @@ const ModifyWrapper = styled.div`
   }
 `;
 
-const AnserDetail = (answer: AnswerInfo) => {
+const AnswerDeail = ({
+  answer,
+  accepted,
+}: {
+  answer: AnswerInfo;
+  accepted: boolean;
+}) => {
   const [isModify, setIsModify] = useState(false);
   const [content, setContent] = useState(answer.content);
   const navigate = useNavigate();
@@ -178,16 +203,21 @@ const AnserDetail = (answer: AnswerInfo) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper accepted={accepted}>
+      {/* 프로필 및 수정, 삭제 버튼 등 */}
       <ProfileWrapper>
+        {/* 프로필 정보 */}
         <div className="profileBox">
+          {/* 사용자 프로필 이미지 */}
           <img
             src={answer.profile}
             alt="User-Profile"
             onClick={() => navigate(`/mypage/users/${answer.authorId}/profile`)}
           />
           <div className="userdiv">
+            {/* 사용자 닉네임 */}
             <div className="nick">{answer.authorNickname}</div>
+            {/* 사용자 레벨 및 수정 날짜 */}
             <div className="lv">
               LV.{answer.level} |{" "}
               {new Date(answer.updateDate).toLocaleString("ko-KR")}
@@ -195,32 +225,36 @@ const AnserDetail = (answer: AnswerInfo) => {
           </div>
         </div>
 
+        {/* 수정, 삭제 버튼 및 채택 여부 */}
+
         <div>
-          {userStore.getUser()?.id === Number(answer.authorId) ? (
+          {/* 사용자가 해당 답변 작성자인 경우에만 수정, 삭제 버튼을 표시 */}
+
+          {userStore.getUser()?.id === Number(answer.authorId) && (
             <div>
-              <button
-                className="modify"
-                onClick={() => {
-                  setIsModify(!isModify);
-                }}
-              >
-                수정
-              </button>
-              <button onClick={answerdelete}>삭제</button>
+              {!accepted && (
+                <button
+                  className="modify"
+                  onClick={() => setIsModify(!isModify)}
+                >
+                  수정
+                </button>
+              )}
+              {!accepted && <button onClick={answerdelete}>삭제</button>}
             </div>
-          ) : (
-            <div></div>
           )}
-          {answer.isEditable && !answer.isSolved ? (
+          {answer.accepted && <div className="ctanswer">채택된 답변</div>}
+          {answer.isEditable && !answer.isSolved && (
             <div>
-              <button onClick={answerSelection}>채택</button>
+              {!accepted && <button onClick={answerSelection}>채택</button>}
             </div>
-          ) : (
-            <div></div>
           )}
         </div>
       </ProfileWrapper>
+
+      {/* 답변 수정 또는 답변 내용 표시 */}
       {isModify ? (
+        // 수정 모드인 경우
         <ModifyWrapper>
           <ReactQuill
             modules={modules}
@@ -229,13 +263,15 @@ const AnserDetail = (answer: AnswerInfo) => {
               setContent(c);
             }}
           ></ReactQuill>
-          <button
-            onClick={() => {
-              handleModify();
-            }}
-          >
-            수정하기
-          </button>
+          {!accepted && (
+            <button
+              onClick={() => {
+                handleModify();
+              }}
+            >
+              수정하기
+            </button>
+          )}
         </ModifyWrapper>
       ) : (
         <DetailWrapper>
@@ -248,5 +284,4 @@ const AnserDetail = (answer: AnswerInfo) => {
     </Wrapper>
   );
 };
-
-export default AnserDetail;
+export default AnswerDeail;

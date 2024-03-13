@@ -5,9 +5,6 @@ import QuillEditor from "../../components/board/QuillEditor";
 import ReactQuill from "react-quill";
 import axios from "axios";
 
-import userStore from "../../stores/UserStore";
-import { set } from "firebase/database";
-
 const Wrapper = styled.div`
   width: 100%;
   margin-top: 10px;

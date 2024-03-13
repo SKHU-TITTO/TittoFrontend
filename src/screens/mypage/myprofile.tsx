@@ -47,11 +47,7 @@ const MainDiv = styled.div`
   text-align: left;
   margin-left: 30px;
   height: 100%;
-  p {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+
   & .subname {
     font-size: 16px;
     font-weight: bold;
