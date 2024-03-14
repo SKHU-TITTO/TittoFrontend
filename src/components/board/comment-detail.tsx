@@ -14,7 +14,7 @@ export type CommentInfo = {
   reviewAuthor: string;
   content: string;
   updateDate: string;
-  modify?: boolean; //기본 false
+  modify?: boolean;
   reviewAuthorId: number;
 };
 

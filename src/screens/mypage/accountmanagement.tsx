@@ -43,11 +43,7 @@ const AccountManagementContent = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id === "nickname") {
-      if (id.length < 2 || id.length > 10) {
-        setNicknameError("닉네임은 2글자 이상 10글자 이하로 입력해주세요."); // 수정 부분
-        setErrorcolor("red");
-        setSignInfo({ ...userSignfo, nickname: value });
-      }
+      setSignInfo({ ...userSignfo, nickname: value });
     } else if (id === "studentNo") {
       const onlyNums = value.replace(/[^0-9]/g, "");
       if (onlyNums.length <= 9) {
@@ -226,6 +222,7 @@ const AccountManagementContent = () => {
                     placeholder={userSignfo.nickname}
                     value={userSignfo.nickname}
                     onChange={handleChange}
+                    maxLength={9}
                   />
                   <button
                     onClick={handleNicknameCheck}

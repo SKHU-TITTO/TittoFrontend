@@ -420,9 +420,9 @@ const UserProfileMainIntroduceTopContainer = styled.div`
   margin-bottom: 40px;
 
   h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     height: 20px;
   }
 
