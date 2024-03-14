@@ -88,6 +88,13 @@ const ProfileManagementContent = () => {
     fetchData();
   }, [accessToken]);
 
+  // 한줄 소개 입력 내용 변경 시 호출되는 함수
+  const handleOneLineIntroChange = (content: string) => {
+    if (content.length <= 28) {
+      setOneLineIntro(content);
+    }
+  };
+
   return (
     <>
       <ProfileManagementDiv>
@@ -100,7 +107,7 @@ const ProfileManagementContent = () => {
               <ReactQuill
                 modules={modules}
                 value={oneLineIntro}
-                onChange={setOneLineIntro}
+                onChange={handleOneLineIntroChange}
                 placeholder={"한줄 소개를 입력하세요."}
                 style={{
                   height: "65px",
@@ -196,6 +203,7 @@ const ManyLineDiv = styled.div`
 
 const QuillWrapper = styled.div`
   width: 100%;
+
   text-align: left;
 `;
 

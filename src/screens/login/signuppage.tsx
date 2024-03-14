@@ -188,7 +188,9 @@ const SignUpPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id === "nickname") {
-      setNickname(value);
+      if (id.length < 2 || id.length > 10) {
+        setNickname(value);
+      }
     } else if (id === "studentNo") {
       const onlyNums = value.replace(/[^0-9]/g, "");
       if (onlyNums.length <= 9) {
@@ -287,6 +289,7 @@ const SignUpPage = () => {
             placeholder="이름을 입력해주세요."
             onChange={handleChange}
             style={{ borderRadius: "7px" }}
+            maxLength={6}
           />
         </SignUpInputContainer>
         <SignUpLabel>닉네임</SignUpLabel>
@@ -296,6 +299,7 @@ const SignUpPage = () => {
             type="text"
             placeholder="닉네임을 입력해주세요."
             value={nickname}
+            maxLength={10}
             onChange={handleChange}
           />
           <button type="button" onClick={handleNicknameCheck}>
@@ -324,6 +328,7 @@ const SignUpPage = () => {
             type="text"
             placeholder="한 줄 소개를 입력해주세요."
             value={oneLineIntro}
+            maxLength={15}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setOneLineIntro(event.target.value)
             }
@@ -339,6 +344,7 @@ const SignUpPage = () => {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setSelfIntro(event.target.value)
             }
+            maxLength={100}
           />
         </SignUpInputContainer>
 

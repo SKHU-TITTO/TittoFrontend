@@ -4,6 +4,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserInfo } from "../board/postView";
+import { set } from "firebase/database";
 
 export type UserSignfo = {
   department: string;
@@ -65,7 +66,7 @@ const AccountManagementContent = () => {
         setMyInfo({
           name: userData.nickname,
           profileImg: userData.profileImg,
-          lv: 1,
+          lv: userData.lv,
           id: userData.id,
           email: userData.email,
         });
@@ -78,7 +79,6 @@ const AccountManagementContent = () => {
   const handleNicknameCheck = async () => {
     try {
       const res = await axios.get("https://titto.store/user/check/nickname", {
-        //ㅇㅇ
         params: {
           nickname: userSignfo.nickname,
         },
@@ -95,6 +95,7 @@ const AccountManagementContent = () => {
     } catch (error: any) {
       if (error.response.status === 409) {
         setNicknameError("이미 사용 중인 닉네임입니다.");
+        setErrorcolor("red");
       } else {
         setNicknameError("서버 에러가 발생했습니다.");
       }
@@ -120,6 +121,7 @@ const AccountManagementContent = () => {
     } catch (error: any) {
       if (error.response.status === 409) {
         setStudentNoError("이미 사용 중인 학번입니다.");
+        setErrorcolor("red");
       } else {
         setStudentNoError("서버 에러가 발생했습니다.");
       }
@@ -220,6 +222,7 @@ const AccountManagementContent = () => {
                     placeholder={userSignfo.nickname}
                     value={userSignfo.nickname}
                     onChange={handleChange}
+                    maxLength={9}
                   />
                   <button
                     onClick={handleNicknameCheck}

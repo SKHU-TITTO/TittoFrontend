@@ -69,9 +69,7 @@ const MessageBox = () => {
   const handleDeleteMessage = async () => {
     try {
       if (selectedSenderId !== null) {
-        const confirmDelete = window.confirm(
-          "정말로 모든 메시지를 삭제하시겠습니까?"
-        );
+        const confirmDelete = window.confirm("모든 메시지를 삭제하시겠습니까?");
         if (confirmDelete) {
           await axios.put(
             `https://titto.store/message/delete-all/${selectedSenderId}`,
