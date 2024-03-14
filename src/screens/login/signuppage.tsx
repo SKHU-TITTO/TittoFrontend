@@ -188,7 +188,9 @@ const SignUpPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id === "nickname") {
-      setNickname(value);
+      if (id.length < 2 || id.length > 10) {
+        setNickname(value);
+      }
     } else if (id === "studentNo") {
       const onlyNums = value.replace(/[^0-9]/g, "");
       if (onlyNums.length <= 9) {
