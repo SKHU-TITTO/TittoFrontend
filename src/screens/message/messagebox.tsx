@@ -57,7 +57,7 @@ const MessageBox = () => {
         );
 
         const data = response.data;
-        setMessages(data.reverse());
+        setMessages(data); //
       } else {
         setMessages([]);
       }

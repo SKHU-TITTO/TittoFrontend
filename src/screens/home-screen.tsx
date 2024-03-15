@@ -32,6 +32,10 @@ const MyIcon = styled.div`
 
   img {
     display: block;
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+    border-radius: 20%;
     padding-bottom: 10px;
   }
 `;
@@ -109,7 +113,7 @@ const HomeScreen = () => {
       <IconMenu>
         <MyIcon>
           <img
-            src="/imgs/myIcon.svg"
+            src="/imgs/mainimg/titto.png"
             alt="My Icon"
             onClick={() => navigate("/board/lists/titto/1")}
           />
@@ -117,7 +121,7 @@ const HomeScreen = () => {
         </MyIcon>
         <MyIcon>
           <img
-            src="/imgs/myIcon.svg"
+            src="/imgs/mainimg/answer.png"
             alt="My Icon"
             onClick={() => navigate("/board/lists/qna/1")}
           />
@@ -125,7 +129,7 @@ const HomeScreen = () => {
         </MyIcon>
         <MyIcon>
           <img
-            src="/imgs/myIcon.svg"
+            src="/imgs/mainimg/mypage.png"
             alt="My Icon"
             onClick={() =>
               navigate(`/mypage/users/${userStore.getUser()?.id}/profile`)

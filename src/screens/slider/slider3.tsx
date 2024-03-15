@@ -71,6 +71,12 @@ const Description = styled.p`
   line-height: 1.5;
   text-align: left;
 
+  img {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    display: block;
+  }
   table {
     border: 1px solid #bababa;
     border-collapse: collapse;
@@ -82,8 +88,9 @@ const Description = styled.p`
     tr,
     th {
       border: 1px solid #bababa;
-      padding: 10px;
+      padding: 5px;
       text-align: center;
+      vertical-align: middle;
     }
     th {
       background-color: #3e68ff;
@@ -172,28 +179,59 @@ const Slider3 = () => {
                 <tr>
                   <th>답변 개수</th>
                   <th>뱃지 종류</th>
+                  <th>이미지</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>1</td>
                   <td>신입 답변러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/NOVICE_RESPONDER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>2 ~ 5</td>
                   <td>초보 답변러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/BEGINNER_RESPONDER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>6 ~ 10</td>
                   <td>견습 답변러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/TRAINEE_RESPONDER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>11 ~ 20</td>
                   <td>프로 답변러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/PROFESSIONAL_RESPONDER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>100</td>
                   <td>전문 답변러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/EXPERT_RESPONDER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -203,28 +241,53 @@ const Slider3 = () => {
                 <tr>
                   <th>채택 개수</th>
                   <th>뱃지 종류</th>
+                  <th>이미지</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>1</td>
                   <td>신입 질문러</td>
+                  <td>
+                    <img src="/imgs/bg/NOVICE_INQUIRER.png" alt="이미지_설명" />
+                  </td>
                 </tr>
                 <tr>
                   <td>2 ~ 5</td>
                   <td>초보 질문러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/BEGINNER_INQUIRER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>6 ~ 10</td>
                   <td>견습 질문러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/TRAINEE_INQUIRER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>11 ~ 20</td>
                   <td>프로 질문러</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/PROFESSIONAL_INQUIRER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>100</td>
                   <td>전문 질문러</td>
+                  <td>
+                    <img src="/imgs/bg/EXPERT_INQUIRER.png" alt="이미지_설명" />
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -234,28 +297,47 @@ const Slider3 = () => {
                 <tr>
                   <th>받은 채택 개수</th>
                   <th>뱃지 종류</th>
+                  <th>이미지</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>1</td>
                   <td>신입 해결사</td>
+                  <td>
+                    <img src="/imgs/bg/NOVICE_SOLVER.png" alt="이미지_설명" />
+                  </td>
                 </tr>
                 <tr>
                   <td>2 ~ 5</td>
                   <td>초보 해결사</td>
+                  <td>
+                    <img src="/imgs/bg/BEGINNER_SOLVER.png" alt="이미지_설명" />
+                  </td>
                 </tr>
                 <tr>
                   <td>6 ~ 10</td>
                   <td>견습 해결사</td>
+                  <td>
+                    <img src="/imgs/bg/TRAINEE_SOLVER.png" alt="이미지_설명" />
+                  </td>
                 </tr>
                 <tr>
                   <td>11 ~ 20</td>
                   <td>프로 해결사</td>
+                  <td>
+                    <img
+                      src="/imgs/bg/PROFESSIONAL_SOLVER.png"
+                      alt="이미지_설명"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>100</td>
                   <td>전문 해결사</td>
+                  <td>
+                    <img src="/imgs/bg/EXPERT_SOLVER.png" alt="이미지_설명" />
+                  </td>
                 </tr>
               </tbody>
             </table>

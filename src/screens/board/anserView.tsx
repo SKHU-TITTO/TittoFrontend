@@ -210,7 +210,7 @@ const SubmitWrapper = styled.div`
   }
 `;
 
-type AnswerViewProps = {
+export type AnswerViewProps = {
   accepted: boolean;
   authorId: number;
   authorNickname: string;
@@ -251,12 +251,7 @@ const AnswerView = () => {
   const modules = useMemo(() => {
     return {
       toolbar: {
-        container: [
-          ["image"],
-
-          [{ header: [1, 2, 3, 4, 5, false] }],
-          ["bold", "underline"],
-        ],
+        container: [["image"]],
       },
     };
   }, []);
@@ -432,6 +427,7 @@ const AnswerView = () => {
           <AnswerDeail
             key={answer.id}
             answer={answer}
+            authorId={view.authorId}
             accepted={answer.accepted}
           />
         ))}

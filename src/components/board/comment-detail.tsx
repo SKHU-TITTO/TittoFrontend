@@ -106,12 +106,7 @@ const CommentDetail = ({ postId }: { postId: string }) => {
   const [isModify, setIsModify] = useState<boolean>(false);
   const modules = useMemo(() => {
     return {
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, 4, 5, false] }],
-          ["bold", "underline"],
-        ],
-      },
+      toolbar: false,
     };
   }, []);
   const navigate = useNavigate();

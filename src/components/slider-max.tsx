@@ -13,8 +13,8 @@ const SliderWrap = styled.div`
   .slick-prev {
     left: 10px;
     z-index: 1;
-    width: 70px;
-    height: 70px;
+    width: 55px;
+    height: 50px;
     &:before {
       content: "";
       width: 50px;
@@ -27,8 +27,8 @@ const SliderWrap = styled.div`
   .slick-next {
     right: 10px;
     z-index: 1;
-    width: 70px;
-    height: 70px;
+    width: 55px;
+    height: 50px;
     &:before {
       content: "";
       width: 50px;
@@ -53,7 +53,7 @@ const Img1 = styled.img`
 const PrevArrow = (props: ComponentProps<"button">) => (
   <button {...props} className="slick-prev" aria-label="Previous">
     <img
-      src="/imgs/bg/NOVICE_INQUIRER.png"
+      src="/imgs/slider/leftarrow.png"
       alt="Previous"
       style={{ width: "100%", height: "100%", objectFit: "contain" }}
     />
@@ -63,7 +63,7 @@ const PrevArrow = (props: ComponentProps<"button">) => (
 const NextArrow = (props: ComponentProps<"button">) => (
   <button {...props} className="slick-next" aria-label="Next">
     <img
-      src="/imgs/bg/NOVICE_INQUIRER.png"
+      src="/imgs/slider/rightarrow.png"
       alt="Next"
       style={{ width: "100%", height: "100%", objectFit: "contain" }}
     />

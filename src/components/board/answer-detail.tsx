@@ -121,9 +121,11 @@ const ModifyWrapper = styled.div`
 const AnswerDeail = ({
   answer,
   accepted,
+  authorId,
 }: {
   answer: AnswerInfo;
   accepted: boolean;
+  authorId: number;
 }) => {
   const [isModify, setIsModify] = useState(false);
   const [content, setContent] = useState(answer.content);
@@ -131,11 +133,7 @@ const AnswerDeail = ({
   const modules = useMemo(() => {
     return {
       toolbar: {
-        container: [
-          ["image"],
-          [{ header: [1, 2, 3, 4, 5, false] }],
-          ["bold", "underline"],
-        ],
+        container: [["image"]],
       },
     };
   }, []);
@@ -156,8 +154,6 @@ const AnswerDeail = ({
   };
 
   const answerSelection = () => {
-    console.table(answer);
-
     const confirm = window.confirm(
       "정말 채택하시겠습니까? 채택하면 다른 답변은 채택할 수 없습니다."
     );
@@ -229,7 +225,6 @@ const AnswerDeail = ({
 
         <div>
           {/* 사용자가 해당 답변 작성자인 경우에만 수정, 삭제 버튼을 표시 */}
-
           {userStore.getUser()?.id === Number(answer.authorId) && (
             <div>
               {!accepted && (
@@ -244,9 +239,10 @@ const AnswerDeail = ({
             </div>
           )}
           {answer.accepted && <div className="ctanswer">채택된 답변</div>}
-          {answer.isEditable && !answer.isSolved && (
+
+          {!answer.accepted && userStore.getUser()?.id === Number(authorId) && (
             <div>
-              {!accepted && <button onClick={answerSelection}>채택</button>}
+              <button onClick={answerSelection}>채택</button>
             </div>
           )}
         </div>
