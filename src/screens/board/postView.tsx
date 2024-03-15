@@ -238,15 +238,9 @@ const PostView = () => {
 
   const navigate = useNavigate();
 
-  // Quill 에디터 모듈 정의
   const modules = useMemo(() => {
     return {
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, 4, 5, false] }],
-          ["bold", "underline"],
-        ],
-      },
+      toolbar: false,
     };
   }, []);
 
