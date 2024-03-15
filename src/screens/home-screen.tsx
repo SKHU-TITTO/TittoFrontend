@@ -22,12 +22,17 @@ const IconMenu = styled.div`
 
 const MyIcon = styled.div`
   margin-top: 30px;
+  display: grid;
+  place-items: center;
   position: relative;
   transition: transform 0.3s ease-in-out;
   font-weight: bold;
+  overflow: hidden;
+  border-radius: 14px;
+  perspective: 1000px;
 
   &:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px) scale(1.1) rotate(-5deg);
     cursor: pointer;
   }
 
@@ -35,9 +40,13 @@ const MyIcon = styled.div`
     display: block;
     height: 100px;
     width: 90px;
-    margin: 0 auto;
-    border-radius: 14px;
     padding: 5px;
+    border-radius: 14px;
+    transition: transform 0.7s ease-in-out;
+    transform-style: preserve-3d;
+  }
+  &:hover img {
+    transform: translateY(-5px) rotateY(360deg);
   }
 `;
 
