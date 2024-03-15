@@ -25,6 +25,7 @@ const MyIcon = styled.div`
   position: relative;
   transition: transform 0.3s ease-in-out;
   font-weight: bold;
+
   &:hover {
     transform: translateY(-10px);
     cursor: pointer;
@@ -33,10 +34,10 @@ const MyIcon = styled.div`
   img {
     display: block;
     height: 100px;
-    width: 100px;
+    width: 90px;
     margin: 0 auto;
-    border-radius: 20%;
-    padding-bottom: 10px;
+    border-radius: 14px;
+    padding: 5px;
   }
 `;
 
