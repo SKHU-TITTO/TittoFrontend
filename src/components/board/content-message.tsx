@@ -44,7 +44,7 @@ const ContentMessage = ({
       );
 
       const data = response.data;
-      setMessages(data.reverse());
+      setMessages(data);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
