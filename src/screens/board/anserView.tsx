@@ -210,7 +210,7 @@ const SubmitWrapper = styled.div`
   }
 `;
 
-type AnswerViewProps = {
+export type AnswerViewProps = {
   accepted: boolean;
   authorId: number;
   authorNickname: string;
@@ -432,6 +432,7 @@ const AnswerView = () => {
           <AnswerDeail
             key={answer.id}
             answer={answer}
+            authorId={view.authorId}
             accepted={answer.accepted}
           />
         ))}
