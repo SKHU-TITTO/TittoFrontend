@@ -5,7 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { UserProfileInfo } from "./userprofile";
 import userStore from "../../stores/UserStore";
-import BadgeList, { badgeImageMap } from "../../components/board/badgeslist";
+import BadgeList, {
+  badgeComments,
+  badgeImageMap,
+} from "../../components/board/badgeslist";
 
 const ProfileManagementContent = () => {
   const navigate = useNavigate();
@@ -138,7 +141,11 @@ const ProfileManagementContent = () => {
       <ProfileBadgeDiv>
         <div className="BadgeContainer">
           <h2 className="subname">획득 뱃지</h2>{" "}
-          <BadgeList badges={userProfo.badges} badgeImageMap={badgeImageMap} />
+          <BadgeList
+            badges={userProfo.badges}
+            badgeImageMap={badgeImageMap}
+            badgeComments={badgeComments}
+          />
         </div>
       </ProfileBadgeDiv>
     </>

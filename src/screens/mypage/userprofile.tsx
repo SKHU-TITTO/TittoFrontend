@@ -6,7 +6,10 @@ import userStore from "../../stores/UserStore";
 import NewMessagePopup from "../../components/board/postmsg";
 import WriteDetail from "../../components/board/mywrite-detail";
 import WriteAnswerDetail from "../../components/board/writeanswer-detail";
-import BadgeList, { badgeImageMap } from "../../components/board/badgeslist";
+import BadgeList, {
+  badgeComments,
+  badgeImageMap,
+} from "../../components/board/badgeslist";
 
 // 유저 정보 타입 정의
 export type UserProfileInfo = {
@@ -218,6 +221,7 @@ const UserProfile = () => {
               <BadgeList
                 badges={userProfo.badges}
                 badgeImageMap={badgeImageMap}
+                badgeComments={badgeComments}
               />
             </UserProfileMainIntroduceBottomContainer>
           </UserProfileMainIntroduceContainer>
@@ -412,9 +416,7 @@ const UserProfileMainIntroduceBottomContainer = styled.div`
     position: relative;
     border: 0;
   }
-  .imgcnt {
-    overflow-y: auto;
-  }
+
   p {
     font-size: 20px;
     font-weight: bold;
