@@ -6,26 +6,7 @@ import userStore from "../../stores/UserStore";
 import NewMessagePopup from "../../components/board/postmsg";
 import WriteDetail from "../../components/board/mywrite-detail";
 import WriteAnswerDetail from "../../components/board/writeanswer-detail";
-
-export const badgeImageMap: { [key: string]: string } = {
-  NOVICE_INQUIRER: "/imgs/bg/NOVICE_INQUIRER.png",
-  BEGINNER_INQUIRER: "/imgs/bg/BEGINNER_INQUIRER.png",
-  TRAINEE_INQUIRER: "/imgs/bg/TRAINEE_INQUIRER.png",
-  PROFESSIONAL_INQUIRER: "/imgs/bg/PROFESSIONAL_INQUIRER.png",
-  EXPERT_INQUIRER: "/imgs/bg/EXPERT_INQUIRER.png",
-  NOVICE_RESPONDER: "/imgs/bg/NOVICE_RESPONDER.png",
-  BEGINNER_RESPONDER: "/imgs/bg/BEGINNER_RESPONDER.png",
-  TRAINEE_RESPONDER: "/imgs/bg/TRAINEE_RESPONDER.png",
-  PROFESSIONAL_RESPONDER: "/imgs/bg/PROFESSIONAL_RESPONDER.png",
-  EXPERT_RESPONDER: "/imgs/bg/EXPERT_RESPONDER.png",
-  NOVICE_SOLVER: "/imgs/bg/NOVICE_SOLVER.png",
-  BEGINNER_SOLVER: "/imgs/bg/BEGINNER_SOLVER.png",
-  TRAINEE_SOLVER: "/imgs/bg/TRAINEE_SOLVER.png",
-  PROFESSIONAL_SOLVER: "/imgs/bg/PROFESSIONAL_SOLVER.png",
-  EXPERT_SOLVER: "/imgs/bg/EXPERT_SOLVER.png",
-  TITTO_MASTER: "/imgs/bg/TITTO_MASTER.png",
-  TITTO_AUTHORITY: "/imgs/bg/TITTO_AUTHORITY.png",
-};
+import BadgeList, { badgeImageMap } from "../../components/board/badgeslist";
 
 // 유저 정보 타입 정의
 export type UserProfileInfo = {
@@ -234,22 +215,10 @@ const UserProfile = () => {
             </UserProfileMainIntroduceTopContainer>
             <UserProfileMainIntroduceBottomContainer>
               <h1>보유 뱃지</h1>
-              <div className="imgcnt">
-                {userProfo.badges &&
-                Array.isArray(userProfo.badges) &&
-                userProfo.badges.length > 0 &&
-                userProfo.badges[0] !== "" ? (
-                  userProfo.badges.map((badge: string) => (
-                    <img key={badge} src={badgeImageMap[badge]} alt="" />
-                  ))
-                ) : userProfo.badges &&
-                  Array.isArray(userProfo.badges) &&
-                  userProfo.badges.length > 0 ? (
-                  <p>보유한 뱃지가 없습니다.</p>
-                ) : (
-                  <p>뱃지 정보가 없습니다.</p>
-                )}
-              </div>
+              <BadgeList
+                badges={userProfo.badges}
+                badgeImageMap={badgeImageMap}
+              />
             </UserProfileMainIntroduceBottomContainer>
           </UserProfileMainIntroduceContainer>
 
