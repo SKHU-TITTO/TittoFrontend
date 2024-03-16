@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -10,15 +9,6 @@ const Wrapper = styled.div`
   border: 2px solid #bababa;
   border-radius: 5px;
   background-color: white;
-`;
-
-const ContentBox = styled.div`
-  width: 900px;
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-top: 20px;
-
   .back {
     margin-top: 30px;
     width: 100%;
@@ -32,6 +22,14 @@ const ContentBox = styled.div`
       background-color: #7391ff;
     }
   }
+`;
+
+const ContentBox = styled.div`
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin-top: 20px;
 `;
 
 const Title = styled.p`
@@ -72,77 +70,116 @@ const Description = styled.p`
   text-align: left;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  font-size: 18px;
+  color: white;
+  background-color: #3e68ff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #7391ff;
+  }
+`;
+
+const BackButton = styled(Button)`
+  margin-top: 30px;
+`;
+
 const Slider2 = () => {
-  const navigate = useNavigate();
+  const [tab, setTab] = useState(1);
 
   return (
     <Wrapper>
       <ContentBox>
         <Title>게시판 이용 가이드</Title>
         <SubTitle>기본 정보</SubTitle>
-        <DetailContent>
-          <Header>1. 티토찾아요</Header>
-          <SubHeader>
-            티토 게시판은 멘토, 멘티, 스터디, 어울림을 할 사람들을 찾는
-            게시판입니다.
-          </SubHeader>
-          <Description>
-            티토찾아요 게시판은 멘토, 멘티, 스터디, 어울림을 할 사람들을 찾는
-            게시판입니다. 여기서 당신의 멘토를 만나보세요! <br />이 게시판에서는
-            멘토링, 스터디 파트너, 함께 공부할 사람 등을 찾을 수 있습니다.
-            <br />
-            1. 먼저 글쓰기를 누른 후, 원하는 카테고리를 선택합니다. <br />
-            2. 제목과 내용을 작성합니다. <br />
-            3. 글을 등록합니다. <br />
-            4. 다른 사용자들이 당신의 글을 확인하고 답장을 남겨줄 수 있습니다.
-            <br />
-            5. 다른 사용자들의 글을 확인하고 답장을 남겨주세요!
-            <br />
-            6. 모집이 완료되면 글쓴이는 모집완료 버튼을 눌러주세요!
-          </Description>
-        </DetailContent>
-        <DetailContent>
-          <Header>2. 질문있어요</Header>
-          <SubHeader>
-            질문있어요 게시판은 여러분이 가지고 있는 궁금증을 해결할 수 있도록
-            도와주는 곳입니다.
-          </SubHeader>
-          <Description>
-            질문있어요 게시판은 여러분이 가지고 있는 궁금증을 해결할 수 있도록
-            도와주는 곳입니다. <br />
-            궁금한 점이 있다면 언제든지 질문해주세요! 다른 사용자들과 함께
-            문제를 해결하고 지식을 공유할 수 있습니다
-            <br />
-            1. 먼저 글쓰기를 누른 후, 원하는 카테고리와 내공을 선택합니다.
-            <br />
-            2. 제목과 내용을 작성합니다. <br />
-            3. 글을 등록합니다. <br />
-            4. 다른 사용자들이 당신의 글을 확인하고 답장을 남겨줄 수 있습니다.
-            <br />
-            5. 다른 사용자들의 글을 확인하고 답장을 남겨주세요!
-            <br />
-            6. 답변이 도움이 되었다면 채택 버튼을 눌러주세요!
-            <br />
-            7. 문제가 해결되었다면 해결완료 버튼을 눌러주세요!
-            <br />
-            <p>주의사항</p>
-            <p>
-              1. 질문 게시판에서 자신이 쓴 글에는 답변을 할 수 없습니다! <br />
-              2. 질문 게시판에서는 답변을 채택할 수 있습니다. <br />
-              3. 질문 게시판에서는 답변을 채택하면 답변한 유저에게 내공이
-              지급됩니다. <br />
-            </p>
-            <p>마이페이지 </p>
-            <p>
+        <ButtonWrapper>
+          <Button onClick={() => setTab(1)}>티토찾아요</Button>
+          <Button onClick={() => setTab(2)}>질문있어요</Button>
+          <Button onClick={() => setTab(3)}>마이페이지</Button>
+        </ButtonWrapper>
+        {tab === 1 && (
+          <DetailContent>
+            <Header>1. 티토찾아요</Header>
+            <SubHeader>
+              티토 게시판은 멘토, 멘티, 스터디, 어울림을 할 사람들을 찾는
+              게시판입니다.
+            </SubHeader>
+            <Description>
+              티토찾아요 게시판은 멘토, 멘티, 스터디, 어울림을 할 사람들을 찾는
+              게시판입니다. 여기서 당신의 멘토를 만나보세요! <br />이
+              게시판에서는 멘토링, 스터디 파트너, 함께 공부할 사람 등을 찾을 수
+              있습니다.
+              <br />
+              1. 먼저 글쓰기를 누른 후, 원하는 카테고리를 선택합니다. <br />
+              2. 제목과 내용을 작성합니다. <br />
+              3. 글을 등록합니다. <br />
+              4. 다른 사용자들이 당신의 글을 확인하고 답장을 남겨줄 수 있습니다.
+              <br />
+              5. 다른 사용자들의 글을 확인하고 답장을 남겨주세요!
+              <br />
+              6. 모집이 완료되면 글쓴이는 모집완료 버튼을 눌러주세요!
+            </Description>
+          </DetailContent>
+        )}
+        {tab === 2 && (
+          <DetailContent>
+            <Header>2. 질문있어요</Header>
+            <SubHeader>
+              질문있어요 게시판은 여러분이 가지고 있는 궁금증을 해결할 수 있도록
+              도와주는 곳입니다.
+            </SubHeader>
+            <Description>
+              질문있어요 게시판은 여러분이 가지고 있는 궁금증을 해결할 수 있도록
+              도와주는 곳입니다. <br />
+              궁금한 점이 있다면 언제든지 질문해주세요! 다른 사용자들과 함께
+              문제를 해결하고 지식을 공유할 수 있습니다
+              <br />
+              1. 먼저 글쓰기를 누른 후, 원하는 카테고리와 내공을 선택합니다.
+              <br />
+              2. 제목과 내용을 작성합니다. <br />
+              3. 글을 등록합니다. <br />
+              4. 다른 사용자들이 당신의 글을 확인하고 답장을 남겨줄 수 있습니다.
+              <br />
+              5. 다른 사용자들의 글을 확인하고 답장을 남겨주세요!
+              <br />
+              6. 답변이 도움이 되었다면 채택 버튼을 눌러주세요!
+              <br />
+              7. 문제가 해결되었다면 해결완료 버튼을 눌러주세요!
+              <br />
+              <p>주의사항</p>
+              <p>
+                1. 질문 게시판에서 자신이 쓴 글에는 답변을 할 수 없습니다!{" "}
+                <br />
+                2. 질문 게시판에서는 답변을 채택할 수 있습니다. <br />
+                3. 질문 게시판에서는 답변을 채택하면 답변한 유저에게 내공이
+                지급됩니다. <br />
+              </p>
+            </Description>
+          </DetailContent>
+        )}
+        {tab === 3 && (
+          <DetailContent>
+            <Header>3. 마이페이지</Header>
+            <SubHeader>마이페이지 </SubHeader>
+            <Description>
               1. 게시글을 쓴 유저, 답변을 달은 유저에게 궁금한 점이 있다면 유저
               프로필에 들어가서 쪽지를 보낼 수 있습니다!
               <br />
               2. 유저프로필에 답변한 글은 티토게시판에 답변이 아닌 질문게시판의
               답변 내용만 보여집니다.
-              <br />
-            </p>
-          </Description>
-        </DetailContent>
+            </Description>
+          </DetailContent>
+        )}
         <div
           className="back"
           onClick={() => {

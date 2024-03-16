@@ -57,18 +57,21 @@ const ProfileWrapper = styled.div`
   }
 
   button {
-    width: fit-content;
-    text-align: center;
-    padding: 10px 15px;
+    width: 70px;
+    height: 35px;
     border-radius: 5px;
-    background-color: white;
-    border: 2px solid #bababa;
-    color: #bababa;
+    border: none;
+    background-color: #3e68ff;
+    color: white;
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
-    margin-right: 5px;
-    line-height: 10px;
+    margin-left: 10px;
+  }
+  .modify {
+    background-color: white;
+    color: #bababa;
+    border: 1px solid #bababa;
   }
 `;
 
@@ -246,6 +249,7 @@ const CommentDetail = ({ postId }: { postId: string }) => {
               {userMyfo.name === comment.reviewAuthor && ( // 로그인한 유저와 댓글 작성자가 같을 경우 수정/삭제 버튼 표시
                 <div>
                   <button
+                    className="modify"
                     onClick={() => {
                       comment.modify = !comment.modify;
                       setIsModify(!isModify);

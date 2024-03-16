@@ -2,7 +2,6 @@ import styled from "styled-components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SmsIcon from "@mui/icons-material/Sms";
 import { useEffect, useState } from "react";
-import NumberSelector from "./number-selector";
 
 export type MyWriteType = {
   category: string;

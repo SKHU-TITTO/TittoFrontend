@@ -3,8 +3,12 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { UserProfileInfo, badgeImageMap } from "./userprofile";
+import { UserProfileInfo } from "./userprofile";
 import userStore from "../../stores/UserStore";
+import BadgeList, {
+  badgeComments,
+  badgeImageMap,
+} from "../../components/board/badgeslist";
 
 const ProfileManagementContent = () => {
   const navigate = useNavigate();
@@ -137,22 +141,11 @@ const ProfileManagementContent = () => {
       <ProfileBadgeDiv>
         <div className="BadgeContainer">
           <h2 className="subname">획득 뱃지</h2>{" "}
-          <div className="imgcnt">
-            {userProfo.badges &&
-            Array.isArray(userProfo.badges) &&
-            userProfo.badges.length > 0 &&
-            userProfo.badges[0] !== "" ? (
-              userProfo.badges.map((badge: string) => (
-                <img key={badge} src={badgeImageMap[badge]} alt="" />
-              ))
-            ) : userProfo.badges &&
-              Array.isArray(userProfo.badges) &&
-              userProfo.badges.length > 0 ? (
-              <p>보유한 뱃지가 없습니다.</p>
-            ) : (
-              <p>뱃지 정보가 없습니다.</p>
-            )}
-          </div>
+          <BadgeList
+            badges={userProfo.badges}
+            badgeImageMap={badgeImageMap}
+            badgeComments={badgeComments}
+          />
         </div>
       </ProfileBadgeDiv>
     </>
