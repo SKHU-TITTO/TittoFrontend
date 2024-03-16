@@ -53,7 +53,7 @@ const User1 = () => {
           <p>TITTO</p>
           <br />
           <br />
-          <span style={{ color: "red" }}>존재하지 않는 유저 입니다!</span>
+          <span style={{ color: "red" }}>존재하지 않는 유저입니다!</span>
           <div
             className="back"
             onClick={() => {
