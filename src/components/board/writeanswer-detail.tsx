@@ -27,14 +27,16 @@ const departmentToString = (department: string) => {
       return "기타";
   }
 };
-
 const BoardWrapper = styled.div`
   width: 100%;
   text-align: left;
   border-bottom: 2px solid #ccc;
   padding: 5px;
   color: #bababa;
-
+  &:hover {
+    background-color: #3e68ff;
+    color: white;
+  }
   .title {
     color: black;
     font-size: 20px;
@@ -48,10 +50,15 @@ const BoardWrapper = styled.div`
   p {
     margin-right: 10px;
   }
+
   .cover {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+  }
+
+  &:hover * {
+    color: white;
   }
 `;
 
