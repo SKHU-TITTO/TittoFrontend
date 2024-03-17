@@ -168,29 +168,35 @@ const CommentDetail = ({ postId }: { postId: string }) => {
     }
   };
   const handleDeleteComment = async (reviewId: number, postId: number) => {
-    await axios
-      .delete(`https://titto.store/matching-board-review/delete/${reviewId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: "application/json;charset=UTF-8",
-        },
-        data: {
-          postId: postId,
-          reviewId: reviewId,
-        },
-      })
-      .then((response: { status: number }) => {
-        if (response.status === 200) {
-          window.location.reload();
-          setComments((prevComments) =>
-            prevComments.filter((comment) => comment.reviewId !== reviewId)
-          );
-          alert("댓글이 삭제되었습니다.");
-        } else {
-          console.error("댓글 삭제 실패:", response);
-          alert("댓글 삭제에 실패했습니다. 다시 시도해주세요.");
-        }
-      });
+    const confirm = window.confirm("정말 삭제하시겠습니까?");
+    if (confirm) {
+      await axios
+        .delete(
+          `https://titto.store/matching-board-review/delete/${reviewId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Accept: "application/json;charset=UTF-8",
+            },
+            data: {
+              postId: postId,
+              reviewId: reviewId,
+            },
+          }
+        )
+        .then((response: { status: number }) => {
+          if (response.status === 200) {
+            window.location.reload();
+            setComments((prevComments) =>
+              prevComments.filter((comment) => comment.reviewId !== reviewId)
+            );
+            alert("댓글이 삭제되었습니다.");
+          } else {
+            console.error("댓글 삭제 실패:", response);
+            alert("댓글 삭제에 실패했습니다. 다시 시도해주세요.");
+          }
+        });
+    }
   };
 
   const handleReviewModify = async (
