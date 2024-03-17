@@ -58,16 +58,23 @@ const Header = styled.h1`
 `;
 
 const SubHeader = styled.h2`
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: bold;
   margin-bottom: 15px;
   text-align: left;
 `;
 
 const Description = styled.p`
-  font-size: 16px;
+  font-size: 20px;
   margin-bottom: 15px;
   line-height: 1.5;
   text-align: left;
+  img {
+    width: 100%;
+    height: 700px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -88,10 +95,6 @@ const Button = styled.button`
   &:hover {
     background-color: #7391ff;
   }
-`;
-
-const BackButton = styled(Button)`
-  margin-top: 30px;
 `;
 
 const Slider2 = () => {
@@ -150,19 +153,21 @@ const Slider2 = () => {
               3. 글을 등록합니다. <br />
               4. 다른 사용자들이 당신의 글을 확인하고 답장을 남겨줄 수 있습니다.
               <br />
-              5. 다른 사용자들의 글을 확인하고 답장을 남겨주세요!
+              5. 다른 사용자들의 글을 확인하고 답변을 남겨주세요!
               <br />
               6. 답변이 도움이 되었다면 채택 버튼을 눌러주세요!
               <br />
-              7. 문제가 해결되었다면 해결완료 버튼을 눌러주세요!
+              7. 문제가 해결되었다면 미해결에서 해결로 바뀝니다!
               <br />
-              <p>주의사항</p>
+              <br />
+              <SubHeader>주의사항</SubHeader>
               <p>
                 1. 질문 게시판에서 자신이 쓴 글에는 답변을 할 수 없습니다!{" "}
                 <br />
                 2. 질문 게시판에서는 답변을 채택할 수 있습니다. <br />
                 3. 질문 게시판에서는 답변을 채택하면 답변한 유저에게 내공이
                 지급됩니다. <br />
+                4. 채택이 완료되면 그 게시글은 삭제할 수 없습니다. <br />
               </p>
             </Description>
           </DetailContent>
@@ -170,13 +175,26 @@ const Slider2 = () => {
         {tab === 3 && (
           <DetailContent>
             <Header>3. 마이페이지</Header>
-            <SubHeader>마이페이지 </SubHeader>
+            <SubHeader>
+              마이페이지는 유저의 정보를 확인하고 쪽지를 보낼 수 있는 곳입니다.
+            </SubHeader>
             <Description>
               1. 게시글을 쓴 유저, 답변을 달은 유저에게 궁금한 점이 있다면 유저
               프로필에 들어가서 쪽지를 보낼 수 있습니다!
+              <img src="/imgs/mainimg/titto.png" alt="image" />
               <br />
-              2. 유저프로필에 답변한 글은 티토게시판에 답변이 아닌 질문게시판의
+              2. 마이페이지에서는 내가 쓴 글, 내가 쓴 답변을 확인할 수 있습니다.
+              <img src="/imgs/mainimg/titto.png" alt="image" />
+              <br />
+              3. 유저프로필에 답변한 글은 티토게시판에 답변이 아닌 질문게시판의
               답변 내용만 보여집니다.
+              <img src="/imgs/mainimg/titto.png" alt="image" />
+              <br />
+              4. 마이페이지는 내공, 레벨, 채택률, 보유 뱃지 등을 확인할 수
+              있습니다.
+              <img src="/imgs/mainimg/titto.png" alt="image" />
+              <br />
+              5. 보유 뱃지는 티토에서 활동한 내역에 따라 지급됩니다.
             </Description>
           </DetailContent>
         )}
