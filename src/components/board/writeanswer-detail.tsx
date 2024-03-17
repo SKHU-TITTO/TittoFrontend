@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export type MyWriteType = {
+  questionId: number;
   department: string;
   title: string;
   detail: string;
@@ -29,11 +31,10 @@ const departmentToString = (department: string) => {
 const BoardWrapper = styled.div`
   width: 100%;
   text-align: left;
-  .cover {
-    border-bottom: 2px solid #ccc;
-    padding: 5px;
-    color: #bababa;
-  }
+  border-bottom: 2px solid #ccc;
+  padding: 5px;
+  color: #bababa;
+
   .title {
     color: black;
     font-size: 20px;
@@ -44,14 +45,22 @@ const BoardWrapper = styled.div`
     color: #4d4d4d;
   }
 
-
-    p {
-      margin-right: 10px;
-    }
+  p {
+    margin-right: 10px;
+  }
+  .cover {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
   }
 `;
 
-const WriteAnswerDetail = ({ department, title, detail }: MyWriteType) => {
+const WriteAnswerDetail = ({
+  questionId,
+  department,
+  title,
+  detail,
+}: MyWriteType) => {
   const [htmldetail, setDetail] = useState<string>("");
 
   useEffect(() => {
@@ -64,7 +73,7 @@ const WriteAnswerDetail = ({ department, title, detail }: MyWriteType) => {
 
   return (
     <BoardWrapper>
-      <div className="cover">
+      <Link className="cover" to={`/board/view/qna/${questionId}`}>
         <p className="category">{departmentToString(department)}</p>
         <br />
         <p className="title">{title}</p>
@@ -73,7 +82,7 @@ const WriteAnswerDetail = ({ department, title, detail }: MyWriteType) => {
           className="detail"
           dangerouslySetInnerHTML={{ __html: htmldetail }}
         ></p>
-      </div>
+      </Link>
     </BoardWrapper>
   );
 };

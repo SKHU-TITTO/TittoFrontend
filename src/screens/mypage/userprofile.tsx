@@ -271,14 +271,17 @@ const UserProfile = () => {
               {userAnswers.map(
                 (
                   answer: {
+                    questionId: number;
                     department: string;
                     questionTitle: string;
                     content: string;
+                    id: number;
                   },
                   index
                 ) => (
                   <WriteAnswerDetail
-                    key={index}
+                    key={answer.id}
+                    questionId={answer.questionId}
                     department={answer.department}
                     title={answer.questionTitle}
                     detail={answer.content}
