@@ -167,32 +167,30 @@ const CommentDetail = ({ postId }: { postId: string }) => {
       console.error("Error fetching comments:", error);
     }
   };
-
-  const handleDeleteComment = (reviewIdToDelete: number) => {
-    const confirmDelete = window.confirm("댓글을 삭제하시겠습니까?");
-    if (confirmDelete) {
-      axios
-        .delete(
-          `https://titto.store/matching-board-review/delete/${reviewIdToDelete}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              Accept: "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .then((response) => {
+  const handleDeleteComment = async (reviewId: number, postId: number) => {
+    await axios
+      .delete(`https://titto.store/matching-board-review/delete/${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/json;charset=UTF-8",
+        },
+        data: {
+          postId: postId,
+          reviewId: reviewId,
+        },
+      })
+      .then((response: { status: number }) => {
+        if (response.status === 200) {
+          window.location.reload();
           setComments((prevComments) =>
-            prevComments.filter(
-              (comment) => comment.reviewId !== reviewIdToDelete
-            )
+            prevComments.filter((comment) => comment.reviewId !== reviewId)
           );
-          window.location.reload(); // 일단..
-        })
-        .catch((error) => {
-          console.error("댓글 삭제 중 에러가 발생했습니다:", error);
-        });
-    }
+          alert("댓글이 삭제되었습니다.");
+        } else {
+          console.error("댓글 삭제 실패:", response);
+          alert("댓글 삭제에 실패했습니다. 다시 시도해주세요.");
+        }
+      });
   };
 
   const handleReviewModify = async (
@@ -257,7 +255,11 @@ const CommentDetail = ({ postId }: { postId: string }) => {
                   >
                     수정
                   </button>
-                  <button onClick={() => handleDeleteComment(comment.reviewId)}>
+                  <button
+                    onClick={() =>
+                      handleDeleteComment(comment.reviewId, parseInt(postId))
+                    }
+                  >
                     삭제
                   </button>
                 </div>
