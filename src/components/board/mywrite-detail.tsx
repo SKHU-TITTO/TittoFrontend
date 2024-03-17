@@ -2,8 +2,10 @@ import styled from "styled-components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SmsIcon from "@mui/icons-material/Sms";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export type MyWriteType = {
+  postId: number;
   category: string;
   department: string;
   title: string;
@@ -47,9 +49,79 @@ const departmentToString = (department: string) => {
   }
 };
 
+const WriteDetail = ({
+  postId,
+  category,
+  department,
+  title,
+  detail,
+  view,
+  comment = 0,
+  answerCount = 0,
+}: MyWriteType) => {
+  const [htmldetail, setDetail] = useState<string>("");
+
+  useEffect(() => {
+    if (detail.length > 50) {
+      setDetail(detail.substring(0, 50) + "...");
+    } else {
+      setDetail(detail);
+    }
+  }, [detail]);
+
+  // 카테고리와 디파트먼트에 따라 링크를 다르게 설정
+  const linkTo = department
+    ? `/board/view/qna/${postId}`
+    : `/board/view/titto/${postId}`;
+
+  return (
+    <LinkWrapper to={linkTo}>
+      <BoardWrapper>
+        <div className="cover">
+          <CategoryDiv>
+            {department ? "질문있어요" : "티토찾아요"} |&nbsp;
+            {department
+              ? departmentToString(department)
+              : categoryToString(category)}
+          </CategoryDiv>
+          <br />
+          <p className="title">{title}</p>
+
+          <p
+            className="detail"
+            dangerouslySetInnerHTML={{ __html: htmldetail }}
+          />
+          <br />
+          <div className="show-comment">
+            <VisibilityIcon />
+            <p>{view}</p>
+            <p>|</p>
+            <SmsIcon />
+            <p>{answerCount ? answerCount : comment}</p>
+          </div>
+        </div>
+      </BoardWrapper>
+    </LinkWrapper>
+  );
+};
+
+export default WriteDetail;
+
+const LinkWrapper = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    .cover {
+      background-color: #f2f2f2;
+      color: white;
+    }
+  }
+`;
+
 const BoardWrapper = styled.div`
   width: 100%;
   margin-bottom: 10px;
+
   text-align: left;
   .cover {
     border-bottom: 2px solid #ccc;
@@ -88,10 +160,10 @@ const BoardWrapper = styled.div`
     }
   }
 `;
+
 const CategoryDiv = styled.div`
   padding: 10px 20px 10px 20px;
   background-color: #3e68ff;
-
   font-size: 14px;
   color: white;
   border-radius: 5px;
@@ -103,53 +175,3 @@ const CategoryDiv = styled.div`
   text-align: center;
   justify-content: center;
 `;
-
-const WriteDetail = ({
-  category,
-  department,
-  title,
-  detail,
-  view,
-  comment = 0,
-  answerCount = 0,
-}: MyWriteType) => {
-  const [htmldetail, setDetail] = useState<string>("");
-
-  useEffect(() => {
-    if (detail.length > 50) {
-      setDetail(detail.substring(0, 50) + "...");
-    } else {
-      setDetail(detail);
-    }
-  }, [detail]);
-
-  return (
-    <BoardWrapper>
-      <div className="cover">
-        <CategoryDiv>
-          {department ? "질문있어요" : "티토찾아요"} |&nbsp;
-          {department
-            ? departmentToString(department)
-            : categoryToString(category)}
-        </CategoryDiv>
-        <br />
-        <p className="title">{title}</p>
-
-        <p
-          className="detail"
-          dangerouslySetInnerHTML={{ __html: htmldetail }}
-        />
-        <br />
-        <div className="show-comment">
-          <VisibilityIcon />
-          <p>{view}</p>
-          <p>|</p>
-          <SmsIcon />
-          <p>{answerCount ? answerCount : comment}</p>
-        </div>
-      </div>
-    </BoardWrapper>
-  );
-};
-
-export default WriteDetail;

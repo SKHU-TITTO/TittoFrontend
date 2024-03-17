@@ -269,16 +269,13 @@ const UserProfile = () => {
             <p className="wirteanswer">답변한 글</p>
             <UserProfileAcceptInner>
               {userAnswers.map(
-                (
-                  answer: {
-                    questionId: number;
-                    department: string;
-                    questionTitle: string;
-                    content: string;
-                    id: number;
-                  },
-                  index
-                ) => (
+                (answer: {
+                  questionId: number;
+                  department: string;
+                  questionTitle: string;
+                  content: string;
+                  id: number;
+                }) => (
                   <WriteAnswerDetail
                     key={answer.id}
                     questionId={answer.questionId}
@@ -304,11 +301,13 @@ const UserProfile = () => {
                       viewCount: number;
                       reviewCount: number;
                       answerCount: number;
+                      id: number;
                     },
                     index
                   ) => (
                     <WriteDetail
-                      key={index}
+                      key={post.id}
+                      postId={post.id}
                       category={post.category}
                       department={post.department}
                       title={post.title}
@@ -510,7 +509,6 @@ const UserProfileWritePostContainer = styled.div`
   }
 `;
 const UserProfileWritePostInner = styled.div`
-  padding: 10px;
   height: 500px;
   overflow-y: auto;
 `;
