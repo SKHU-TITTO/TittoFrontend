@@ -518,7 +518,7 @@ const UserProfileWritePostInner = styled.div`
 const UserProfileAcceptInner = styled.div`
   height: 500px;
   overflow-y: auto;
-  padding: 10px;
+
   margin-bottom: 20px;
 `;
 export default UserProfile;

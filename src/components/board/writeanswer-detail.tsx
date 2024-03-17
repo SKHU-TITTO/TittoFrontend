@@ -31,7 +31,7 @@ const BoardWrapper = styled.div`
   width: 100%;
   text-align: left;
   border-bottom: 2px solid #ccc;
-  padding: 5px;
+  padding: 10px;
   color: #bababa;
   &:hover {
     background-color: #3e68ff;
