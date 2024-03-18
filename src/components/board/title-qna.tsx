@@ -2,8 +2,69 @@ import styled from "styled-components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SmsIcon from "@mui/icons-material/Sms";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
 
+type QnaTitleProps = {
+  id: number;
+  solve: boolean;
+  title: string;
+  detail: string;
+  date: string;
+  category: string;
+  userLv: number;
+  userNick: string;
+  view: number;
+  comment: number;
+};
+
+const QnaTitle = ({
+  id,
+  solve,
+  title,
+  detail,
+  date,
+  category,
+  userLv,
+  userNick,
+  view,
+  comment,
+}: QnaTitleProps) => {
+  const { boardId } = useParams();
+  const navigate = useNavigate();
+  return (
+    <Wrapper
+      onClick={() => {
+        navigate("/board/view/" + boardId + "/" + id);
+      }}
+    >
+      <MainTitle>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <SolveDiv className={solve ? "solve" : "not-solve"}>
+            {solve ? "해결" : "미해결"}
+          </SolveDiv>
+          <span className="title">{title}</span>
+        </div>
+        <span className="date">{date}</span>
+      </MainTitle>
+      <DetailDiv>
+        <div dangerouslySetInnerHTML={{ __html: detail }}></div>
+      </DetailDiv>
+      <UserInfo>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <CategoryDiv>{category}</CategoryDiv>
+          <span className="user-lv">LV.{userLv}</span>
+          <span className="user-nick">{userNick}</span>
+        </div>
+        <div className="show-comment">
+          <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view}{" "}
+          <div style={{ display: "inline-block", width: "10px" }}> </div>
+          <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon> {comment}
+        </div>
+      </UserInfo>
+    </Wrapper>
+  );
+};
+
+export default QnaTitle;
 const Wrapper = styled.div`
   width: 100%;
   padding-bottom: 10px;
@@ -73,67 +134,3 @@ const CategoryDiv = styled.div`
   border-radius: 5px;
   margin-right: 0.5em;
 `;
-
-type QnaTitleProps = {
-  id: number;
-  solve: boolean;
-  title: string;
-  detail: string;
-  date: string;
-  category: string;
-  userLv: number;
-  userNick: string;
-  view: number;
-  comment: number;
-};
-
-const QnaTitle = ({
-  id,
-  solve,
-  title,
-  detail,
-  date,
-  category,
-  userLv,
-  userNick,
-  view,
-
-  comment,
-}: QnaTitleProps) => {
-  const { boardId } = useParams();
-  const navigate = useNavigate();
-  return (
-    <Wrapper
-      onClick={() => {
-        navigate("/board/view/" + boardId + "/" + id);
-      }}
-    >
-      <MainTitle>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <SolveDiv className={solve ? "solve" : "not-solve"}>
-            {solve ? "해결" : "미해결"}
-          </SolveDiv>
-          <span className="title">{title}</span>
-        </div>
-        <span className="date">{date}</span>
-      </MainTitle>
-      <DetailDiv>
-        <div dangerouslySetInnerHTML={{ __html: detail }}></div>
-      </DetailDiv>
-      <UserInfo>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <CategoryDiv>{category}</CategoryDiv>
-          <span className="user-lv">LV.{userLv}</span>
-          <span className="user-nick">{userNick}</span>
-        </div>
-        <div className="show-comment">
-          <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view}{" "}
-          <div style={{ display: "inline-block", width: "10px" }}> </div>
-          <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon> {comment}
-        </div>
-      </UserInfo>
-    </Wrapper>
-  );
-};
-
-export default QnaTitle;

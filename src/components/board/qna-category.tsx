@@ -1,44 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const CategoryWrapper = styled.div`
-  width: 100%;
-  border: 1px solid #bababa;
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 10px;
-  text-align: left;
-  .category-title {
-    color: #325393;
-    font-weight: bold;
-  }
-
-  .category-select {
-    color: #bababa;
-    font-weight: bold;
-  }
-`;
-
-const CategoryTitle = styled.div`
-  padding: 10px;
-  color: #325393;
-  font-weight: bold;
-`;
-const CategorySelect = styled.div`
-  padding: 10px;
-  color: #bababa;
-  font-weight: bold;
-  &:hover {
-    cursor: pointer;
-    color: black;
-  }
-`;
-
 const QnaCategoty = () => {
   const navigate = useNavigate();
   return (
-    // 아래를 카테고리 선택 컴포넌트로 사용하면 됩니다.
-
     <CategoryWrapper>
       <CategoryTitle>카테고리</CategoryTitle>
       <CategorySelect
@@ -102,3 +67,36 @@ const QnaCategoty = () => {
 };
 
 export default QnaCategoty;
+
+const CategoryWrapper = styled.div`
+  width: 100%;
+  border: 1px solid #bababa;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: left;
+  .category-title {
+    color: #325393;
+    font-weight: bold;
+  }
+
+  .category-select {
+    color: #bababa;
+    font-weight: bold;
+  }
+`;
+
+const CategoryTitle = styled.div`
+  padding: 10px;
+  color: #325393;
+  font-weight: bold;
+`;
+const CategorySelect = styled.div`
+  padding: 10px;
+  color: #bababa;
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+    color: black;
+  }
+`;

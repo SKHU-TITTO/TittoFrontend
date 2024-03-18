@@ -39,7 +39,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
       const data = response.data;
       setMessages(data);
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error(error);
     }
   };
 
@@ -47,9 +47,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
     if (messages.length === 0) {
       return <NoMessages> 받은 메시지가 없습니다.</NoMessages>;
     }
-
     const latestMessagesBySender: { [key: string]: UserMsgInfo } = {};
-
     messages.forEach((message) => {
       if (
         !latestMessagesBySender[message.senderId] ||

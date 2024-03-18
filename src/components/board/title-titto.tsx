@@ -2,6 +2,37 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+export type TitleType = {
+  title: string;
+  author: string;
+  date: string;
+  postId: string;
+  status: string;
+};
+
+const TittoTitle = ({ title, author, date, postId, status }: TitleType) => {
+  const { boardId } = useParams();
+  const navigate = useNavigate();
+  return (
+    <TitleWrapper
+      onClick={() => {
+        navigate(`/board/view/${boardId}/${postId}`);
+      }}
+    >
+      <td>
+        <div className={status === "RECRUITING" ? "search" : "end"}>
+          {status === "RECRUITING" ? "모집중" : "완료"}
+        </div>
+      </td>
+      <td>{title}</td>
+      <td>{author}</td>
+      <td style={{ fontSize: "9px" }}>{date}</td>
+    </TitleWrapper>
+  );
+};
+
+export default TittoTitle;
+
 const TitleWrapper = styled.tr`
   height: 43px;
   border-bottom: 1px solid #bababa;
@@ -33,34 +64,3 @@ const TitleWrapper = styled.tr`
     font-size: 12px;
   }
 `;
-
-export type TitleType = {
-  title: string;
-  author: string;
-  date: string;
-  postId: string;
-  status: string;
-};
-
-const TittoTitle = ({ title, author, date, postId, status }: TitleType) => {
-  const { boardId } = useParams();
-  const navigate = useNavigate();
-  return (
-    <TitleWrapper
-      onClick={() => {
-        navigate(`/board/view/${boardId}/${postId}`);
-      }}
-    >
-      <td>
-        <div className={status === "RECRUITING" ? "search" : "end"}>
-          {status === "RECRUITING" ? "모집중" : "완료"}
-        </div>
-      </td>
-      <td>{title}</td>
-      <td>{author}</td>
-      <td style={{ fontSize: "9px" }}>{date}</td>
-    </TitleWrapper>
-  );
-};
-
-export default TittoTitle;

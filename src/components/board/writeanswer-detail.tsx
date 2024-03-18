@@ -27,40 +27,6 @@ const departmentToString = (department: string) => {
       return "기타";
   }
 };
-const BoardWrapper = styled.div`
-  width: 100%;
-  text-align: left;
-  border-bottom: 2px solid #ccc;
-  padding: 10px;
-  color: #bababa;
-  &:hover {
-    background-color: #3e68ff;
-    color: white;
-  }
-  .title {
-    color: black;
-    font-size: 20px;
-  }
-
-  .detail {
-    font-size: 16px;
-    color: #4d4d4d;
-  }
-
-  p {
-    margin-right: 10px;
-  }
-
-  .cover {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  &:hover * {
-    color: white;
-  }
-`;
 
 const WriteAnswerDetail = ({
   questionId,
@@ -95,3 +61,38 @@ const WriteAnswerDetail = ({
 };
 
 export default WriteAnswerDetail;
+
+const BoardWrapper = styled.div`
+  width: 100%;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+  padding: 10px;
+  color: #bababa;
+  &:hover {
+    background-color: #3e68ff;
+    color: white;
+  }
+  .title {
+    color: black;
+    font-size: 20px;
+  }
+
+  .detail {
+    font-size: 16px;
+    color: #4d4d4d;
+  }
+
+  p {
+    margin-right: 10px;
+  }
+
+  .cover {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  &:hover * {
+    color: white;
+  }
+`;

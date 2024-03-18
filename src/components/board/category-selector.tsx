@@ -1,4 +1,17 @@
 import styled from "styled-components";
+const CategorySelector = () => {
+  return (
+    <CategoryWrapper>
+      <CategoryTitle>전체보기</CategoryTitle>
+      <CategorySelect>스터디만만 보기</CategorySelect>
+      <CategorySelect>멘토만 보기</CategorySelect>
+      <CategorySelect>멘티만 보기</CategorySelect>
+      <CategorySelect>어울림만 보기</CategorySelect>
+    </CategoryWrapper>
+  );
+};
+
+export default CategorySelector;
 
 const CategoryWrapper = styled.div`
   width: 100%;
@@ -28,17 +41,3 @@ const CategorySelect = styled.div`
   color: #bababa;
   font-weight: bold;
 `;
-
-const CategorySelector = () => {
-  return (
-    <CategoryWrapper>
-      <CategoryTitle>전체보기</CategoryTitle>
-      <CategorySelect>스터디만만 보기</CategorySelect>
-      <CategorySelect>멘토만 보기</CategorySelect>
-      <CategorySelect>멘티만 보기</CategorySelect>
-      <CategorySelect>어울림만 보기</CategorySelect>
-    </CategoryWrapper>
-  );
-};
-
-export default CategorySelector;

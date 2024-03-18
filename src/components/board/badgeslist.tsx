@@ -40,34 +40,6 @@ export const badgeComments: { [key: string]: string } = {
   TITTO_MASTER: "티토 마스터",
   TITTO_AUTHORITY: "티토 권위자",
 };
-const Popup = styled.div<{ position: { x: number; y: number } }>`
-  background: white;
-  width: 150px;
-  height: 50px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #3e68ff;
-  color: white;
-  font-weight: bold;
-  z-index: 999;
-  position: absolute;
-  top: ${(props) => props.position.y}px;
-  left: ${(props) => props.position.x}px;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const BadgeContainer = styled.div`
-  display: inline-block;
-  position: relative;
-`;
-
-const BadgeImage = styled.img`
-  width: 50px;
-`;
-
 const BadgeList = ({
   badges,
   badgeImageMap,
@@ -78,7 +50,6 @@ const BadgeList = ({
   badgeComments: { [key: string]: string };
 }) => {
   const [hoveredBadge, setHoveredBadge] = useState("");
-
   const handleMouseEnter = (badge: string) => {
     setHoveredBadge(badge);
   };
@@ -117,3 +88,31 @@ const BadgeList = ({
 };
 
 export default BadgeList;
+
+const Popup = styled.div<{ position: { x: number; y: number } }>`
+  background: white;
+  width: 150px;
+  height: 50px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #3e68ff;
+  color: white;
+  font-weight: bold;
+  z-index: 999;
+  position: absolute;
+  top: ${(props) => props.position.y}px;
+  left: ${(props) => props.position.x}px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const BadgeContainer = styled.div`
+  display: inline-block;
+  position: relative;
+`;
+
+const BadgeImage = styled.img`
+  width: 50px;
+`;

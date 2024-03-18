@@ -6,6 +6,159 @@ import { useMemo, useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 
+const AnswerDeail = ({
+  answer,
+  accepted,
+  authorId,
+}: {
+  answer: AnswerInfo;
+  accepted: boolean;
+  authorId: number;
+}) => {
+  const [isModify, setIsModify] = useState(false);
+  const [content, setContent] = useState(answer.content);
+  const navigate = useNavigate();
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [["image"]],
+      },
+    };
+  }, []);
+  const answerdelete = () => {
+    const confirm = window.confirm("정말 삭제하시겠습니까?");
+    if (confirm) {
+      axios
+        .delete(`https://titto.store/answers/${answer.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Accept: "application/json;charset=UTF-8",
+          },
+        })
+        .then((res) => {
+          window.location.reload();
+        });
+    }
+  };
+
+  const answerSelection = () => {
+    const confirm = window.confirm(
+      "정말 채택하시겠습니까? 채택하면 다른 답변은 채택할 수 없습니다."
+    );
+    if (confirm) {
+      axios
+        .put(
+          `https://titto.store/answers/accept/${answer.id}?questionId=${answer.postId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Accept: "application/json;charset=UTF-8",
+            },
+          }
+        )
+        .then((res) => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+    }
+  };
+
+  const handleModify = () => {
+    axios
+      .put(
+        `https://titto.store/answers/${answer.id}`,
+        {
+          questionId: answer.postId,
+          content: content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Accept: "application/json;charset=UTF-8",
+          },
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      });
+  };
+
+  return (
+    <Wrapper accepted={accepted}>
+      <ProfileWrapper>
+        <div className="profileBox">
+          <img
+            src={answer.profile}
+            alt="User-Profile"
+            onClick={() => navigate(`/mypage/users/${answer.authorId}/profile`)}
+          />
+          <div className="userdiv">
+            <div className="nick">{answer.authorNickname}</div>
+            <div className="lv">
+              LV.{answer.level} |{" "}
+              {new Date(answer.updateDate).toLocaleString("ko-KR")}
+            </div>
+          </div>
+        </div>
+        <div>
+          {userStore.getUser()?.id === Number(answer.authorId) && (
+            <div>
+              {!accepted && (
+                <button
+                  className="modify"
+                  onClick={() => setIsModify(!isModify)}
+                >
+                  수정
+                </button>
+              )}
+              {!accepted && <button onClick={answerdelete}>삭제</button>}
+            </div>
+          )}
+          {answer.accepted && <div className="ctanswer">채택된 답변</div>}
+
+          {!answer.accepted && userStore.getUser()?.id === Number(authorId) && (
+            <div>
+              <button onClick={answerSelection}>채택</button>
+            </div>
+          )}
+        </div>
+      </ProfileWrapper>
+
+      {isModify ? (
+        <ModifyWrapper>
+          <ReactQuill
+            modules={modules}
+            value={content}
+            onChange={(c) => {
+              setContent(c);
+            }}
+          ></ReactQuill>
+          {!accepted && (
+            <button
+              onClick={() => {
+                handleModify();
+              }}
+            >
+              수정하기
+            </button>
+          )}
+        </ModifyWrapper>
+      ) : (
+        <DetailWrapper>
+          <div
+            className="detail"
+            dangerouslySetInnerHTML={{ __html: answer.content }}
+          ></div>
+        </DetailWrapper>
+      )}
+    </Wrapper>
+  );
+};
+export default AnswerDeail;
+
 const Wrapper = styled.div<{ accepted?: boolean }>`
   width: 100%;
   margin-top: 30px;
@@ -117,167 +270,3 @@ const ModifyWrapper = styled.div`
     cursor: pointer;
   }
 `;
-
-const AnswerDeail = ({
-  answer,
-  accepted,
-  authorId,
-}: {
-  answer: AnswerInfo;
-  accepted: boolean;
-  authorId: number;
-}) => {
-  const [isModify, setIsModify] = useState(false);
-  const [content, setContent] = useState(answer.content);
-  const navigate = useNavigate();
-  const modules = useMemo(() => {
-    return {
-      toolbar: {
-        container: [["image"]],
-      },
-    };
-  }, []);
-  const answerdelete = () => {
-    const confirm = window.confirm("정말 삭제하시겠습니까?");
-    if (confirm) {
-      axios
-        .delete(`https://titto.store/answers/${answer.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            Accept: "application/json;charset=UTF-8",
-          },
-        })
-        .then((res) => {
-          window.location.reload();
-        });
-    }
-  };
-
-  const answerSelection = () => {
-    const confirm = window.confirm(
-      "정말 채택하시겠습니까? 채택하면 다른 답변은 채택할 수 없습니다."
-    );
-    if (confirm) {
-      axios
-        .put(
-          `https://titto.store/answers/accept/${answer.id}?questionId=${answer.postId}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              Accept: "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .then((res) => {
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-        });
-    }
-  };
-
-  const handleModify = () => {
-    axios
-      .put(
-        `https://titto.store/answers/${answer.id}`,
-        {
-          questionId: answer.postId,
-          content: content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            Accept: "application/json;charset=UTF-8",
-          },
-        }
-      )
-      .then((res) => {
-        window.location.reload();
-      });
-  };
-
-  return (
-    <Wrapper accepted={accepted}>
-      {/* 프로필 및 수정, 삭제 버튼 등 */}
-      <ProfileWrapper>
-        {/* 프로필 정보 */}
-        <div className="profileBox">
-          {/* 사용자 프로필 이미지 */}
-          <img
-            src={answer.profile}
-            alt="User-Profile"
-            onClick={() => navigate(`/mypage/users/${answer.authorId}/profile`)}
-          />
-          <div className="userdiv">
-            {/* 사용자 닉네임 */}
-            <div className="nick">{answer.authorNickname}</div>
-            {/* 사용자 레벨 및 수정 날짜 */}
-            <div className="lv">
-              LV.{answer.level} |{" "}
-              {new Date(answer.updateDate).toLocaleString("ko-KR")}
-            </div>
-          </div>
-        </div>
-
-        {/* 수정, 삭제 버튼 및 채택 여부 */}
-
-        <div>
-          {/* 사용자가 해당 답변 작성자인 경우에만 수정, 삭제 버튼을 표시 */}
-          {userStore.getUser()?.id === Number(answer.authorId) && (
-            <div>
-              {!accepted && (
-                <button
-                  className="modify"
-                  onClick={() => setIsModify(!isModify)}
-                >
-                  수정
-                </button>
-              )}
-              {!accepted && <button onClick={answerdelete}>삭제</button>}
-            </div>
-          )}
-          {answer.accepted && <div className="ctanswer">채택된 답변</div>}
-
-          {!answer.accepted && userStore.getUser()?.id === Number(authorId) && (
-            <div>
-              <button onClick={answerSelection}>채택</button>
-            </div>
-          )}
-        </div>
-      </ProfileWrapper>
-
-      {/* 답변 수정 또는 답변 내용 표시 */}
-      {isModify ? (
-        // 수정 모드인 경우
-        <ModifyWrapper>
-          <ReactQuill
-            modules={modules}
-            value={content}
-            onChange={(c) => {
-              setContent(c);
-            }}
-          ></ReactQuill>
-          {!accepted && (
-            <button
-              onClick={() => {
-                handleModify();
-              }}
-            >
-              수정하기
-            </button>
-          )}
-        </ModifyWrapper>
-      ) : (
-        <DetailWrapper>
-          <div
-            className="detail"
-            dangerouslySetInnerHTML={{ __html: answer.content }}
-          ></div>
-        </DetailWrapper>
-      )}
-    </Wrapper>
-  );
-};
-export default AnswerDeail;

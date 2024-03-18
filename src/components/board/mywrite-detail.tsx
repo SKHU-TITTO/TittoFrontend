@@ -120,7 +120,6 @@ const LinkWrapper = styled(Link)`
 
 const BoardWrapper = styled.div`
   width: 100%;
-  margin-bottom: 10px;
 
   text-align: left;
   .cover {

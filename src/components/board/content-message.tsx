@@ -42,11 +42,10 @@ const ContentMessage = ({
           },
         }
       );
-
       const data = response.data;
       setMessages(data);
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error(error);
     }
   };
 

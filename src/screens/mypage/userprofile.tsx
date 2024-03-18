@@ -44,25 +44,12 @@ const changeDepartment = (department: string) => {
       return "소프트웨어융합";
   }
 };
-export type ChosePost = {
-  matchingPostId: string;
-  title: string;
-  user: {
-    nickname: string;
-    id: number;
-  };
-  createDate: string;
-  status: string;
-  content: string;
-  viewCount: number;
-  reviewCount: number;
-};
 
 const UserProfile = () => {
-  const navigate = useNavigate();
   const { userId } = useParams();
   const [userPosts, setUserPosts] = useState([]);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
   const accessToken = localStorage.getItem("accessToken");
   const [userProfo, setProInfo] = useState<UserProfileInfo>({
     userId: 0,
@@ -81,7 +68,6 @@ const UserProfile = () => {
     level: 0,
   }); // 프로필 유저 정보
   const [max, setMax] = useState(0);
-
   const levelStandard = [100, 300, 600, 1000, Infinity];
   const [isMaxLevel, setIsMaxLevel] = useState(false);
   const checkNextLevel = (totalExp: number, userLevel: number) => {
@@ -98,8 +84,6 @@ const UserProfile = () => {
         return 0;
     }
   };
-
-  const [isSendingMessage, setIsSendingMessage] = useState(false);
 
   const openSendMessagePopup = () => {
     setIsSendingMessage(true);

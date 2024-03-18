@@ -3,9 +3,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SmsIcon from "@mui/icons-material/Sms";
-import CommentDetail, {
-  CommentInfo,
-} from "../../components/board/comment-detail";
+import CommentDetail from "../../components/board/comment-detail";
 import ReactQuill from "react-quill";
 import axios from "axios";
 
