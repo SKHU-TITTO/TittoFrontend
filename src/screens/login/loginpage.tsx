@@ -3,6 +3,94 @@ import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+const LoginPage = () => {
+  const navigate = useNavigate();
+  const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
+  const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+  const handleKakaoLogin = () => {
+    try {
+      window.location.href = KAKAO_AUTH_URL;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleKakaoCallback = async () => {
+    const code = new URLSearchParams(window.location.search).get("code");
+
+    try {
+      const res = await axios.get(`https://titto.store/oauth/kakao`, {
+        params: {
+          code: code,
+        },
+      });
+
+      const kakaoAccessToken = res.data.kakaoAccessToken;
+      console.log("엑세스 토큰:", kakaoAccessToken);
+      const dataraw = {
+        kakaoAccessToken: kakaoAccessToken,
+      };
+      const raw = JSON.stringify(dataraw);
+
+      const loginRes = await axios.post(
+        "https://titto.store/oauth/kakao/login",
+        raw,
+        {
+          headers: {
+            Authorization: `Bearer ${kakaoAccessToken}`,
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        }
+      );
+      if (loginRes.status === 200) {
+        localStorage.setItem("accessToken", loginRes.data.accessToken);
+        localStorage.setItem("refreshToken", loginRes.data.refreshToken);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (window.location.pathname === "/login/oauth2/code/kakao") {
+      handleKakaoCallback();
+    }
+  }, []);
+
+  return (
+    <>
+      <LoginPageWrapper>
+        <LoginForm>
+          <LoginMainTitle>
+            <p>TITTO</p>
+            <p>더 나은 캠퍼스 라이프.</p>
+          </LoginMainTitle>
+
+          <LoginTitleContainer>
+            <LoginTitle>
+              <span>다음으로 로그인</span>
+              <hr />
+            </LoginTitle>
+            <LoginBtnContainer>
+              <div className="kakao" onClick={handleKakaoLogin}>
+                <img src="/imgs/kakaoimg.png" alt="kakao_logo" />
+                <button type="button" className="btn_login_kakao">
+                  <span>카카오 로그인</span>
+                </button>
+              </div>
+            </LoginBtnContainer>
+          </LoginTitleContainer>
+        </LoginForm>
+      </LoginPageWrapper>
+    </>
+  );
+};
+
+export default LoginPage;
+
 const LoginPageWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -90,98 +178,3 @@ const LoginBtnContainer = styled.div`
     }
   }
 `;
-
-const LoginPage = () => {
-  const navigate = useNavigate();
-  const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
-  const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
-  const handleKakaoLogin = () => {
-    try {
-      window.location.href = KAKAO_AUTH_URL;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleKakaoCallback = async () => {
-    const code = new URLSearchParams(window.location.search).get("code");
-
-    try {
-      const res = await axios.get(`https://titto.store/oauth/kakao`, {
-        params: {
-          code: code,
-        },
-      });
-
-      const kakaoAccessToken = res.data.kakaoAccessToken;
-      const kakaoRefreshToken = res.data.kakaoRefreshToken;
-      console.log(
-        "엑세스 토큰:",
-        kakaoAccessToken,
-        "리프레시 토큰:",
-        kakaoRefreshToken
-      );
-      const dataraw = {
-        kakaoAccessToken: kakaoAccessToken,
-      };
-      const raw = JSON.stringify(dataraw);
-
-      const loginRes = await axios.post(
-        "https://titto.store/oauth/kakao/login",
-        raw,
-        {
-          headers: {
-            Authorization: `Bearer ${kakaoAccessToken}`,
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        }
-      );
-      if (loginRes.status === 200) {
-        localStorage.setItem("accessToken", loginRes.data.accessToken);
-        localStorage.setItem("refreshToken", loginRes.data.refreshToken);
-        navigate("/");
-      }
-    } catch (err) {
-      console.log(err);
-      console.log("카카오 로그인 실패");
-    }
-  };
-
-  useEffect(() => {
-    if (window.location.pathname === "/login/oauth2/code/kakao") {
-      handleKakaoCallback();
-    }
-  }, []);
-
-  return (
-    <>
-      <LoginPageWrapper>
-        <LoginForm>
-          <LoginMainTitle>
-            <p>TITTO</p>
-            <p>더 나은 캠퍼스 라이프.</p>
-          </LoginMainTitle>
-
-          <LoginTitleContainer>
-            <LoginTitle>
-              <span>다음으로 로그인</span>
-              <hr />
-            </LoginTitle>
-            <LoginBtnContainer>
-              <div className="kakao" onClick={handleKakaoLogin}>
-                <img src="/imgs/kakaoimg.png" alt="kakao_logo" />
-                <button type="button" className="btn_login_kakao">
-                  <span>카카오 로그인</span>
-                </button>
-              </div>
-            </LoginBtnContainer>
-          </LoginTitleContainer>
-        </LoginForm>
-      </LoginPageWrapper>
-    </>
-  );
-};
-
-export default LoginPage;

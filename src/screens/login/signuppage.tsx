@@ -2,138 +2,11 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { set } from "mobx";
-
-const SignUpWrapper = styled.div`
-  width: 800px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-`;
-
-const SignUpTitle = styled.div`
-  text-align: left;
-
-  p:nth-child(1) {
-    font-size: 32px;
-    color: #c6c6c6;
-    font-weight: bold;
-    margin: 10px 0 0 0;
-  }
-
-  p:nth-child(2) {
-    font-size: 48px;
-    font-weight: bold;
-    color: #3e68ff;
-    margin: 0;
-
-    span {
-      color: black;
-      font-size: 32px;
-      font-weight: bold;
-    }
-  }
-
-  hr {
-    border: 1px solid #c6c6c6;
-    margin: 20px auto;
-    width: 700px;
-  }
-`;
-
-const SignUpForm = styled.form`
-  width: 600px;
-`;
-
-const SignUpInputContainer = styled.div`
-  margin-bottom: 30px;
-  text-align: left;
-  display: flex;
-  height: 50px;
-  input {
-    flex-grow: 1;
-    appearance: none;
-    border: 1px solid #bababa;
-    cursor: pointer;
-    border-radius: 7px 0 0 7px;
-    outline: 0;
-    padding: 10px;
-  }
-
-  button {
-    font-size: 14px;
-    color: #fff;
-    font-weight: bold;
-    background-color: #3e68ff;
-    height: 100%;
-    border: 1px solid #3e68ff;
-    border-radius: 0 7px 7px 0;
-    cursor: pointer;
-  }
-`;
-
-const SignUpBtnContainer = styled.div`
-  width: 600px;
-  text-align: center;
-
-  button {
-    font-size: 18px;
-    height: 50px;
-    color: #fff;
-    width: 100%;
-    font-weight: bold;
-    background-color: #3e68ff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    margin-top: 20px;
-
-    &:disabled {
-      background-color: #bababa;
-      cursor: not-allowed;
-    }
-  }
-`;
-
-const SignUpLabel = styled.label`
-  display: block;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 8px;
-`;
-
-const SignUpSelect = styled.select`
-  padding: 10px;
-  font-size: 16px;
-  width: 30%;
-  border: 1px solid #bababa;
-  border-radius: 7px;
-  cursor: pointer;
-  outline: none;
-
-  option {
-    background-color: #fff;
-    color: #333;
-  }
-`;
-
-const SignUpError = styled.div`
-  font-size: 14px;
-  color: ${(props) => props.color || "red"};
-  font-weight: bold;
-  margin-top: -20px;
-  margin-bottom: 20px;
-`;
-
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const [errorcolor, setErrorcolor] = useState("red");
   const [isCheckNick, setIsCheckNick] = useState(false);
   const [isCheckStudentNo, setIsCheckStudentNo] = useState(false);
-  const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
   const [studentNo, setStudentNo] = useState("");
   const [nicknameError, setNicknameError] = useState("");
@@ -373,3 +246,128 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+
+const SignUpWrapper = styled.div`
+  width: 800px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+`;
+
+const SignUpTitle = styled.div`
+  text-align: left;
+
+  p:nth-child(1) {
+    font-size: 32px;
+    color: #c6c6c6;
+    font-weight: bold;
+    margin: 10px 0 0 0;
+  }
+
+  p:nth-child(2) {
+    font-size: 48px;
+    font-weight: bold;
+    color: #3e68ff;
+    margin: 0;
+
+    span {
+      color: black;
+      font-size: 32px;
+      font-weight: bold;
+    }
+  }
+
+  hr {
+    border: 1px solid #c6c6c6;
+    margin: 20px auto;
+    width: 700px;
+  }
+`;
+
+const SignUpForm = styled.form`
+  width: 600px;
+`;
+
+const SignUpInputContainer = styled.div`
+  margin-bottom: 30px;
+  text-align: left;
+  display: flex;
+  height: 50px;
+  input {
+    flex-grow: 1;
+    appearance: none;
+    border: 1px solid #bababa;
+    cursor: pointer;
+    border-radius: 7px 0 0 7px;
+    outline: 0;
+    padding: 10px;
+  }
+
+  button {
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    background-color: #3e68ff;
+    height: 100%;
+    border: 1px solid #3e68ff;
+    border-radius: 0 7px 7px 0;
+    cursor: pointer;
+  }
+`;
+
+const SignUpBtnContainer = styled.div`
+  width: 600px;
+  text-align: center;
+
+  button {
+    font-size: 18px;
+    height: 50px;
+    color: #fff;
+    width: 100%;
+    font-weight: bold;
+    background-color: #3e68ff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-top: 20px;
+
+    &:disabled {
+      background-color: #bababa;
+      cursor: not-allowed;
+    }
+  }
+`;
+
+const SignUpLabel = styled.label`
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+`;
+
+const SignUpSelect = styled.select`
+  padding: 10px;
+  font-size: 16px;
+  width: 30%;
+  border: 1px solid #bababa;
+  border-radius: 7px;
+  cursor: pointer;
+  outline: none;
+
+  option {
+    background-color: #fff;
+    color: #333;
+  }
+`;
+
+const SignUpError = styled.div`
+  font-size: 14px;
+  color: ${(props) => props.color || "red"};
+  font-weight: bold;
+  margin-top: -20px;
+  margin-bottom: 20px;
+`;
