@@ -31,7 +31,241 @@ export type AnswerInfo = {
   updateDate: string;
 };
 
-// 스타일드 컴포넌트들 정의
+export type AnswerViewProps = {
+  accepted: boolean;
+  authorId: number;
+  authorNickname: string;
+  content: string;
+  createDate: string;
+  profile: string;
+  id: number;
+  department: string;
+  level: number;
+  title: string;
+  status: string;
+  viewCount: number;
+  answerList: AnswerInfo[];
+};
+
+const changeDepartment = (department: string) => {
+  switch (department) {
+    case "HUMANITIES":
+      return "인문융합콘텐츠";
+    case "MANAGEMENT":
+      return "경영";
+    case "SOCIETY":
+      return "사회융합";
+    case "MEDIA_CONTENT":
+      return "미디어콘텐츠융합";
+    case "FUTURE_FUSION":
+      return "미래융합";
+    case "SOFTWARE":
+      return "소프트웨어융합";
+  }
+};
+
+const AnswerView = () => {
+  const [view, setView] = useState<AnswerViewProps>({
+    accepted: false,
+    authorId: 0,
+    authorNickname: "",
+    content: "",
+    profile: "",
+    createDate: "",
+    id: 0,
+    department: "",
+    level: 0,
+    title: "",
+    status: "",
+    viewCount: 0,
+    answerList: [],
+  });
+  const { boardId = "default", postId } = useParams();
+  const accessToken = localStorage.getItem("accessToken");
+  const [reviewContent, setReviewContent] = useState("");
+  const navigate = useNavigate();
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [["image"]],
+      },
+    };
+  }, []);
+
+  const handleAnswerSubmit = () => {
+    axios
+      .post(
+        `https://titto.store/answers/create`,
+        {
+          questionId: postId,
+          content: reviewContent,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/json;charset=UTF-8",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleDeletePost = () => {
+    const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      axios
+        .delete(`https://titto.store/questions/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/json;charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          alert("게시글이 성공적으로 삭제되었습니다.");
+          navigate(`/board/lists/${boardId}/1`);
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            alert("채택된 글은 삭제가 불가능 합니다");
+          }
+        });
+    }
+  };
+
+  const getPostData = async () => {
+    try {
+      const response = await axios
+        .get(`https://titto.store/questions/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setView({
+            id: res.data.id,
+            title: res.data.title,
+            profile: res.data.profile,
+            content: res.data.content,
+            authorId: res.data.authorId,
+            authorNickname: res.data.authorNickname,
+            createDate: new Date(res.data.createDate).toLocaleString("ko-KR"),
+            department: res.data.department,
+            level: res.data.level,
+            status: res.data.status,
+            viewCount: res.data.viewCount,
+            accepted: res.data.accepted,
+            answerList: res.data.answerList,
+          });
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getPostData();
+  }, []);
+
+  return (
+    <Wrapper>
+      <CategoryWrapper>
+        <div className="categoryBox">{changeDepartment(view.department)}</div>
+        <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
+          {view?.status == "UNSOLVED" ? "미해결" : "해결"}
+        </div>
+      </CategoryWrapper>
+      <TitleWrapper>{view?.title}.</TitleWrapper>
+      <ProfileWrapper>
+        <div className="profileBox">
+          <img
+            src={view.profile}
+            alt="User-Profile"
+            onClick={() => navigate(`/mypage/users/${view.authorId}/profile`)}
+          />
+          <div className="userdiv">
+            <div className="nick">{view?.authorNickname}</div>
+            <div className="lv">
+              LV.{view.level} | {view?.createDate}
+            </div>
+          </div>
+        </div>
+        {userStore.getUser()?.id === view.authorId ? (
+          <div>
+            <div>
+              <button
+                className="modify"
+                onClick={() => navigate(`/board/modify/qna/${postId}`)}
+              >
+                수정
+              </button>
+              <button onClick={handleDeletePost}>삭제</button>
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </ProfileWrapper>
+
+      <DetailWrapper>
+        <div
+          className="detail"
+          dangerouslySetInnerHTML={{ __html: view.content }}
+        ></div>
+      </DetailWrapper>
+      <ViewWrapper>
+        <div className="show-comment">
+          <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view.viewCount}{" "}
+          <div style={{ display: "inline-block", width: "10px" }}> </div>
+          <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon>{" "}
+          {view.answerList.length}
+        </div>
+      </ViewWrapper>
+      <CommentWrapper>
+        <span style={{ fontWeight: "bold", fontSize: "20px" }}>
+          답변 {view.answerList.length}개
+        </span>
+      </CommentWrapper>
+      {[...view.answerList]
+        .sort((a, b) => (a.accepted === b.accepted ? 0 : a.accepted ? -1 : 1))
+        .map((answer) => (
+          <AnswerDeail
+            key={answer.id}
+            answer={answer}
+            authorId={view.authorId}
+            accepted={answer.accepted}
+          />
+        ))}
+      {userStore.getUser()?.nickname === view.authorNickname ? (
+        <div></div>
+      ) : (
+        <div>
+          <QuillWrapper>
+            <ReactQuill
+              modules={modules}
+              style={{ height: "200px" }}
+              value={reviewContent}
+              onChange={setReviewContent}
+            ></ReactQuill>
+          </QuillWrapper>
+          <SubmitWrapper>
+            <div className="btn" onClick={handleAnswerSubmit}>
+              등록
+            </div>
+          </SubmitWrapper>
+        </div>
+      )}
+    </Wrapper>
+  );
+};
+
+export default AnswerView;
+
 const Wrapper = styled.div`
   width: 100%;
   margin-top: 10px;
@@ -209,250 +443,3 @@ const SubmitWrapper = styled.div`
     margin-left: 10px;
   }
 `;
-
-export type AnswerViewProps = {
-  accepted: boolean;
-  authorId: number;
-  authorNickname: string;
-  content: string;
-  createDate: string;
-  profile: string;
-  id: number;
-  department: string;
-  level: number;
-  title: string;
-  status: string;
-  viewCount: number;
-
-  answerList: AnswerInfo[];
-};
-
-const AnswerView = () => {
-  const [view, setView] = useState<AnswerViewProps>({
-    accepted: false,
-    authorId: 0,
-    authorNickname: "",
-    content: "",
-    profile: "",
-    createDate: "",
-    id: 0,
-    department: "",
-    level: 0,
-    title: "",
-    status: "",
-    viewCount: 0,
-    answerList: [],
-  });
-  const { boardId = "default", postId } = useParams();
-  const accessToken = localStorage.getItem("accessToken");
-  const [reviewContent, setReviewContent] = useState("");
-  const navigate = useNavigate();
-
-  const modules = useMemo(() => {
-    return {
-      toolbar: {
-        container: [["image"]],
-      },
-    };
-  }, []);
-
-  const handleAnswerSubmit = () => {
-    axios
-      .post(
-        `https://titto.store/answers/create`,
-        {
-          questionId: postId,
-          content: reviewContent,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Accept: "application/json;charset=UTF-8",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        }
-      )
-      .then((res) => {
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error("답변 등록 중 에러가 발생했습니다:", error);
-      });
-  };
-
-  const handleDeletePost = () => {
-    // 확인 팝업 표시
-    const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
-
-    // 사용자가 확인을 눌렀을 때만 삭제 요청을 보냄
-    if (confirmDelete) {
-      axios
-        .delete(`https://titto.store/questions/${postId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Accept: "application/json;charset=UTF-8",
-          },
-        })
-        .then((response) => {
-          alert("게시글이 성공적으로 삭제되었습니다.");
-          navigate(`/board/lists/${boardId}/1`);
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            alert("채택된 글은 삭제가 불가능 합니다");
-          }
-        });
-    }
-  };
-
-  const getPostData = async () => {
-    try {
-      const response = await axios
-        .get(`https://titto.store/questions/${postId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((res) => {
-          setView({
-            id: res.data.id,
-            title: res.data.title,
-            profile: res.data.profile,
-            content: res.data.content,
-            authorId: res.data.authorId,
-            authorNickname: res.data.authorNickname,
-            createDate: new Date(res.data.createDate).toLocaleString("ko-KR"),
-            department: res.data.department,
-            level: res.data.level,
-            status: res.data.status,
-            viewCount: res.data.viewCount,
-            accepted: res.data.accepted,
-            answerList: res.data.answerList,
-          });
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const changeDepartment = (department: string) => {
-    switch (department) {
-      case "HUMANITIES":
-        return "인문융합콘텐츠";
-      case "MANAGEMENT":
-        return "경영";
-      case "SOCIETY":
-        return "사회융합";
-      case "MEDIA_CONTENT":
-        return "미디어콘텐츠융합";
-      case "FUTURE_FUSION":
-        return "미래융합";
-      case "SOFTWARE":
-        return "소프트웨어융합";
-    }
-  };
-
-  useEffect(() => {
-    getPostData();
-  }, []);
-
-  return (
-    <Wrapper>
-      {/* 카테고리 표시 */}
-      <CategoryWrapper>
-        <div className="categoryBox">{changeDepartment(view.department)}</div>
-        <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
-          {view?.status == "UNSOLVED" ? "미해결" : "해결"}
-        </div>
-      </CategoryWrapper>
-      {/* 제목 표시 */}
-      <TitleWrapper>{view?.title}.</TitleWrapper>
-      {/* 프로필 표시 */}
-      <ProfileWrapper>
-        <div className="profileBox">
-          <img
-            src={view.profile}
-            alt="User-Profile"
-            onClick={() => navigate(`/mypage/users/${view.authorId}/profile`)}
-          />
-          <div className="userdiv">
-            <div className="nick">{view?.authorNickname}</div>
-            <div className="lv">
-              LV.{view.level} | {view?.createDate}
-            </div>
-          </div>
-        </div>
-        {/* 로그인한 유저와 글 작성자가 같을 경우 수정/삭제 버튼 표시 */}
-        {userStore.getUser()?.id === view.authorId ? (
-          <div>
-            <div>
-              <button
-                className="modify"
-                onClick={() => navigate(`/board/modify/qna/${postId}`)}
-              >
-                수정
-              </button>
-              <button onClick={handleDeletePost}>삭제</button>
-            </div>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </ProfileWrapper>
-
-      <DetailWrapper>
-        <div
-          className="detail"
-          dangerouslySetInnerHTML={{ __html: view.content }}
-        ></div>
-      </DetailWrapper>
-      {/* 조회수, 댓글 수 표시 */}
-      <ViewWrapper>
-        <div className="show-comment">
-          <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view.viewCount}{" "}
-          <div style={{ display: "inline-block", width: "10px" }}> </div>
-          <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon>{" "}
-          {view.answerList.length}
-        </div>
-      </ViewWrapper>
-      {/* 댓글 표시 */}
-      <CommentWrapper>
-        <span style={{ fontWeight: "bold", fontSize: "20px" }}>
-          답변 {view.answerList.length}개
-        </span>
-      </CommentWrapper>
-      {[...view.answerList]
-        .sort((a, b) => (a.accepted === b.accepted ? 0 : a.accepted ? -1 : 1))
-        .map((answer) => (
-          <AnswerDeail
-            key={answer.id}
-            answer={answer}
-            authorId={view.authorId}
-            accepted={answer.accepted}
-          />
-        ))}
-      {userStore.getUser()?.nickname === view.authorNickname ? (
-        <div></div>
-      ) : (
-        <div>
-          <QuillWrapper>
-            <ReactQuill
-              modules={modules}
-              style={{ height: "200px" }}
-              value={reviewContent}
-              onChange={setReviewContent}
-            ></ReactQuill>
-          </QuillWrapper>
-          {/* 등록 버튼 */}
-          <SubmitWrapper>
-            <div className="btn" onClick={handleAnswerSubmit}>
-              등록
-            </div>
-          </SubmitWrapper>
-        </div>
-      )}
-    </Wrapper>
-  );
-};
-
-export default AnswerView;
