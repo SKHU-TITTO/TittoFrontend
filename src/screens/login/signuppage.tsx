@@ -93,7 +93,7 @@ const SignUpPage = () => {
       )
       .then((response) => {})
       .catch((error) => {
-        console.error("Error saving profile:", error);
+        console.error(error);
       });
   };
 
