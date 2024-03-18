@@ -313,7 +313,7 @@ const UserProfileWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 30px;
 `;
 
 const UserProfileMainContainer = styled.div`
