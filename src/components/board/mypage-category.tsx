@@ -1,4 +1,25 @@
 import styled from "styled-components";
+type MyPageCategoryProps = {
+  onCategoryChange: (category: string) => void;
+};
+const MyPageCategory = ({ onCategoryChange }: MyPageCategoryProps) => {
+  const handleCategoryClick = (category: string) => {
+    onCategoryChange(category);
+  };
+  return (
+    <CategoryWrapper>
+      <CategoryTitle>내 정보 관리</CategoryTitle>
+      <CategorySelect onClick={() => handleCategoryClick("계정 관리")}>
+        계정 관리
+      </CategorySelect>
+      <CategorySelect onClick={() => handleCategoryClick("프로필 관리")}>
+        프로필 관리
+      </CategorySelect>
+    </CategoryWrapper>
+  );
+};
+
+export default MyPageCategory;
 
 const CategoryWrapper = styled.div`
   width: 100%;
@@ -32,27 +53,3 @@ const CategorySelect = styled.div`
     color: black;
   }
 `;
-
-type MyPageCategoryProps = {
-  onCategoryChange: (category: string) => void;
-};
-
-const MyPageCategory = ({ onCategoryChange }: MyPageCategoryProps) => {
-  const handleCategoryClick = (category: string) => {
-    onCategoryChange(category);
-  };
-
-  return (
-    <CategoryWrapper>
-      <CategoryTitle>내 정보 관리</CategoryTitle>
-      <CategorySelect onClick={() => handleCategoryClick("계정 관리")}>
-        계정 관리
-      </CategorySelect>
-      <CategorySelect onClick={() => handleCategoryClick("프로필 관리")}>
-        프로필 관리
-      </CategorySelect>
-    </CategoryWrapper>
-  );
-};
-
-export default MyPageCategory;

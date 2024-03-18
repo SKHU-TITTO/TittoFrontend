@@ -10,110 +10,6 @@ export type boardUrl = {
   id: string;
   page: number;
 };
-
-const Wrapper = styled.div`
-  width: 100%;
-`;
-
-const BoardWrapper = styled.div`
-  display: flex;
-  margin-top: 10px;
-  justify-content: space-between;
-`;
-
-const CategoryDiv = styled.div`
-  width: 28%;
-`;
-
-const MainDiv = styled.div`
-  width: 70%;
-  text-align: left;
-`;
-
-const SolveDiv = styled.div`
-  margin-top: 10px;
-
-  width: 100%;
-  border-bottom: 1px solid #bababa;
-  display: flex;
-
-  .select {
-    color: black;
-    border-bottom: 2px solid #3e68ff;
-  }
-`;
-
-const SolveTitle = styled.div`
-  padding: 10px 15px 10px 15px;
-  font-size: 20px;
-  color: #bababa;
-  font-weight: bold;
-
-  &:hover {
-    cursor: pointer;
-    color: black;
-  }
-`;
-
-const SearchDiv = styled.div`
-  display: flex;
-  padding: 10px 0 10px 0;
-  justify-content: space-between;
-
-  border-bottom: 1px solid #bababa;
-
-  input {
-    border: 1px solid #bababa;
-    border-radius: 5px;
-    width: 85%;
-    padding-left: 10px;
-    font-size: 20px;
-  }
-
-  input:focus {
-    outline: none;
-    color: black;
-  }
-  input:focus::placeholder {
-    opacity: 0;
-  }
-  button {
-    width: 14%;
-    border: none;
-    background-color: #3e68ff;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-  }
-  button:hover {
-    cursor: pointer;
-  }
-`;
-
-const PostWrapper = styled.div`
-  width: 100%;
-`;
-const SubmitWrapper = styled.div`
-  width: 100%;
-  margin-top: 10px;
-  justify-content: right;
-  display: flex;
-  .btn {
-    width: 100px;
-    height: 35px;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 2em;
-    border: none;
-    background-color: #3e68ff;
-    color: white;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: bold;
-    margin-left: 10px;
-  }
-`;
-
 export type QNAPost = {
   id: number;
   authrId: number;
@@ -343,3 +239,106 @@ const QnaBoard = ({ id, page }: boardUrl) => {
 };
 
 export default QnaBoard;
+
+const Wrapper = styled.div`
+  width: 100%;
+`;
+
+const BoardWrapper = styled.div`
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+`;
+
+const CategoryDiv = styled.div`
+  width: 28%;
+`;
+
+const MainDiv = styled.div`
+  width: 70%;
+  text-align: left;
+`;
+
+const SolveDiv = styled.div`
+  margin-top: 10px;
+
+  width: 100%;
+  border-bottom: 1px solid #bababa;
+  display: flex;
+
+  .select {
+    color: black;
+    border-bottom: 2px solid #3e68ff;
+  }
+`;
+
+const SolveTitle = styled.div`
+  padding: 10px 15px 10px 15px;
+  font-size: 20px;
+  color: #bababa;
+  font-weight: bold;
+
+  &:hover {
+    cursor: pointer;
+    color: black;
+  }
+`;
+
+const SearchDiv = styled.div`
+  display: flex;
+  padding: 10px 0 10px 0;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #bababa;
+
+  input {
+    border: 1px solid #bababa;
+    border-radius: 5px;
+    width: 85%;
+    padding-left: 10px;
+    font-size: 20px;
+  }
+
+  input:focus {
+    outline: none;
+    color: black;
+  }
+  input:focus::placeholder {
+    opacity: 0;
+  }
+  button {
+    width: 14%;
+    border: none;
+    background-color: #3e68ff;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  button:hover {
+    cursor: pointer;
+  }
+`;
+
+const PostWrapper = styled.div`
+  width: 100%;
+`;
+const SubmitWrapper = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  justify-content: right;
+  display: flex;
+  .btn {
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 2em;
+    border: none;
+    background-color: #3e68ff;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+`;

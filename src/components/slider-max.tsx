@@ -4,51 +4,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 import { ComponentProps } from "react";
-const SliderWrap = styled.div`
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 20px;
-
-  .slick-prev {
-    left: 10px;
-    z-index: 1;
-    width: 55px;
-    height: 50px;
-    &:before {
-      content: "";
-      width: 50px;
-      height: 50px;
-      background-color: #000;
-      opacity: 0.5;
-      border-radius: 50%;
-    }
-  }
-  .slick-next {
-    right: 10px;
-    z-index: 1;
-    width: 55px;
-    height: 50px;
-    &:before {
-      content: "";
-      width: 50px;
-      height: 50px;
-      background-color: #000;
-      opacity: 0.5;
-      border-radius: 50%;
-    }
-  }
-  .slick-prev:hover,
-  .slick-next:hover {
-  }
-`;
-
-const Img1 = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-`;
 
 const PrevArrow = (props: ComponentProps<"button">) => (
   <button {...props} className="slick-prev" aria-label="Previous">
@@ -111,3 +66,49 @@ const MaxSlider = () => {
 };
 
 export default MaxSlider;
+
+const SliderWrap = styled.div`
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 20px;
+
+  .slick-prev {
+    left: 10px;
+    z-index: 1;
+    width: 55px;
+    height: 50px;
+    &:before {
+      content: "";
+      width: 50px;
+      height: 50px;
+      background-color: #000;
+      opacity: 0.5;
+      border-radius: 50%;
+    }
+  }
+  .slick-next {
+    right: 10px;
+    z-index: 1;
+    width: 55px;
+    height: 50px;
+    &:before {
+      content: "";
+      width: 50px;
+      height: 50px;
+      background-color: #000;
+      opacity: 0.5;
+      border-radius: 50%;
+    }
+  }
+  .slick-prev:hover,
+  .slick-next:hover {
+  }
+`;
+
+const Img1 = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+`;

@@ -44,25 +44,12 @@ const changeDepartment = (department: string) => {
       return "소프트웨어융합";
   }
 };
-export type ChosePost = {
-  matchingPostId: string;
-  title: string;
-  user: {
-    nickname: string;
-    id: number;
-  };
-  createDate: string;
-  status: string;
-  content: string;
-  viewCount: number;
-  reviewCount: number;
-};
 
 const UserProfile = () => {
-  const navigate = useNavigate();
   const { userId } = useParams();
   const [userPosts, setUserPosts] = useState([]);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
   const accessToken = localStorage.getItem("accessToken");
   const [userProfo, setProInfo] = useState<UserProfileInfo>({
     userId: 0,
@@ -81,7 +68,6 @@ const UserProfile = () => {
     level: 0,
   }); // 프로필 유저 정보
   const [max, setMax] = useState(0);
-
   const levelStandard = [100, 300, 600, 1000, Infinity];
   const [isMaxLevel, setIsMaxLevel] = useState(false);
   const checkNextLevel = (totalExp: number, userLevel: number) => {
@@ -98,8 +84,6 @@ const UserProfile = () => {
         return 0;
     }
   };
-
-  const [isSendingMessage, setIsSendingMessage] = useState(false);
 
   const openSendMessagePopup = () => {
     setIsSendingMessage(true);
@@ -269,16 +253,16 @@ const UserProfile = () => {
             <p className="wirteanswer">답변한 글</p>
             <UserProfileAcceptInner>
               {userAnswers.map(
-                (
-                  answer: {
-                    department: string;
-                    questionTitle: string;
-                    content: string;
-                  },
-                  index
-                ) => (
+                (answer: {
+                  questionId: number;
+                  department: string;
+                  questionTitle: string;
+                  content: string;
+                  id: number;
+                }) => (
                   <WriteAnswerDetail
-                    key={index}
+                    key={answer.id}
+                    questionId={answer.questionId}
                     department={answer.department}
                     title={answer.questionTitle}
                     detail={answer.content}
@@ -301,11 +285,13 @@ const UserProfile = () => {
                       viewCount: number;
                       reviewCount: number;
                       answerCount: number;
+                      id: number;
                     },
                     index
                   ) => (
                     <WriteDetail
-                      key={index}
+                      key={post.id}
+                      postId={post.id}
                       category={post.category}
                       department={post.department}
                       title={post.title}
@@ -507,7 +493,6 @@ const UserProfileWritePostContainer = styled.div`
   }
 `;
 const UserProfileWritePostInner = styled.div`
-  padding: 10px;
   height: 500px;
   overflow-y: auto;
 `;
@@ -515,7 +500,7 @@ const UserProfileWritePostInner = styled.div`
 const UserProfileAcceptInner = styled.div`
   height: 500px;
   overflow-y: auto;
-  padding: 10px;
+
   margin-bottom: 20px;
 `;
 export default UserProfile;

@@ -3,6 +3,45 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const WelcomePage = () => {
+  const navigate = useNavigate();
+  const [nickname, setNickname] = useState("");
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get("https://titto.store/user/info", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setNickname(response.data.nickname || "");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  return (
+    <WelcomeWrapper>
+      <WelcomeTitle>
+        <p>더 나은 캠퍼스 라이프.</p>
+        <p>TITTO</p>
+      </WelcomeTitle>
+      <WelcomeSubTitle>
+        <p>{nickname ? `${nickname}님 환영해요!` : ""}</p>
+        <p>지식의 공유와 소통이 함께하는 곳, 티토입니다</p>
+      </WelcomeSubTitle>
+      <WelcomeBtnContainer>
+        <button onClick={() => navigate("/")}>시작하기</button>
+      </WelcomeBtnContainer>
+    </WelcomeWrapper>
+  );
+};
+
+export default WelcomePage;
+
 const WelcomeWrapper = styled.div`
   width: 500px;
   height: 100vh;
@@ -52,46 +91,3 @@ const WelcomeBtnContainer = styled.div`
     margin-top: 20px;
   }
 `;
-
-const WelcomePage = () => {
-  const navigate = useNavigate();
-  const [nickname, setNickname] = useState(""); // 닉네임 state 추가
-
-  useEffect(() => {
-    // 유저 정보를 불러오는 함수
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get("https://titto.store/user/info", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        // 요청이 성공하면 닉네임 설정
-        setNickname(response.data.nickname || "");
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-
-    // 페이지가 로드될 때 유저 정보를 불러옴
-    fetchUserInfo();
-  }, []); // 빈 배열을 전달하여 최초 한 번만 실행
-
-  return (
-    <WelcomeWrapper>
-      <WelcomeTitle>
-        <p>더 나은 캠퍼스 라이프.</p>
-        <p>TITTO</p>
-      </WelcomeTitle>
-      <WelcomeSubTitle>
-        <p>{nickname ? `${nickname}님 환영해요!` : ""}</p>
-        <p>지식의 공유와 소통이 함께하는 곳, 티토입니다</p>
-      </WelcomeSubTitle>
-      <WelcomeBtnContainer>
-        <button onClick={() => navigate("/")}>시작하기</button>
-      </WelcomeBtnContainer>
-    </WelcomeWrapper>
-  );
-};
-
-export default WelcomePage;

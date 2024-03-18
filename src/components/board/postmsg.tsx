@@ -14,7 +14,6 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
   defaultReceiverNickname,
 }) => {
   const [content, setContent] = useState("");
-  const [receiverNickname, setReceiverNickname] = useState("");
   const accessToken = localStorage.getItem("accessToken");
   const handleSend = async () => {
     try {
@@ -32,7 +31,7 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
       window.location.reload();
       onCancel();
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error(error);
       alert("잘못 된 시도입니다.");
     }
   };
@@ -42,13 +41,6 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
       <PopupContainer>
         <PopupContent>
           <h2>쪽지 보내기</h2>
-          {/* <label>보낼 닉네임</label>
-          <input
-            type="text"
-            value={defaultReceiverNickname}
-            placeholder={"닉네임을 입력하세요."}
-            onChange={(e) => setReceiverNickname(e.target.value)}
-          /> */}
           <label>메시지 내용</label>
           <input
             type="text"
