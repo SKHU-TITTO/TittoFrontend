@@ -4,48 +4,6 @@ import styled from "styled-components";
 import TitleRank from "../../components/board/title-rank";
 import axios from "axios";
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-  background-color: white;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  border-radius: 10px;
-  overflow: hidden;
-`;
-
-const StyledTh = styled.th`
-  background-color: #3e68ff;
-  padding: 10px;
-  font-size: 20px;
-  height: 50px;
-  vertical-align: middle;
-  text-align: center;
-  font-weight: bold;
-  color: white;
-  &:first-child {
-    width: 20%;
-  }
-  &:nth-child(2) {
-    width: 50%;
-  }
-  &:nth-child(3) {
-    width: 15%;
-  }
-
-  &:last-child {
-    width: 15%;
-  }
-`;
-
-const StyledTr = styled.tr`
-  border-bottom: 1px solid #ccc;
-`;
 export type UserRanking = {
   userId: number;
   profile: string;
@@ -132,3 +90,46 @@ const BestRanking = () => {
 };
 
 export default BestRanking;
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  background-color: white;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+const StyledTh = styled.th`
+  background-color: #3e68ff;
+  padding: 10px;
+  font-size: 20px;
+  height: 50px;
+  vertical-align: middle;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  &:first-child {
+    width: 20%;
+  }
+  &:nth-child(2) {
+    width: 50%;
+  }
+  &:nth-child(3) {
+    width: 15%;
+  }
+
+  &:last-child {
+    width: 15%;
+  }
+`;
+
+const StyledTr = styled.tr`
+  border-bottom: 1px solid #ccc;
+`;

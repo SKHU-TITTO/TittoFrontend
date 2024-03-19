@@ -12,6 +12,10 @@ export type TitleType = {
   totalExperience: number;
   department: string;
 };
+type TitleWrapperProps = {
+  borderColor: string;
+  fontSize: string;
+};
 
 const TitleRank = ({
   rank,
@@ -27,23 +31,28 @@ const TitleRank = ({
 
   let borderColor;
   let color;
+  let size;
 
   switch (rank) {
     case 1:
-      borderColor = "#D5A11E"; // 금색
-      color = "#D5A11E"; // 금색
+      borderColor = "#D5A11E";
+      color = "#D5A11E";
+      size = "2.0em";
       break;
     case 2:
-      borderColor = "#A3A3A3"; // 은색
-      color = "#A3A3A3"; // 금색
+      borderColor = "#A3A3A3";
+      color = "#A3A3A3";
+      size = "1.8em";
       break;
     case 3:
-      borderColor = "#CD7F32"; // 동색
-      color = "#CD7F32"; // 금색
+      borderColor = "#CD7F32";
+      color = "#CD7F32";
+      size = "1.6em";
       break;
     default:
-      borderColor = "#f0f0f0"; // 흰색 (기본값)
-      color = "black"; // 금색
+      borderColor = "#f0f0f0";
+      color = "black";
+      size = "1.2em";
       break;
   }
 
@@ -54,6 +63,7 @@ const TitleRank = ({
       }}
       borderColor={borderColor}
       color={color}
+      fontSize={size}
     >
       <td>{rank}</td>
       <td>
@@ -78,10 +88,6 @@ const TitleRank = ({
 };
 
 export default TitleRank;
-
-type TitleWrapperProps = {
-  borderColor: string;
-};
 
 const TitleWrapper = styled.tr<TitleWrapperProps>`
   cursor: pointer;
@@ -113,8 +119,7 @@ const TitleWrapper = styled.tr<TitleWrapperProps>`
     &:first-child {
       width: 10%;
       font-weight: bold;
-      font-size: 1.6em;
-
+      font-size: ${({ fontSize }) => fontSize};
       color: ${({ color }) => color};
     }
 
