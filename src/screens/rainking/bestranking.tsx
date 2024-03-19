@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleRank from "../../components/board/title-rank";
+import axios from "axios";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -26,63 +28,103 @@ const StyledTh = styled.th`
   text-align: center;
   font-weight: bold;
   color: white;
+  &:first-child {
+    width: 20%;
+  }
+  &:nth-child(2) {
+    width: 50%;
+  }
+  &:nth-child(3) {
+    width: 15%;
+  }
+
+  &:last-child {
+    width: 15%;
+  }
 `;
 
+const StyledTr = styled.tr`
+  border-bottom: 1px solid #ccc;
+`;
+export type UserRanking = {
+  userId: number;
+  profile: string;
+  nickname: string;
+  studentNo: string;
+  department: string;
+  totalExperience: number;
+  level: number;
+};
+const changeDepartment = (department: string | undefined) => {
+  if (!department) return "";
+
+  switch (department) {
+    case "HUMANITIES":
+      return "인문융합콘텐츠";
+    case "MANAGEMENT":
+      return "경영";
+    case "SOCIETY":
+      return "사회융합";
+    case "MEDIA_CONTENT":
+      return "미디어콘텐츠융합";
+    case "FUTURE_FUSION":
+      return "미래융합";
+    case "SOFTWARE":
+      return "소프트웨어융합";
+    default:
+      return "";
+  }
+};
 const BestRanking = () => {
   const navigate = useNavigate();
+  const [userRankings, setUserRankings] = useState<UserRanking[]>([]);
+  const accessToken = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    const fetchRankings = async () => {
+      try {
+        const response = await axios.get<UserRanking[]>(
+          "https://titto.store/user/ranking",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        setUserRankings(response.data);
+      } catch (error) {
+        console.error("Error fetching user rankings:", error);
+      }
+    };
+
+    fetchRankings();
+  }, []);
 
   return (
     <Wrapper>
       <StyledTable>
         <thead>
-          <tr>
+          <StyledTr>
             <StyledTh>순위</StyledTh>
             <StyledTh>유저 정보</StyledTh>
             <StyledTh>레벨</StyledTh>
             <StyledTh>내공</StyledTh>
-          </tr>
+          </StyledTr>
         </thead>
         <tbody>
-          <TitleRank
-            rank={1}
-            profile={""}
-            userId={0}
-            nickname={"하이"}
-            lv={1}
-            studentNo={201914127}
-            totalExperience={500}
-            department={"소프트웨어공학과"}
-          />
-          <TitleRank
-            rank={2}
-            profile={""}
-            userId={0}
-            nickname={"하이"}
-            lv={1}
-            studentNo={201914127}
-            totalExperience={500}
-            department={"소프트웨어공학과"}
-          />
-          <TitleRank
-            rank={3}
-            profile={""}
-            userId={0}
-            nickname={"하이"}
-            lv={2}
-            studentNo={201914127}
-            totalExperience={500}
-            department={"소프트웨어공학과"}
-          />
-          <TitleRank
-            rank={4}
-            profile={""}
-            userId={0}
-            nickname={"하이"}
-            lv={1}
-            studentNo={201914127}
-            totalExperience={500}
-            department={"소프트웨어공학과"}
-          />
+          {userRankings.map((user, index) => (
+            <TitleRank
+              key={user.userId}
+              rank={index + 1}
+              profile={user.profile}
+              userId={user.userId}
+              nickname={user.nickname}
+              lv={user.level}
+              studentNo={user.studentNo}
+              totalExperience={user.totalExperience}
+              department={changeDepartment(user.department as string)}
+            />
+          ))}
         </tbody>
       </StyledTable>
     </Wrapper>
