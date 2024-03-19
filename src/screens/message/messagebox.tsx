@@ -55,9 +55,15 @@ const MessageBox = () => {
             },
           }
         );
-
         const data = response.data;
-        setMessages(data); //
+        setMessages(data);
+        // 각 메시지 객체를 받아서 그 중 senderId 속성이 senderId와 다른 경우를 찾음 그 다음 그 메시지의 receiverNickname을 선택한 메시지의 nickname으로 설정
+        const selectedMessage = data.find(
+          (message: { senderId: number }) => message.senderId !== senderId
+        );
+        if (selectedMessage) {
+          setSelectedSenderNickname(selectedMessage.receiverNickname);
+        }
       } else {
         setMessages([]);
       }
@@ -109,14 +115,13 @@ const MessageBox = () => {
           </TitleArea>
 
           <ContentMessage
-            selectedSenderId={selectedSenderId}
-            onSelectedSenderIdChange={setSelectedSenderId}
+            selectedId={selectedSenderId}
+            onSelectedIdChange={setSelectedSenderId}
           />
         </UserMessageRightContainer>
       </UserMessageSubContainer>
       {isSendingMessage && (
         <NewMessagePopup
-          onSend={() => {}}
           onCancel={closeSendMessagePopup}
           defaultReceiverNickname={selectedSenderNickname || ""}
         />

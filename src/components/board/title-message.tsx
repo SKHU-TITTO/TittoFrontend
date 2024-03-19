@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import userStore from "../../stores/UserStore";
 
 export type UserMsgInfo = {
+  receiverId: number;
   id: number;
   content: string;
   senderNickname: string;
@@ -16,11 +18,8 @@ interface TitleMessageProps {
 }
 
 const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
-  const [selectedMessage, setSelectedMessage] = useState<UserMsgInfo | null>(
-    null
-  );
   const [messages, setMessages] = useState<UserMsgInfo[]>([]);
-  const [selectedSenderId, setSelectedSenderId] = useState<number | null>(null);
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -43,33 +42,39 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
     }
   };
 
-  const renderLatestMessageBySender = () => {
-    if (messages.length === 0) {
-      return <NoMessages> 받은 메시지가 없습니다.</NoMessages>;
-    }
-    const latestMessagesBySender: { [key: string]: UserMsgInfo } = {};
-    messages.forEach((message) => {
-      if (
-        !latestMessagesBySender[message.senderId] ||
-        new Date(message.sentAt) >
-          new Date(latestMessagesBySender[message.senderId].sentAt)
-      ) {
-        latestMessagesBySender[message.senderId] = message;
-      }
-    });
+  const handleClick = (index: number) => {
+    setClickedIndex(index);
+  };
 
-    return Object.values(latestMessagesBySender).map((message) => (
+  const renderMessages = () => {
+    if (messages.length === 0) {
+      return <NoMessages>받은 메시지가 없습니다.</NoMessages>;
+    }
+
+    return messages.map((message, index) => (
       <div
         key={message.id}
-        className={`items ${selectedMessage === message ? "active" : ""}`}
+        className={`items ${index === clickedIndex ? "active" : ""}`}
       >
+        {/* 서로 보낼 때 마다 리시버 센더가 달라지니 내 아이디랑 리시버 아이디가 같은지 판단, 리시버면 나에게 온건데
+        그땐 senderId로 해서 링크이동, 반대면 receiverId로 해서 링크 이동 해야 같은 곳 userId로 링크가 이동 가능함 */}
         <MessageLink
-          to={`/message/${message.senderId}`}
+          to={
+            userStore.getUser() &&
+            userStore.getUser()?.id === message.receiverId
+              ? `/message/${message.senderId}`
+              : `/message/${message.receiverId}`
+          }
           className="item"
           onClick={() => {
-            onSelectMessage(message.senderId, message.senderNickname);
-            setSelectedMessage(message);
-            setSelectedSenderId(message.senderId);
+            onSelectMessage(
+              userStore.getUser() &&
+                userStore.getUser()?.id === message.receiverId
+                ? message.senderId
+                : message.receiverId,
+              message.senderNickname
+            );
+            handleClick(index);
           }}
         >
           <div className="top">
@@ -90,7 +95,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
     ));
   };
 
-  return <MessageItems>{renderLatestMessageBySender()}</MessageItems>;
+  return <MessageItems>{renderMessages()}</MessageItems>;
 };
 
 const MessageItems = styled.div`
@@ -113,15 +118,14 @@ const MessageItems = styled.div`
     color: inherit;
   }
 
-  .items.active {
-    background-color: #3e68ff;
-    color: #ffffff;
-  }
-
   .top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .items.active {
+    background-color: #3e68ff;
+    color: #ffffff;
   }
 
   .bottom {

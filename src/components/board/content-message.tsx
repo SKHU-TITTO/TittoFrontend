@@ -14,34 +14,32 @@ export type MessageDetail = {
 };
 
 interface ContentMessageProps {
-  selectedSenderId: number | null;
-  onSelectedSenderIdChange: (senderId: number | null) => void;
+  selectedId: number | null;
+  onSelectedIdChange: (senderId: number | null) => void;
 }
 
 const ContentMessage = ({
-  selectedSenderId,
-  onSelectedSenderIdChange,
+  selectedId,
+  onSelectedIdChange,
 }: ContentMessageProps) => {
   const [messages, setMessages] = useState<MessageDetail[]>([]);
   const accessToken = localStorage.getItem("accessToken");
+  const userId = userStore.getUser()?.id;
 
   useEffect(() => {
-    if (selectedSenderId !== null) {
-      fetchMessages(selectedSenderId);
+    if (selectedId !== null) {
+      fetchMessages(selectedId);
     }
-  }, [selectedSenderId]);
+  }, [selectedId]);
 
-  const fetchMessages = async (senderId: number) => {
+  const fetchMessages = async (id: number) => {
     try {
-      const response = await axios.get(
-        `https://titto.store/message/${senderId}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await axios.get(`https://titto.store/message/${id}`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       const data = response.data;
       setMessages(data);
     } catch (error) {
@@ -57,13 +55,10 @@ const ContentMessage = ({
             <div className="top">
               <h3
                 style={{
-                  color:
-                    message.senderId === userStore.getUser()?.id
-                      ? "#05bcbc"
-                      : "#ffc900",
+                  color: userId === message.senderId ? "#05bcbc" : "#ffc900",
                 }}
               >
-                {message.senderNickname}
+                {userId === message.senderId ? "나" : message.senderNickname}
               </h3>
               <time>{new Date(message.sentAt).toLocaleString("ko-KR")}</time>
             </div>
