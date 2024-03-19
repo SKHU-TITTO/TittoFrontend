@@ -117,7 +117,7 @@ const TTlayout = () => {
             <Link to="/board/lists/qna/1">질문있어요 </Link>
           </NavLi>
           <NavLi>
-            <Link to="/ranking">명예의 전당 </Link>
+            <Link to="/ranking">명예의 전당! </Link>
           </NavLi>
 
           <NavProfile>
