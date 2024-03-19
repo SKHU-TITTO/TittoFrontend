@@ -14,6 +14,7 @@ import WelcomePage from "./screens/login/welcomepage";
 import NotFound from "./screens/notfound";
 import axios from "axios";
 import SliderRoutes from "./routes/slider-route";
+import BestRanking from "./screens/rainking/bestranking";
 
 axios.defaults.withCredentials = true;
 
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
       { path: "message/*", element: <MessageRoutes /> },
       { path: "board/*", element: <BoardRoutes /> },
       { path: "slider/*", element: <SliderRoutes /> },
+      { path: "ranking/*", element: <BestRanking /> },
     ],
     errorElement: <NotFound />,
   },

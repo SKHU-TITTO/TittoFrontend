@@ -72,7 +72,7 @@ const BadgeList = ({
           >
             <BadgeImage src={badgeImageMap[badge]} alt="" />
             {hoveredBadge === badge && (
-              <Popup position={{ x: 35, y: -25 }}>{badgeComments[badge]}</Popup>
+              <Popup position={{ x: 35, y: 100 }}>{badgeComments[badge]}</Popup>
             )}
           </BadgeContainer>
         ))
@@ -91,12 +91,13 @@ export default BadgeList;
 
 const Popup = styled.div<{ position: { x: number; y: number } }>`
   background: white;
-  width: 150px;
-  height: 50px;
+  width: 120px;
+  height: 40px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #3e68ff;
-  color: white;
+  background-color: white;
+
+  color: #3e68ff;
   font-weight: bold;
   z-index: 999;
   position: absolute;
