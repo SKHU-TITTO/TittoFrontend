@@ -3,13 +3,11 @@ import styled from "styled-components";
 import axios from "axios";
 
 interface NewMessageProps {
-  onSend: (message: { content: string; receiverNickname: string }) => void;
   onCancel: () => void;
   defaultReceiverNickname: string;
 }
 
 const NewMessagePopup: React.FC<NewMessageProps> = ({
-  onSend,
   onCancel,
   defaultReceiverNickname,
 }) => {
