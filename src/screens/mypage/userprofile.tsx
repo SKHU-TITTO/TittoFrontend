@@ -222,7 +222,9 @@ const UserProfile = () => {
                 max={levelStandard[userProfo.level - 1]}
               ></progress>
 
-              <h1>현재 내공은 {userProfo.currentExperience}입니다.</h1>
+              <h2>
+                현재 사용 가능한 내공은 {userProfo.currentExperience}입니다.
+              </h2>
               <p>답변한 글 수</p>
               <h1>총 {userProfo.countAnswer}개 답변했어요.</h1>
               <p>채택된 글 수</p>
@@ -440,6 +442,11 @@ const UserProfileMainLevelContainer = styled.div`
 
   h1 {
     font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 20px;
   }
