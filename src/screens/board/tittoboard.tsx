@@ -7,6 +7,7 @@ import NumberSelector from "../../components/board/number-selector";
 import TittoCategory from "../../components/board/titto-category";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import LoadingScreen from "../../components/board/loadingscreen";
 
 type BoardUrl = {
   id: string;
@@ -34,12 +35,15 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
   const [pages, setPages] = useState(0);
   const [posts, setPosts] = useState<TITTOPost[]>([]);
   const [searchValue, setSearchValue] = useState("");
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchPosts = async () => {
-      if (searchParams.has("search")) {
-        try {
+      setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
+
+      try {
+        if (searchParams.has("search")) {
           const response = await axios.get(
             `https://titto.store/matching-board/search?page=${
               page - 1
@@ -61,11 +65,7 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
             })
           );
           setPosts(formattedPosts);
-        } catch (error) {
-          console.error(error);
-        }
-      } else if (searchParams.has("category")) {
-        try {
+        } else if (searchParams.has("category")) {
           const response = await axios.get(
             `https://titto.store/matching-board/category?page=${
               page - 1
@@ -86,11 +86,7 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
             })
           );
           setPosts(formattedPosts);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
+        } else {
           const response = await axios.get(
             `https://titto.store/matching-board/all?page=${page - 1}`,
             {
@@ -110,82 +106,96 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
             })
           );
           setPosts(formattedPosts);
-        } catch (error) {
-          console.error(error);
         }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
       }
     };
 
     fetchPosts();
-  }, [page]);
+  }, [page, searchParams, accessToken]);
 
   return (
     <Wrapper>
-      <MaxSlider></MaxSlider>
-      <BoardWrapper>
-        <MainDiv>
-          <SearchDiv>
-            <input
-              type="text"
-              placeholder="제목 검색하기"
-              value={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            />
-            <button
-              onClick={() => {
-                navigate(`/board/lists/titto/1/?search=${searchValue}`);
-                window.location.reload();
-              }}
-            >
-              <SearchIcon style={{ fontSize: "43px" }}></SearchIcon>
-            </button>
-          </SearchDiv>
-          <span
-            style={{ color: "#3E68FF", fontWeight: "bold", fontSize: "25px" }}
-          >
-            티토 게시판
-          </span>
-          <PostWrapper>
-            <table>
-              <thead>
-                <tr>
-                  <th>상태</th>
-                  <th>제목</th>
-                  <th>작성자</th>
-                  <th>작성일</th>
-                </tr>
-              </thead>
-              <tbody>
-                {posts.map((post) => (
-                  <TittoTitle
-                    status={post.status}
-                    key={post.matchingPostId}
-                    title={post.title}
-                    author={post.user.nickname}
-                    date={post.createDate}
-                    postId={post.matchingPostId}
+      <>
+        {loading ? (
+          <LoadingScreen /> // 로딩 중일 때는 LoadingScreen을 표시
+        ) : (
+          <>
+            <MaxSlider></MaxSlider>
+            <BoardWrapper>
+              <MainDiv>
+                <SearchDiv>
+                  <input
+                    type="text"
+                    placeholder="제목 검색하기"
+                    value={searchValue}
+                    onChange={(e) => {
+                      setSearchValue(e.target.value);
+                    }}
                   />
-                ))}
-              </tbody>
-            </table>
-          </PostWrapper>
-          <SubmitWrapper>
-            <div
-              className="btn"
-              onClick={() => navigate("/board/write/" + boardId)}
-            >
-              글쓰기
-            </div>
-          </SubmitWrapper>
-          <NumberSelector id={id} page={page} pages={pages} />
-        </MainDiv>
+                  <button
+                    onClick={() => {
+                      navigate(`/board/lists/titto/1/?search=${searchValue}`);
+                      window.location.reload();
+                    }}
+                  >
+                    <SearchIcon style={{ fontSize: "43px" }}></SearchIcon>
+                  </button>
+                </SearchDiv>
+                <span
+                  style={{
+                    color: "#3E68FF",
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                  }}
+                >
+                  티토 게시판
+                </span>
+                <PostWrapper>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>상태</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {posts.map((post) => (
+                        <TittoTitle
+                          status={post.status}
+                          key={post.matchingPostId}
+                          title={post.title}
+                          author={post.user.nickname}
+                          date={post.createDate}
+                          postId={post.matchingPostId}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                </PostWrapper>
+                <SubmitWrapper>
+                  <div
+                    className="btn"
+                    onClick={() => navigate("/board/write/" + boardId)}
+                  >
+                    글쓰기
+                  </div>
+                </SubmitWrapper>
+                <NumberSelector id={id} page={page} pages={pages} />
+              </MainDiv>
 
-        <CategoryDiv>
-          <TittoCategory />
-        </CategoryDiv>
-      </BoardWrapper>
+              <CategoryDiv>
+                <TittoCategory />
+              </CategoryDiv>
+            </BoardWrapper>
+          </>
+        )}
+      </>
     </Wrapper>
   );
 };

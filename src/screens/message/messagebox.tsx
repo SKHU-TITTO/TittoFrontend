@@ -26,6 +26,14 @@ const MessageBox = () => {
       setMessages([]);
     }
   }, [selectedSenderId]);
+
+  useEffect(() => {
+    // 메시지를 보내고 나면 해당 발신자의 메시지 목록을 다시 가져옴.
+    if (selectedSenderId !== null) {
+      fetchMessages(selectedSenderId);
+    }
+  }, [isSendingMessage]);
+
   const openSendMessagePopup = () => {
     setIsSendingMessage(true);
   };
@@ -87,14 +95,18 @@ const MessageBox = () => {
               },
             }
           );
-
-          window.location.reload();
-          setMessages([]);
+          setMessages(
+            messages.filter((message) => message.senderId !== selectedSenderId)
+          );
         }
       }
     } catch (error) {
       console.error("Error deleting message:", error);
     }
+  };
+
+  const handleSendMessage = async (newMessage: MessageDetail) => {
+    setIsSendingMessage(false);
   };
 
   return (
@@ -117,11 +129,13 @@ const MessageBox = () => {
           <ContentMessage
             selectedId={selectedSenderId}
             onSelectedIdChange={setSelectedSenderId}
+            message={messages}
           />
         </UserMessageRightContainer>
       </UserMessageSubContainer>
       {isSendingMessage && (
         <NewMessagePopup
+          onMessageSent={handleSendMessage}
           onCancel={closeSendMessagePopup}
           defaultReceiverNickname={selectedSenderNickname || ""}
         />

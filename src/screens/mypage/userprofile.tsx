@@ -51,6 +51,7 @@ const UserProfile = () => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
   const accessToken = localStorage.getItem("accessToken");
+
   const [userProfo, setProInfo] = useState<UserProfileInfo>({
     userId: 0,
     profile: "",
@@ -70,6 +71,8 @@ const UserProfile = () => {
   const [max, setMax] = useState(0);
   const levelStandard = [100, 300, 600, 1000, Infinity];
   const [isMaxLevel, setIsMaxLevel] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태를 추적하는 상태 변수
+  const navigate = useNavigate();
   const checkNextLevel = (totalExp: number, userLevel: number) => {
     switch (userLevel) {
       case 1:
@@ -106,7 +109,6 @@ const UserProfile = () => {
           params: {
             userId: userId,
           },
-
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -126,7 +128,6 @@ const UserProfile = () => {
           params: {
             userId: userId,
           },
-
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -137,11 +138,6 @@ const UserProfile = () => {
       console.error("Error fetching user posts:", error);
     }
   };
-
-  useEffect(() => {
-    fetchUserPosts(userId);
-    fetchUserAnswers(userId);
-  }, [userId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -173,142 +169,167 @@ const UserProfile = () => {
         setIsMaxLevel(response.data.level === levelStandard.length);
       } catch (error) {
         console.error("Error fetching user profile:", error);
+      } finally {
+        setIsLoading(false); // 데이터 로딩이 끝났으므로 로딩 상태 변경
       }
     };
 
     fetchData();
-  }, [accessToken]);
+    fetchUserPosts(userId);
+    fetchUserAnswers(userId);
+  }, [userId]);
 
   return (
     <>
-      <UserProfileWrapper>
-        <UserProfileMainContainer>
-          <UserProfileMainProfileContainer>
-            <img src={userProfo.profile} alt="User-Profile"></img>
-            <UserProfileMainTextContainer>
-              <h1>{userProfo.nickname}</h1>
-              <h2>LV.{userProfo.level}</h2>
-              <p>{userProfo.studentNo}</p>
-              <p>{changeDepartment(userProfo.department)}</p>
-            </UserProfileMainTextContainer>
-          </UserProfileMainProfileContainer>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <UserProfileWrapper>
+          <UserProfileMainContainer>
+            <UserProfileMainProfileContainer>
+              <img src={userProfo.profile} alt="User-Profile"></img>
+              <UserProfileMainTextContainer>
+                <h1>{userProfo.nickname}</h1>
+                <h2>LV.{userProfo.level}</h2>
+                <p>{userProfo.studentNo}</p>
+                <p>{changeDepartment(userProfo.department)}</p>
+              </UserProfileMainTextContainer>
+            </UserProfileMainProfileContainer>
 
-          <UserProfileMainIntroduceContainer>
-            <UserProfileMainIntroduceTopContainer>
-              <h1
-                dangerouslySetInnerHTML={{ __html: userProfo.oneLineIntro }}
-              />
-              <p dangerouslySetInnerHTML={{ __html: userProfo.selfIntro }} />
-            </UserProfileMainIntroduceTopContainer>
-            <UserProfileMainIntroduceBottomContainer>
-              <h1>보유 뱃지</h1>
-              <BadgeList
-                badges={userProfo.badges}
-                badgeImageMap={badgeImageMap}
-                badgeComments={badgeComments}
-              />
-            </UserProfileMainIntroduceBottomContainer>
-          </UserProfileMainIntroduceContainer>
-
-          <UserProfileMainLevelContainer>
-            <div className="levelcon">
-              <p>다음 레벨까지</p>
-              <h1>
-                {isMaxLevel ? "남은 내공이 없습니다" : ` ${max} 내공남았어요.`}
-              </h1>
-              <progress
-                className="gage"
-                value={levelStandard[userProfo.level - 1] - max}
-                max={levelStandard[userProfo.level - 1]}
-              ></progress>
-
-              <h1>현재 내공은 {userProfo.currentExperience}입니다.</h1>
-              <p>답변한 글 수</p>
-              <h1>총 {userProfo.countAnswer}개 답변했어요.</h1>
-              <p>채택된 글 수</p>
-              <h1>총 {userProfo.countAccept}개 채택됐어요.</h1>
-            </div>
-            <p>채택률</p>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h1>{acceptanceRate.toFixed(1)}%</h1>
-              {userStore.getUser()?.id !== userProfo.userId && (
-                <div className="btn" onClick={openSendMessagePopup}>
-                  쪽지 보내기
-                </div>
-              )}
-
-              {isSendingMessage && (
-                <NewMessagePopup
-                  onSend={() => {}}
-                  onCancel={closeSendMessagePopup}
-                  defaultReceiverNickname={userProfo.nickname}
+            <UserProfileMainIntroduceContainer>
+              <UserProfileMainIntroduceTopContainer>
+                <h1
+                  dangerouslySetInnerHTML={{ __html: userProfo.oneLineIntro }}
                 />
-              )}
-            </div>
-          </UserProfileMainLevelContainer>
-        </UserProfileMainContainer>
+                <p dangerouslySetInnerHTML={{ __html: userProfo.selfIntro }} />
+              </UserProfileMainIntroduceTopContainer>
+              <UserProfileMainIntroduceBottomContainer>
+                <h1>보유 뱃지</h1>
+                <BadgeList
+                  badges={userProfo.badges}
+                  badgeImageMap={badgeImageMap}
+                  badgeComments={badgeComments}
+                />
+              </UserProfileMainIntroduceBottomContainer>
+            </UserProfileMainIntroduceContainer>
 
-        <UserProfileSubContainer>
-          <UserProfileStudyContainer>
-            <p className="wirteanswer">답변한 글</p>
-            <UserProfileAcceptInner>
-              {userAnswers.map(
-                (answer: {
-                  questionId: number;
-                  department: string;
-                  questionTitle: string;
-                  content: string;
-                  id: number;
-                }) => (
-                  <WriteAnswerDetail
-                    key={answer.id}
-                    questionId={answer.questionId}
-                    department={answer.department}
-                    title={answer.questionTitle}
-                    detail={answer.content}
+            <UserProfileMainLevelContainer>
+              <div className="levelcon">
+                <p>다음 레벨까지</p>
+                <h1>
+                  {isMaxLevel
+                    ? "남은 내공이 없습니다"
+                    : ` ${max} 내공남았어요.`}
+                </h1>
+                <progress
+                  className="gage"
+                  value={levelStandard[userProfo.level - 1] - max}
+                  max={levelStandard[userProfo.level - 1]}
+                ></progress>
+
+                <h2>
+                  현재 사용 가능한 내공은 {userProfo.currentExperience}입니다.
+                </h2>
+                <p>답변한 글 수</p>
+                <h1>총 {userProfo.countAnswer}개 답변했어요.</h1>
+                <p>채택된 글 수</p>
+                <h1>총 {userProfo.countAccept}개 채택됐어요.</h1>
+              </div>
+              <p>채택률</p>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h1>{acceptanceRate.toFixed(1)}%</h1>
+                {userStore.getUser()?.id !== userProfo.userId && (
+                  <div className="btn" onClick={openSendMessagePopup}>
+                    쪽지 보내기
+                  </div>
+                )}
+
+                {isSendingMessage && (
+                  <NewMessagePopup
+                    onMessageSent={() => {
+                      closeSendMessagePopup();
+                    }}
+                    onCancel={closeSendMessagePopup}
+                    defaultReceiverNickname={userProfo.nickname}
                   />
-                )
-              )}
-            </UserProfileAcceptInner>
-          </UserProfileStudyContainer>
-          <UserProfileWritePostContainer>
-            <p className="writepost">작성한 글</p>
-            <UserProfileWritePostInner>
-              {Array.isArray(userPosts) &&
-                userPosts.map(
-                  (
-                    post: {
-                      category: string;
-                      department: string;
-                      title: string;
-                      content: string;
-                      viewCount: number;
-                      reviewCount: number;
-                      answerCount: number;
-                      id: number;
-                    },
-                    index
-                  ) => (
-                    <WriteDetail
-                      key={post.id}
-                      postId={post.id}
-                      category={post.category}
-                      department={post.department}
-                      title={post.title}
-                      detail={post.content}
-                      view={post.viewCount}
-                      comment={post.reviewCount}
-                      answerCount={post.answerCount}
+                )}
+              </div>
+            </UserProfileMainLevelContainer>
+          </UserProfileMainContainer>
+
+          <UserProfileSubContainer>
+            <UserProfileStudyContainer>
+              <p className="wirteanswer">답변한 글</p>
+              <UserProfileAcceptInner>
+                {userAnswers.map(
+                  (answer: {
+                    questionId: number;
+                    department: string;
+                    questionTitle: string;
+                    content: string;
+                    id: number;
+                  }) => (
+                    <WriteAnswerDetail
+                      key={answer.id}
+                      questionId={answer.questionId}
+                      department={answer.department}
+                      title={answer.questionTitle}
+                      detail={answer.content}
                     />
                   )
                 )}
-            </UserProfileWritePostInner>
-          </UserProfileWritePostContainer>
-        </UserProfileSubContainer>
-      </UserProfileWrapper>
+              </UserProfileAcceptInner>
+            </UserProfileStudyContainer>
+            <UserProfileWritePostContainer>
+              <p className="writepost">작성한 글</p>
+              <UserProfileWritePostInner>
+                {Array.isArray(userPosts) &&
+                  userPosts.map(
+                    (
+                      post: {
+                        category: string;
+                        department: string;
+                        title: string;
+                        content: string;
+                        viewCount: number;
+                        reviewCount: number;
+                        answerCount: number;
+                        id: number;
+                      },
+                      index
+                    ) => (
+                      <WriteDetail
+                        key={post.id}
+                        postId={post.id}
+                        category={post.category}
+                        department={post.department}
+                        title={post.title}
+                        detail={post.content}
+                        view={post.viewCount}
+                        comment={post.reviewCount}
+                        answerCount={post.answerCount}
+                      />
+                    )
+                  )}
+              </UserProfileWritePostInner>
+            </UserProfileWritePostContainer>
+          </UserProfileSubContainer>
+        </UserProfileWrapper>
+      )}
     </>
   );
 };
+const LoadingScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* 흰색 배경에 투명도 부여 */
+  position: fixed; /* 화면에 고정 */
+  top: 0;
+  left: 0;
+`;
 const UserProfileWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -441,6 +462,11 @@ const UserProfileMainLevelContainer = styled.div`
 
   h1 {
     font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 20px;
   }

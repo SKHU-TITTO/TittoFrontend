@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { MessageDetail } from "./content-message";
 
 interface NewMessageProps {
   onCancel: () => void;
   defaultReceiverNickname: string;
+  onMessageSent: (newMessage: MessageDetail) => void;
 }
 
 const NewMessagePopup: React.FC<NewMessageProps> = ({
   onCancel,
   defaultReceiverNickname,
+  onMessageSent,
 }) => {
   const [content, setContent] = useState("");
   const accessToken = localStorage.getItem("accessToken");
+
   const handleSend = async () => {
     try {
       const response = await axios.post(
@@ -26,13 +30,17 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
         }
       );
 
-      window.location.reload();
+      const newMessage = response.data;
+      // 새로운 메시지를 화면에 추가하기 위해 상태를 업데이트합니다.
+      onMessageSent(newMessage);
+
       onCancel();
     } catch (error) {
       console.error(error);
-      alert("잘못 된 시도입니다.");
+      alert("잘못된 시도입니다.");
     }
   };
+
   return (
     <>
       <PopupCover />

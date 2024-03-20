@@ -5,6 +5,7 @@ import NumberSelector from "../../components/board/number-selector";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import LoadingScreen from "../../components/board/loadingscreen";
 
 export type boardUrl = {
   id: string;
@@ -59,69 +60,74 @@ const QnaBoard = ({ id, page }: boardUrl) => {
   const [posts, setPost] = useState<QNAPost[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const accessToken = localStorage.getItem("accessToken");
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
     const fetchPost = async () => {
-      if (searchParmas.get("search")) {
-        const searchKey = searchParmas.get("search");
-        const res = await axios.get(
-          `https://titto.store/questions/search?page=${
-            page - 1
-          }&keyWord=${searchKey}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+      try {
+        setLoading(true); // 데이터를 가져올 때 로딩 상태를 true로 설정
+
+        if (searchParmas.get("search")) {
+          const searchKey = searchParmas.get("search");
+          const res = await axios.get(
+            `https://titto.store/questions/search?page=${
+              page - 1
+            }&keyWord=${searchKey}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          setPages(res.data.totalPages);
+          const formattedPost = res.data.content.map((post: QNAPost) => ({
+            ...post,
+            content: sliceContent(post.content),
+            department: changeDepartment(post.department),
+          }));
+          setPost(formattedPost);
+        } else if (searchParmas.get("status")) {
+          const status = searchParmas.get("status");
+          if (status === "UNSOLVED") {
+            setStatus(1);
+          } else {
+            setStatus(2);
           }
-        );
-        setPages(res.data.totalPages);
-        const formattedPost = res.data.content.map((post: QNAPost) => ({
-          ...post,
-          content: sliceContent(post.content),
-          department: changeDepartment(post.department),
-        }));
-        setPost(formattedPost);
-      } else if (searchParmas.get("status")) {
-        const status = searchParmas.get("status");
-        if (status === "UNSOLVED") {
-          setStatus(1);
+          const res = await axios.get(
+            `https://titto.store/questions/status/${status}?page=${page - 1}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          setPages(res.data.totalPages);
+          const formattedPost = res.data.content.map((post: QNAPost) => ({
+            ...post,
+            content: sliceContent(post.content),
+            department: changeDepartment(post.department),
+          }));
+          setPost(formattedPost);
+        } else if (searchParmas.get("category")) {
+          const category = searchParmas.get("category");
+          const res = await axios.get(
+            `https://titto.store/questions/category/${category}?page=${
+              page - 1
+            }`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          setPages(res.data.totalPages);
+          const formattedPost = res.data.content.map((post: QNAPost) => ({
+            ...post,
+            content: sliceContent(post.content),
+            department: changeDepartment(post.department),
+          }));
+          setPost(formattedPost);
         } else {
-          setStatus(2);
-        }
-        const res = await axios.get(
-          `https://titto.store/questions/status/${status}?page=${page - 1}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        setPages(res.data.totalPages);
-        const formattedPost = res.data.content.map((post: QNAPost) => ({
-          ...post,
-          content: sliceContent(post.content),
-          department: changeDepartment(post.department),
-        }));
-        setPost(formattedPost);
-      } else if (searchParmas.get("category")) {
-        const category = searchParmas.get("category");
-        const res = await axios.get(
-          `https://titto.store/questions/category/${category}?page=${page - 1}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        setPages(res.data.totalPages);
-        const formattedPost = res.data.content.map((post: QNAPost) => ({
-          ...post,
-          content: sliceContent(post.content),
-          department: changeDepartment(post.department),
-        }));
-        setPost(formattedPost);
-      } else {
-        try {
           const res = await axios.get(
             `https://titto.store/questions/posts?page=${page - 1}`,
             {
@@ -138,102 +144,108 @@ const QnaBoard = ({ id, page }: boardUrl) => {
             department: changeDepartment(post.department),
           }));
           setPost(formattedPost);
-        } catch (e) {
-          console.log(e);
         }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false); // 데이터를 가져왔으면 로딩 상태를 false로 설정
       }
     };
 
     fetchPost();
-  }, [page]);
+  }, [page, accessToken, searchParmas]);
 
   return (
     <Wrapper>
-      <BoardWrapper>
-        <MainDiv>
-          <span
-            style={{ color: "#3E68FF", fontWeight: "bold", fontSize: "25px" }}
-          >
-            질문 게시판
-          </span>
-          <SolveDiv>
-            <SolveTitle
-              className={status === 0 ? "select" : ""}
-              onClick={() => {
-                navigate(`/board/lists/qna/1`);
-                window.location.reload();
-              }}
+      {loading ? ( // 로딩 상태에 따라 LoadingScreen을 보여줄지 판단
+        <LoadingScreen />
+      ) : (
+        <BoardWrapper>
+          <MainDiv>
+            <span
+              style={{ color: "#3E68FF", fontWeight: "bold", fontSize: "25px" }}
             >
-              전체
-            </SolveTitle>
-            <SolveTitle
-              className={status === 1 ? "select" : ""}
-              onClick={() => {
-                navigate(`/board/lists/qna/1/?status=UNSOLVED`);
-                window.location.reload();
-              }}
-            >
-              미해결
-            </SolveTitle>
-            <SolveTitle
-              className={status === 2 ? "select" : ""}
-              onClick={() => {
-                navigate(`/board/lists/qna/1/?status=SOLVED`);
-                window.location.reload();
-              }}
-            >
-              해결
-            </SolveTitle>
-          </SolveDiv>
-          <SearchDiv>
-            <input
-              type="text"
-              placeholder="제목 검색하기"
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            />
-            <button
-              onClick={() => {
-                navigate(`/board/lists/qna/1/?search=${searchValue}`);
-                window.location.reload();
-              }}
-            >
-              검색
-            </button>
-          </SearchDiv>
-          <PostWrapper>
-            {posts.map((post) => (
-              <QnaTitle
-                key={post.id}
-                id={post.id}
-                solve={post.status === "UNSOLVED" ? false : true}
-                title={post.title}
-                date={post.createDate.split("T")[0]}
-                detail={post.content}
-                category={post.department}
-                userLv={post.level}
-                userNick={post.authorNickname}
-                view={post.viewCount}
-                comment={post.answerList.length}
-              ></QnaTitle>
-            ))}
-          </PostWrapper>
-          <SubmitWrapper>
-            <div
-              className="btn"
-              onClick={() => navigate("/board/write/" + boardId)}
-            >
-              글쓰기
-            </div>
-          </SubmitWrapper>
-          <NumberSelector id={id} page={page} pages={pages} />
-        </MainDiv>
+              질문 게시판
+            </span>
+            <SolveDiv>
+              <SolveTitle
+                className={status === 0 ? "select" : ""}
+                onClick={() => {
+                  navigate(`/board/lists/qna/1`);
+                  window.location.reload();
+                }}
+              >
+                전체
+              </SolveTitle>
+              <SolveTitle
+                className={status === 1 ? "select" : ""}
+                onClick={() => {
+                  navigate(`/board/lists/qna/1/?status=UNSOLVED`);
+                  window.location.reload();
+                }}
+              >
+                미해결
+              </SolveTitle>
+              <SolveTitle
+                className={status === 2 ? "select" : ""}
+                onClick={() => {
+                  navigate(`/board/lists/qna/1/?status=SOLVED`);
+                  window.location.reload();
+                }}
+              >
+                해결
+              </SolveTitle>
+            </SolveDiv>
+            <SearchDiv>
+              <input
+                type="text"
+                placeholder="제목 검색하기"
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+              />
+              <button
+                onClick={() => {
+                  navigate(`/board/lists/qna/1/?search=${searchValue}`);
+                  window.location.reload();
+                }}
+              >
+                검색
+              </button>
+            </SearchDiv>
+            <PostWrapper>
+              {posts.map((post) => (
+                <QnaTitle
+                  key={post.id}
+                  id={post.id}
+                  solve={post.status === "UNSOLVED" ? false : true}
+                  title={post.title}
+                  date={post.createDate.split("T")[0]}
+                  detail={post.content}
+                  category={post.department}
+                  userLv={post.level}
+                  userNick={post.authorNickname}
+                  view={post.viewCount}
+                  comment={post.answerList.length}
+                ></QnaTitle>
+              ))}
+            </PostWrapper>
+            <SubmitWrapper>
+              <div
+                className="btn"
+                onClick={() => navigate("/board/write/" + boardId)}
+              >
+                글쓰기
+              </div>
+            </SubmitWrapper>
+            <NumberSelector id={id} page={page} pages={pages} />
+          </MainDiv>
 
-        <CategoryDiv>
-          <QnaCategoty />
-        </CategoryDiv>
-      </BoardWrapper>
+          <CategoryDiv>
+            <QnaCategoty />
+          </CategoryDiv>
+        </BoardWrapper>
+      )}
     </Wrapper>
   );
 };
