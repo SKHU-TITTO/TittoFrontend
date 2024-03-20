@@ -57,7 +57,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
   }, [messages]);
 
   const handleClick = (index: number) => {
-    setClickedIndex(index === clickedIndex ? null : index);
+    setClickedIndex(index);
   };
 
   const renderMessages = () => {
