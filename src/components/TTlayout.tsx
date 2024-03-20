@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import TTfooter from "./TTfooter";
 import { UserInfo } from "../screens/board/postView";
 import axios from "axios";
+import LoadingScreen from "./board/loadingscreen";
 
 const TTlayout = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const TTlayout = () => {
   }); // 로그인 유저 정보
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
@@ -72,7 +75,9 @@ const TTlayout = () => {
             id: userData.id,
             email: userData.email,
           });
+          setIsLoading(false); // 데이터 로드 후 로딩 상태 변경
         })
+
         .catch((error) => {
           console.error(error);
         });
@@ -103,56 +108,66 @@ const TTlayout = () => {
 
   return (
     <>
-      <NavWrapper>
-        <NavUl>
-          <NavLi>
-            <Link to="/">
-              <NavLogo>TITTO</NavLogo>
-            </Link>
-          </NavLi>
-          <NavLi>
-            <Link to="/board/lists/titto/1">티토찾아요 </Link>
-          </NavLi>
-          <NavLi>
-            <Link to="/board/lists/qna/1">질문있어요 </Link>
-          </NavLi>
-          <NavLi>
-            <Link to="/ranking">명예의 전당! </Link>
-          </NavLi>
+      {isLoading ? ( // 로딩 중이면 LoadingScreen 컴포넌트 표시
+        <LoadingScreen />
+      ) : (
+        <>
+          <NavWrapper>
+            <NavUl>
+              <NavLi>
+                <Link to="/">
+                  <NavLogo>TITTO</NavLogo>
+                </Link>
+              </NavLi>
+              <NavLi>
+                <Link to="/board/lists/titto/1">티토찾아요 </Link>
+              </NavLi>
+              <NavLi>
+                <Link to="/board/lists/qna/1">질문있어요 </Link>
+              </NavLi>
+              <NavLi>
+                <Link to="/ranking">명예의 전당! </Link>
+              </NavLi>
 
-          <NavProfile>
-            <MailOutlineIcon
-              style={{ fontSize: "30px" }}
-              onClick={() => navigate("/message")}
-            />
-            <NavImg
-              src={userMyfo.profileImg}
-              alt="/imgs/basicImg.png"
-              onClick={() => navigate(`/mypage/users/${userMyfo.id}/profile`)}
-            />
+              <NavProfile>
+                <MailOutlineIcon
+                  style={{ fontSize: "30px" }}
+                  onClick={() => navigate("/message")}
+                />
+                <NavImg
+                  src={userMyfo.profileImg}
+                  alt="/imgs/basicImg.png"
+                  onClick={() =>
+                    navigate(`/mypage/users/${userMyfo.id}/profile`)
+                  }
+                />
 
-            <MenuIcon
-              style={{ fontSize: "30px" }}
-              onClick={(e: React.MouseEvent<SVGSVGElement>) => togglePopup(e)}
-            />
-            {isPopupOpen && (
-              <PopupContainer>
-                <PopupContent>
-                  <PopupProfile>{userMyfo.name}</PopupProfile>
-                  <PopupMyPage onClick={() => navigate("/mypage")}>
-                    마이페이지
-                  </PopupMyPage>
-                  <PopupLogout onClick={logout}>로그아웃</PopupLogout>
-                </PopupContent>
-              </PopupContainer>
-            )}
-          </NavProfile>
-        </NavUl>
-      </NavWrapper>
-      <Container>
-        <Outlet />
-      </Container>
-      <TTfooter />
+                <MenuIcon
+                  style={{ fontSize: "30px" }}
+                  onClick={(e: React.MouseEvent<SVGSVGElement>) =>
+                    togglePopup(e)
+                  }
+                />
+                {isPopupOpen && (
+                  <PopupContainer>
+                    <PopupContent>
+                      <PopupProfile>{userMyfo.name}</PopupProfile>
+                      <PopupMyPage onClick={() => navigate("/mypage")}>
+                        마이페이지
+                      </PopupMyPage>
+                      <PopupLogout onClick={logout}>로그아웃</PopupLogout>
+                    </PopupContent>
+                  </PopupContainer>
+                )}
+              </NavProfile>
+            </NavUl>
+          </NavWrapper>
+          <Container>
+            <Outlet />
+          </Container>
+          <TTfooter />
+        </>
+      )}
     </>
   );
 };

@@ -7,6 +7,7 @@ import ReactQuill from "react-quill";
 import axios from "axios";
 import userStore from "../../stores/UserStore";
 import AnswerDeail from "../../components/board/answer-detail";
+import LoadingScreen from "../../components/board/loadingscreen";
 
 // 유저 정보 타입 정의
 export type UserInfo = {
@@ -86,6 +87,8 @@ const AnswerView = () => {
   const accessToken = localStorage.getItem("accessToken");
   const [reviewContent, setReviewContent] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // 추가
+
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -139,9 +142,9 @@ const AnswerView = () => {
         });
     }
   };
-
   const getPostData = async () => {
     try {
+      setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
       const response = await axios
         .get(`https://titto.store/questions/${postId}`, {
           headers: {
@@ -165,6 +168,7 @@ const AnswerView = () => {
             accepted: res.data.accepted,
             answerList: res.data.answerList,
           });
+          setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
         });
     } catch (error) {
       console.error(error);
@@ -177,92 +181,104 @@ const AnswerView = () => {
 
   return (
     <Wrapper>
-      <CategoryWrapper>
-        <div className="categoryBox">{changeDepartment(view.department)}</div>
-        <div className="categoryBox">{view.sendExperience}</div>
-        <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
-          {view?.status == "UNSOLVED" ? "미해결" : "해결"}
-        </div>
-      </CategoryWrapper>
-      <TitleWrapper>{view?.title}.</TitleWrapper>
-      <ProfileWrapper>
-        <div className="profileBox">
-          <img
-            src={view.profile}
-            alt="User-Profile"
-            onClick={() => navigate(`/mypage/users/${view.authorId}/profile`)}
-          />
-          <div className="userdiv">
-            <div className="nick">{view?.authorNickname}</div>
-            <div className="lv">
-              LV.{view.level} | {view?.createDate}
-            </div>
-          </div>
-        </div>
-        {userStore.getUser()?.id === view.authorId ? (
-          <div>
-            <div>
-              <button
-                className="modify"
-                onClick={() => navigate(`/board/modify/qna/${postId}`)}
-              >
-                수정
-              </button>
-              <button onClick={handleDeletePost}>삭제</button>
-            </div>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </ProfileWrapper>
-
-      <DetailWrapper>
-        <div
-          className="detail"
-          dangerouslySetInnerHTML={{ __html: view.content }}
-        ></div>
-      </DetailWrapper>
-      <ViewWrapper>
-        <div className="show-comment">
-          <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view.viewCount}{" "}
-          <div style={{ display: "inline-block", width: "10px" }}> </div>
-          <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon>{" "}
-          {view.answerList.length}
-        </div>
-      </ViewWrapper>
-      <CommentWrapper>
-        <span style={{ fontWeight: "bold", fontSize: "20px" }}>
-          답변 {view.answerList.length}개
-        </span>
-      </CommentWrapper>
-      {[...view.answerList]
-        .sort((a, b) => (a.accepted === b.accepted ? 0 : a.accepted ? -1 : 1))
-        .map((answer) => (
-          <AnswerDeail
-            key={answer.id}
-            answer={answer}
-            authorId={view.authorId}
-            accepted={answer.accepted}
-          />
-        ))}
-      {userStore.getUser()?.nickname === view.authorNickname ? (
-        <div></div>
+      {loading ? (
+        <LoadingScreen /> // 로딩 중일 때는 LoadingScreen을 표시
       ) : (
-        <div>
-          <QuillWrapper>
-            <ReactQuill
-              modules={modules}
-              style={{ height: "200px" }}
-              value={reviewContent}
-              onChange={setReviewContent}
-            ></ReactQuill>
-          </QuillWrapper>
-          <SubmitWrapper>
-            <div className="btn" onClick={handleAnswerSubmit}>
-              등록
+        <>
+          <CategoryWrapper>
+            <div className="categoryBox">
+              {changeDepartment(view.department)}
             </div>
-          </SubmitWrapper>
-        </div>
+            <div className="categoryBox">{view.sendExperience}</div>
+            <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
+              {view?.status == "UNSOLVED" ? "미해결" : "해결"}
+            </div>
+          </CategoryWrapper>
+          <TitleWrapper>{view?.title}.</TitleWrapper>
+          <ProfileWrapper>
+            <div className="profileBox">
+              <img
+                src={view.profile}
+                alt="User-Profile"
+                onClick={() =>
+                  navigate(`/mypage/users/${view.authorId}/profile`)
+                }
+              />
+              <div className="userdiv">
+                <div className="nick">{view?.authorNickname}</div>
+                <div className="lv">
+                  LV.{view.level} | {view?.createDate}
+                </div>
+              </div>
+            </div>
+            {userStore.getUser()?.id === view.authorId ? (
+              <div>
+                <div>
+                  <button
+                    className="modify"
+                    onClick={() => navigate(`/board/modify/qna/${postId}`)}
+                  >
+                    수정
+                  </button>
+                  <button onClick={handleDeletePost}>삭제</button>
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </ProfileWrapper>
+
+          <DetailWrapper>
+            <div
+              className="detail"
+              dangerouslySetInnerHTML={{ __html: view.content }}
+            ></div>
+          </DetailWrapper>
+          <ViewWrapper>
+            <div className="show-comment">
+              <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view.viewCount}{" "}
+              <div style={{ display: "inline-block", width: "10px" }}> </div>
+              <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon>{" "}
+              {view.answerList.length}
+            </div>
+          </ViewWrapper>
+          <CommentWrapper>
+            <span style={{ fontWeight: "bold", fontSize: "20px" }}>
+              답변 {view.answerList.length}개
+            </span>
+          </CommentWrapper>
+          {[...view.answerList]
+            .sort((a, b) =>
+              a.accepted === b.accepted ? 0 : a.accepted ? -1 : 1
+            )
+            .map((answer) => (
+              <AnswerDeail
+                key={answer.id}
+                answer={answer}
+                authorId={view.authorId}
+                accepted={answer.accepted}
+              />
+            ))}
+          {userStore.getUser()?.nickname === view.authorNickname ? (
+            <div></div>
+          ) : (
+            <div>
+              <QuillWrapper>
+                <ReactQuill
+                  modules={modules}
+                  style={{ height: "200px" }}
+                  value={reviewContent}
+                  onChange={setReviewContent}
+                ></ReactQuill>
+              </QuillWrapper>
+              <SubmitWrapper>
+                <div className="btn" onClick={handleAnswerSubmit}>
+                  등록
+                </div>
+              </SubmitWrapper>
+            </div>
+          )}
+        </>
       )}
     </Wrapper>
   );

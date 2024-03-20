@@ -8,6 +8,7 @@ import axios from "axios";
 import { TITTOPost } from "./board/tittoboard";
 import { QNAPost } from "./board/qnaboard";
 import userStore from "../stores/UserStore";
+import LoadingScreen from "../components/board/loadingscreen";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -75,6 +76,7 @@ const BoardDetail = styled.div`
 const HomeScreen = () => {
   const [tittoList, setTittoList] = useState<TITTOPost[]>([]);
   const [qnaList, setQnaList] = useState<QNAPost[]>([]);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   const getTITTOBoardList = async () => {
     try {
@@ -89,8 +91,10 @@ const HomeScreen = () => {
 
       const formattedPosts = res.data.content.slice(0, 3);
       setTittoList(formattedPosts);
+      setLoading(false); // 데이터 로딩 후 로딩 상태 변경
     } catch (e) {
       console.log(e);
+      setLoading(false); // 에러 발생 시에도 로딩 상태 변경
     }
   };
 
@@ -106,8 +110,10 @@ const HomeScreen = () => {
       );
       const formattedPosts = res.data.content.slice(0, 3);
       setQnaList(formattedPosts);
+      setLoading(false); // 데이터 로딩 후 로딩 상태 변경
     } catch (e) {
       console.log(e);
+      setLoading(false); // 에러 발생 시에도 로딩 상태 변경
     }
   };
 
@@ -119,75 +125,81 @@ const HomeScreen = () => {
   const navigate = useNavigate();
   return (
     <Wrapper>
-      <MaxSlider></MaxSlider>
-      <IconMenu>
-        <MyIcon>
-          <img
-            src="/imgs/mainimg/titto.png"
-            alt="My Icon"
-            onClick={() => navigate("/board/lists/titto/1")}
-          />
-          티토찾기
-        </MyIcon>
-        <MyIcon>
-          <img
-            src="/imgs/mainimg/answer.png"
-            alt="My Icon"
-            onClick={() => navigate("/board/lists/qna/1")}
-          />
-          질문하기
-        </MyIcon>
-        <MyIcon>
-          <img
-            src="/imgs/mainimg/mypage.png"
-            alt="My Icon"
-            onClick={() =>
-              navigate(`/mypage/users/${userStore.getUser()?.id}/profile`)
-            }
-          />
-          마이페이지
-        </MyIcon>
-      </IconMenu>
-      <BoardWrapper>
-        <BoardDetail onClick={() => navigate("/board/lists/titto/1")}>
-          <span style={{ paddingBottom: "10px" }}>
-            티토 찾아요
-            <ArrowForwardIosIcon />
-          </span>
+      {loading ? ( // 로딩 중인 경우
+        <LoadingScreen />
+      ) : (
+        <>
+          <MaxSlider></MaxSlider>
+          <IconMenu>
+            <MyIcon>
+              <img
+                src="/imgs/mainimg/titto.png"
+                alt="My Icon"
+                onClick={() => navigate("/board/lists/titto/1")}
+              />
+              티토찾기
+            </MyIcon>
+            <MyIcon>
+              <img
+                src="/imgs/mainimg/answer.png"
+                alt="My Icon"
+                onClick={() => navigate("/board/lists/qna/1")}
+              />
+              질문하기
+            </MyIcon>
+            <MyIcon>
+              <img
+                src="/imgs/mainimg/mypage.png"
+                alt="My Icon"
+                onClick={() =>
+                  navigate(`/mypage/users/${userStore.getUser()?.id}/profile`)
+                }
+              />
+              마이페이지
+            </MyIcon>
+          </IconMenu>
+          <BoardWrapper>
+            <BoardDetail onClick={() => navigate("/board/lists/titto/1")}>
+              <span style={{ paddingBottom: "10px" }}>
+                티토 찾아요
+                <ArrowForwardIosIcon />
+              </span>
 
-          {tittoList.map((post) => {
-            return (
-              <HBoarddetail
-                key={post.matchingPostId}
-                category={post.category}
-                title={post.title}
-                detail={post.content}
-                view={post.viewCount}
-                comment={post.reviewCount}
-              ></HBoarddetail>
-            );
-          })}
-        </BoardDetail>
-        <BoardDetail onClick={() => navigate("/board/lists/qna/1")}>
-          <span style={{ paddingBottom: "10px" }}>
-            질문 있어요
-            <ArrowForwardIosIcon />
-          </span>
+              {tittoList.map((post) => {
+                return (
+                  <HBoarddetail
+                    key={post.matchingPostId}
+                    category={post.category}
+                    title={post.title}
+                    detail={post.content}
+                    view={post.viewCount}
+                    comment={post.reviewCount}
+                  ></HBoarddetail>
+                );
+              })}
+            </BoardDetail>
+            <BoardDetail onClick={() => navigate("/board/lists/qna/1")}>
+              <span style={{ paddingBottom: "10px" }}>
+                질문 있어요
+                <ArrowForwardIosIcon />
+              </span>
 
-          {qnaList.map((post) => {
-            return (
-              <HBoarddetail
-                key={post.id}
-                category={post.department}
-                title={post.title}
-                detail={post.content}
-                view={post.viewCount}
-                comment={post.answerList.length}
-              ></HBoarddetail>
-            );
-          })}
-        </BoardDetail>
-      </BoardWrapper>
+              {qnaList.map((post) => {
+                return (
+                  <HBoarddetail
+                    key={post.id}
+                    category={post.department}
+                    title={post.title}
+                    detail={post.content}
+                    view={post.viewCount}
+                    comment={post.answerList.length}
+                  ></HBoarddetail>
+                );
+              })}
+            </BoardDetail>
+          </BoardWrapper>
+        </>
+      )}
     </Wrapper>
   );
 };

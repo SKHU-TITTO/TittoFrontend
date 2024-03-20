@@ -6,6 +6,7 @@ import SmsIcon from "@mui/icons-material/Sms";
 import CommentDetail from "../../components/board/comment-detail";
 import ReactQuill from "react-quill";
 import axios from "axios";
+import LoadingScreen from "../../components/board/loadingscreen";
 
 // 유저 정보 타입 정의
 export type UserInfo = {
@@ -21,6 +22,8 @@ export type UserInfo = {
 
 const PostView = () => {
   const [title, setTitles] = useState("");
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
   const [detail, setDetail] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
@@ -80,6 +83,8 @@ const PostView = () => {
   }, []);
 
   const loadUserData = () => {
+    setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
+
     axios
       .get(`https://titto.store/user/info`, {
         headers: {
@@ -96,13 +101,17 @@ const PostView = () => {
           id: userData.id,
           email: userData.email,
         });
+        setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
       })
       .catch((error) => {
         console.error(error);
+        setLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정
       });
   };
 
   const loadPostData = () => {
+    setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
+
     axios
       .get(`https://titto.store/matching-post/get/${postId}`, {
         headers: {
@@ -127,9 +136,11 @@ const PostView = () => {
           email: "email",
           matchingPostAuthorId: data.matchingPostAuthorId,
         });
+        setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
       })
       .catch((error) => {
         console.error(error);
+        setLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정
       });
   };
 
@@ -217,82 +228,88 @@ const PostView = () => {
 
   return (
     <Wrapper>
-      <CategoryWrapper>
-        <div className="categoryBox">
-          {categoryMapping[category as keyof CategoryMapping]}
-        </div>
-      </CategoryWrapper>
-      <TitleWrapper>{title}</TitleWrapper>
-      <ProfileWrapper>
-        <div className="profileBox">
-          <img
-            src={userWriteInfo.profileImg}
-            alt="User-Profile"
-            onClick={() =>
-              navigate(
-                `/mypage/users/${userWriteInfo.matchingPostAuthorId}/profile`
-              )
-            }
-          />
-          <div className="userdiv">
-            <div className="nick">{userWriteInfo.name}</div>
-            <div className="lv">
-              LV.{userWriteInfo.level} | {date}
+      {loading ? ( // 로딩 중인 경우
+        <LoadingScreen />
+      ) : (
+        <>
+          <CategoryWrapper>
+            <div className="categoryBox">
+              {categoryMapping[category as keyof CategoryMapping]}
             </div>
-          </div>
-        </div>
-        <div>
-          {userMyfo.name &&
-            userWriteInfo.name &&
-            userMyfo.name === userWriteInfo.name && (
-              <div>
-                <button className="btnfix" onClick={handleToggleStatus}>
-                  {statusMapping[status as keyof statusMapping]}
-                </button>
-                <button
-                  className="modify"
-                  onClick={() => navigate(`/board/modify/titto/${postId}`)}
-                >
-                  수정
-                </button>
-                <button onClick={handleDeletePost}>삭제</button>
+          </CategoryWrapper>
+          <TitleWrapper>{title}</TitleWrapper>
+          <ProfileWrapper>
+            <div className="profileBox">
+              <img
+                src={userWriteInfo.profileImg}
+                alt="User-Profile"
+                onClick={() =>
+                  navigate(
+                    `/mypage/users/${userWriteInfo.matchingPostAuthorId}/profile`
+                  )
+                }
+              />
+              <div className="userdiv">
+                <div className="nick">{userWriteInfo.name}</div>
+                <div className="lv">
+                  LV.{userWriteInfo.level} | {date}
+                </div>
               </div>
-            )}
-        </div>
-      </ProfileWrapper>
-      <DetailWrapper>
-        <div
-          className="detail"
-          dangerouslySetInnerHTML={{ __html: detail }}
-        ></div>
-      </DetailWrapper>
-      <ViewWrapper>
-        <div className="show-comment">
-          <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view}{" "}
-          <div style={{ display: "inline-block", width: "10px" }}> </div>
-          <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon>
-          {comment}
-        </div>
-      </ViewWrapper>
-      <CommentWrapper>
-        <span style={{ fontWeight: "bold", fontSize: "20px" }}>
-          댓글 {comment}개
-        </span>
-      </CommentWrapper>
-      <CommentDetail postId={postId || ""} />
-      <QuillWrapper>
-        <ReactQuill
-          modules={modules}
-          style={{ height: "200px" }}
-          value={reviewContent}
-          onChange={setReviewContent}
-        ></ReactQuill>
-      </QuillWrapper>
-      <SubmitWrapper>
-        <div className="btn" onClick={handleReviewSubmit}>
-          등록
-        </div>
-      </SubmitWrapper>
+            </div>
+            <div>
+              {userMyfo.name &&
+                userWriteInfo.name &&
+                userMyfo.name === userWriteInfo.name && (
+                  <div>
+                    <button className="btnfix" onClick={handleToggleStatus}>
+                      {statusMapping[status as keyof statusMapping]}
+                    </button>
+                    <button
+                      className="modify"
+                      onClick={() => navigate(`/board/modify/titto/${postId}`)}
+                    >
+                      수정
+                    </button>
+                    <button onClick={handleDeletePost}>삭제</button>
+                  </div>
+                )}
+            </div>
+          </ProfileWrapper>
+          <DetailWrapper>
+            <div
+              className="detail"
+              dangerouslySetInnerHTML={{ __html: detail }}
+            ></div>
+          </DetailWrapper>
+          <ViewWrapper>
+            <div className="show-comment">
+              <VisibilityIcon style={{ fontSize: "0.8em" }} /> {view}{" "}
+              <div style={{ display: "inline-block", width: "10px" }}> </div>
+              <SmsIcon style={{ fontSize: "0.8em" }}></SmsIcon>
+              {comment}
+            </div>
+          </ViewWrapper>
+          <CommentWrapper>
+            <span style={{ fontWeight: "bold", fontSize: "20px" }}>
+              댓글 {comment}개
+            </span>
+          </CommentWrapper>
+          <CommentDetail postId={postId || ""} />
+          <QuillWrapper>
+            <ReactQuill
+              modules={modules}
+              style={{ height: "200px" }}
+              value={reviewContent}
+              onChange={setReviewContent}
+            ></ReactQuill>
+          </QuillWrapper>
+          <SubmitWrapper>
+            <div className="btn" onClick={handleReviewSubmit}>
+              등록
+            </div>
+          </SubmitWrapper>
+        </>
+      )}
     </Wrapper>
   );
 };
