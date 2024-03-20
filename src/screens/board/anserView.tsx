@@ -39,6 +39,7 @@ export type AnswerViewProps = {
   createDate: string;
   profile: string;
   id: number;
+  sendExperience: number;
   department: string;
   level: number;
   title: string;
@@ -69,6 +70,7 @@ const AnswerView = () => {
     accepted: false,
     authorId: 0,
     authorNickname: "",
+    sendExperience: 0,
     content: "",
     profile: "",
     createDate: "",
@@ -152,6 +154,7 @@ const AnswerView = () => {
             title: res.data.title,
             profile: res.data.profile,
             content: res.data.content,
+            sendExperience: res.data.sendExperience,
             authorId: res.data.authorId,
             authorNickname: res.data.authorNickname,
             createDate: new Date(res.data.createDate).toLocaleString("ko-KR"),
@@ -176,6 +179,7 @@ const AnswerView = () => {
     <Wrapper>
       <CategoryWrapper>
         <div className="categoryBox">{changeDepartment(view.department)}</div>
+        <div className="categoryBox">{view.sendExperience}</div>
         <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
           {view?.status == "UNSOLVED" ? "미해결" : "해결"}
         </div>
