@@ -241,6 +241,9 @@ const UserProfile = () => {
 
               {isSendingMessage && (
                 <NewMessagePopup
+                  onMessageSent={() => {
+                    closeSendMessagePopup();
+                  }}
                   onCancel={closeSendMessagePopup}
                   defaultReceiverNickname={userProfo.nickname}
                 />

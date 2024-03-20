@@ -19,45 +19,57 @@ interface TitleMessageProps {
 
 const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
   const [messages, setMessages] = useState<UserMsgInfo[]>([]);
+  const [sortedMessages, setSortedMessages] = useState<UserMsgInfo[]>([]);
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const accessToken = localStorage.getItem("accessToken");
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    fetchMessages();
-  }, []);
+    if (!loading) {
+      fetchMessages();
+    }
+  }, [loading]);
 
   const fetchMessages = async () => {
     try {
+      setLoading(true);
       const response = await axios.get("https://titto.store/message/all", {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
       const data = response.data;
       setMessages(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    const sorted = messages.slice().sort((a, b) => {
+      return b.id - a.id;
+    });
+    setSortedMessages(sorted);
+  }, [messages]);
+
   const handleClick = (index: number) => {
-    setClickedIndex(index);
+    setClickedIndex(index === clickedIndex ? null : index);
   };
 
   const renderMessages = () => {
-    if (messages.length === 0) {
+    if (sortedMessages.length === 0) {
       return <NoMessages>받은 메시지가 없습니다.</NoMessages>;
     }
 
-    return messages.map((message, index) => (
+    return sortedMessages.map((message, index) => (
       <div
         key={message.id}
-        className={`items ${index === clickedIndex ? "active" : ""}`}
+        className={`items ${clickedIndex === index ? "active" : ""}`}
       >
-        {/* 서로 보낼 때 마다 리시버 센더가 달라지니 내 아이디랑 리시버 아이디가 같은지 판단, 리시버면 나에게 온건데
-        그땐 senderId로 해서 링크이동, 반대면 receiverId로 해서 링크 이동 해야 같은 곳 userId로 링크가 이동 가능함 */}
         <MessageLink
           to={
             userStore.getUser() &&
