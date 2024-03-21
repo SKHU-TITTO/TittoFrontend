@@ -250,6 +250,11 @@ const DetailWrapper = styled.div`
   text-align: left;
   font-size: 20px;
   margin-bottom: 10px;
+
+  img {
+    max-width: 900px;
+    max-height: 900px;
+  }
 `;
 
 const ModifyWrapper = styled.div`

@@ -418,6 +418,10 @@ const DetailWrapper = styled.div`
 
     text-align: left;
   }
+  img {
+    max-width: 1100px;
+    max-height: 1100px;
+  }
 `;
 
 const ViewWrapper = styled.div`
