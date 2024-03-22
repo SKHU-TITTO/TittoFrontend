@@ -56,8 +56,8 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
     setSortedMessages(sorted);
   }, [messages]);
 
-  const handleClick = (index: number) => {
-    setClickedIndex(index);
+  const handleClick = (id: number) => {
+    setClickedIndex(id);
   };
 
   const renderMessages = () => {
@@ -65,10 +65,10 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
       return <NoMessages>받은 메시지가 없습니다.</NoMessages>;
     }
 
-    return sortedMessages.map((message, index) => (
+    return sortedMessages.map((message, id) => (
       <div
         key={message.id}
-        className={`items ${clickedIndex === index ? "active" : ""}`}
+        className={`items ${clickedIndex === id ? "active" : ""}`}
       >
         <MessageLink
           to={
@@ -86,7 +86,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
                 : message.receiverId,
               message.senderNickname
             );
-            handleClick(index);
+            handleClick(id);
           }}
         >
           <div className="top">
