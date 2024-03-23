@@ -28,6 +28,7 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.8",
     "styled-reset": "^4.5.2",
+    "sweetalert2": "^11.10.7",
     "vite-plugin-react": "^4.0.1"
   },
   "devDependencies": {
