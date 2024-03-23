@@ -4,6 +4,7 @@ import styled from "styled-components";
 import QuillEditor from "../../components/board/QuillEditor";
 import ReactQuill from "react-quill";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const PostForm = () => {
   const navigate = useNavigate();
@@ -125,7 +126,6 @@ const PostForm = () => {
               content: htmlContent,
               department: selectedCategory,
             },
-
             {
               headers: {
                 "Content-Type": "application/json;charset=UTF-8",
@@ -135,7 +135,13 @@ const PostForm = () => {
             }
           );
 
-          navigate(`/board/lists/${boardId}/1`);
+          Swal.fire({
+            icon: "success",
+            title: "게시글이 수정되었습니다.",
+            confirmButtonText: "확인",
+          }).then(() => {
+            navigate(`/board/lists/${boardId}/1`);
+          });
         } catch (error) {
           console.error(error);
         }
@@ -148,11 +154,21 @@ const PostForm = () => {
             },
           })
           .then((res) => {
-            navigate(`/board/lists/${boardId}/1`);
+            Swal.fire({
+              icon: "success",
+              title: "게시글이 작성되었습니다.",
+              confirmButtonText: "확인",
+            }).then(() => {
+              navigate(`/board/lists/${boardId}/1`);
+            });
           })
           .catch((err) => {
             if (err.response.status === 400) {
-              alert("내공이 부족합니다!.");
+              Swal.fire({
+                icon: "error",
+                title: "내공이 부족합니다.",
+                confirmButtonText: "확인",
+              });
             }
           });
       }
@@ -175,7 +191,13 @@ const PostForm = () => {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           });
-          navigate(`/board/lists/${boardId}/1`);
+          Swal.fire({
+            icon: "success",
+            title: "게시글이 수정되었습니다.",
+            confirmButtonText: "확인",
+          }).then(() => {
+            navigate(`/board/lists/${boardId}/1`);
+          });
         } catch (error) {
           console.error(error);
         }
@@ -188,13 +210,20 @@ const PostForm = () => {
             },
           });
 
-          navigate(`/board/lists/${boardId}/1`);
+          Swal.fire({
+            icon: "success",
+            title: "게시글이 작성되었습니다.",
+            confirmButtonText: "확인",
+          }).then(() => {
+            navigate(`/board/lists/${boardId}/1`);
+          });
         } catch (error) {
           console.error(error);
         }
       }
     }
   };
+
   return (
     <Wrapper>
       <BoardTitle>글 {bType} </BoardTitle>

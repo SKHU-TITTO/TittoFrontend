@@ -4,8 +4,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserInfo } from "../board/postView";
-import { set } from "firebase/database";
-
+import Swal from "sweetalert2";
 export type UserSignfo = {
   department: string;
   studentNo: string;
@@ -131,9 +130,14 @@ const AccountManagementContent = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!userSignfo.nickname && !userSignfo.studentNo) {
-      // 닉네임이나 학번 둘 다 입력되지 않은 경우
-      alert("닉네임 또는 학번을 입력해주세요.");
+    // 닉네임 또는 학번이 입력되지 않은 경우
+    if (!userSignfo.nickname || !userSignfo.studentNo) {
+      Swal.fire({
+        icon: "error",
+        title: "입력 오류",
+        text: "닉네임과 학번을 입력해주세요.",
+        confirmButtonText: "확인",
+      });
       return;
     }
 
@@ -164,8 +168,14 @@ const AccountManagementContent = () => {
       );
 
       if (res.status === 200) {
-        alert("저장되었습니다.");
-        window.location.reload();
+        Swal.fire({
+          icon: "success",
+          title: "저장 완료",
+          text: "회원 정보가 성공적으로 저장되었습니다.",
+          confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       }
     } catch (error) {
       console.error(error);
@@ -173,27 +183,42 @@ const AccountManagementContent = () => {
   };
 
   const handleDeleteAccount = async () => {
-    const confirmDelete = window.confirm("티토 회원 탈퇴하시겠습니까?");
-    if (confirmDelete) {
-      try {
-        const res = await axios.delete(
-          `https://titto.store/user/${userMyfo.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              Accept: "application/json",
-            },
-          }
-        );
+    Swal.fire({
+      title: "회원 탈퇴",
+      text: "티토 회원 탈퇴하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "네, 탈퇴합니다.",
+      cancelButtonText: "아니요, 취소합니다.",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await axios.delete(
+            `https://titto.store/user/${userMyfo.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+              },
+            }
+          );
 
-        if (res.status === 200) {
-          alert("회원 탈퇴가 완료되었습니다.");
-          navigate("/login/sign_in");
+          if (res.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "회원 탈퇴 완료",
+              text: "회원 탈퇴가 성공적으로 완료되었습니다.",
+              confirmButtonText: "확인",
+            }).then(() => {
+              navigate("/login/sign_in");
+            });
+          }
+        } catch (error) {
+          console.error("Error deleting account:", error);
         }
-      } catch (error) {
-        console.error("Error deleting account:", error);
       }
-    }
+    });
   };
 
   useEffect(() => {

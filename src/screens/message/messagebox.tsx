@@ -9,6 +9,7 @@ import ContentMessage, {
 } from "../../components/board/content-message";
 import styled from "styled-components";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const MessageBox = () => {
   const [isSendingMessage, setIsSendingMessage] = useState(false);
@@ -83,8 +84,18 @@ const MessageBox = () => {
   const handleDeleteMessage = async () => {
     try {
       if (selectedSenderId !== null) {
-        const confirmDelete = window.confirm("모든 메시지를 삭제하시겠습니까?");
-        if (confirmDelete) {
+        const { isConfirmed } = await Swal.fire({
+          title: "메시지 삭제",
+          text: "모든 메시지를 삭제하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "삭제",
+          cancelButtonText: "취소",
+        });
+
+        if (isConfirmed) {
           await axios.put(
             `https://titto.store/message/delete-all/${selectedSenderId}`,
             null,
@@ -95,13 +106,17 @@ const MessageBox = () => {
               },
             }
           );
+
           setMessages(
             messages.filter((message) => message.senderId !== selectedSenderId)
           );
+
+          Swal.fire("삭제 완료", "모든 메시지가 삭제되었습니다.", "success");
         }
       }
     } catch (error) {
       console.error("Error deleting message:", error);
+      Swal.fire("삭제 실패", "메시지 삭제 중 오류가 발생했습니다.", "error");
     }
   };
 
