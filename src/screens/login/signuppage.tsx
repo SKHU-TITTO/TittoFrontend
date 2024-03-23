@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [errorcolor, setErrorcolor] = useState("red");
@@ -29,7 +30,7 @@ const SignUpPage = () => {
         setErrorcolor("green");
       }
     } catch (error: any) {
-      if (error.response.status === 400) {
+      if (error.response.status === 409) {
         setNicknameError("이미 사용 중인 닉네임입니다.");
       } else {
         setNicknameError("서버 에러가 발생했습니다.");
@@ -50,7 +51,7 @@ const SignUpPage = () => {
         setErrorcolor("green");
       }
     } catch (error: any) {
-      if (error.response.status === 400) {
+      if (error.response.status === 409) {
         setStudentNoError("이미 사용 중인 학번입니다.");
       } else {
         setStudentNoError("서버 에러가 발생했습니다.");
@@ -101,18 +102,34 @@ const SignUpPage = () => {
     e.preventDefault();
 
     if (!name || !nickname || !studentNo || !oneLineIntro || !selfIntro) {
-      alert("모든 입력란을 채워주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "모든 입력란을 채워주세요.",
+        confirmButtonText: "확인",
+      });
       return;
     }
     if (nickname.length === 0 || studentNo.length !== 9) {
-      alert("닉네임과 학번을 올바르게 입력해주세요.");
-      alert("학번은 9글자입니다.");
+      Swal.fire({
+        icon: "error",
+        title: "닉네임과 학번을 올바르게 입력해주세요.",
+        text: "학번은 9글자입니다.",
+        confirmButtonText: "확인",
+      });
       return;
     }
     if (isCheckNick === false || isCheckNick === null) {
-      alert("닉네임 중복확인을 해주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "닉네임 중복확인을 해주세요.",
+        confirmButtonText: "확인",
+      });
     } else if (isCheckStudentNo === false || isCheckStudentNo === null) {
-      alert("학번 중복확인을 해주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "학번 중복확인을 해주세요.",
+        confirmButtonText: "확인",
+      });
     } else {
       try {
         const formData = new FormData(e.target as HTMLFormElement);

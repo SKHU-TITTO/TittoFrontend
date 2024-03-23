@@ -9,6 +9,7 @@ import BadgeList, {
   badgeComments,
   badgeImageMap,
 } from "../../components/board/badgeslist";
+import Swal from "sweetalert2";
 
 const ProfileManagementContent = () => {
   const navigate = useNavigate();
@@ -38,31 +39,46 @@ const ProfileManagementContent = () => {
     level: 0,
   }); // 프로필 유저 정보
   const handleSaveProfile = () => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    axios
-      .put(
-        "https://titto.store/user/profile",
-        {
-          oneLineIntro,
-          selfIntro,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        }
-      )
-      .then((response) => {
-        window.alert("프로필이 저장되었습니다.");
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error("Error saving profile:", error);
-      });
+    Swal.fire({
+      icon: "info",
+      title: "프로필 저장",
+      text: "프로필을 저장하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonText: "네, 저장합니다.",
+      cancelButtonText: "아니요, 취소합니다.",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(
+            "https://titto.store/user/profile",
+            {
+              oneLineIntro,
+              selfIntro,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            }
+          )
+          .then((response) => {
+            Swal.fire({
+              icon: "success",
+              title: "프로필 저장 완료",
+              text: "프로필이 성공적으로 저장되었습니다.",
+              confirmButtonText: "확인",
+            }).then(() => {
+              window.location.reload();
+            });
+          })
+          .catch((error) => {
+            console.error("Error saving profile:", error);
+          });
+      }
+    });
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -92,7 +108,6 @@ const ProfileManagementContent = () => {
     fetchData();
   }, [accessToken]);
 
-  // 한줄 소개 입력 내용 변경 시 호출되는 함수
   const handleOneLineIntroChange = (content: string) => {
     if (content.length <= 28) {
       setOneLineIntro(content);

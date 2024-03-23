@@ -5,6 +5,7 @@ import { UserInfo } from "../../screens/board/postView";
 import ReactQuill from "react-quill";
 import { values } from "mobx";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export type CommentInfo = {
   profile: string;
@@ -83,8 +84,25 @@ const CommentDetail = ({ postId }: { postId: string }) => {
     }
   };
   const handleDeleteComment = async (reviewId: number, postId: number) => {
-    const confirm = window.confirm("정말 삭제하시겠습니까?");
-    if (confirm) {
+    const confirmResult = await Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      html: "<p>삭제한 데이터는 복구할 수 없습니다.</p>",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      customClass: {
+        popup: "custom-popup-class",
+        title: "custom-title-class",
+        htmlContainer: "custom-html-container-class",
+        confirmButton: "custom-confirm-button-class",
+        cancelButton: "custom-cancel-button-class",
+      },
+    });
+
+    if (confirmResult.isConfirmed) {
       await axios
         .delete(
           `https://titto.store/matching-board-review/delete/${reviewId}`,
@@ -101,15 +119,22 @@ const CommentDetail = ({ postId }: { postId: string }) => {
         )
         .then((response: { status: number }) => {
           if (response.status === 200) {
-            window.location.reload();
             setComments((prevComments) =>
               prevComments.filter((comment) => comment.reviewId !== reviewId)
             );
-            alert("댓글이 삭제되었습니다.");
+
+            Swal.fire("성공", "댓글이 삭제되었습니다.", "success");
+            window.location.reload();
           } else {
-            alert("댓글 삭제에 실패했습니다. 다시 시도해주세요.");
+            Swal.fire(
+              "실패",
+              "댓글 삭제에 실패했습니다. 다시 시도해주세요.",
+              "error"
+            );
           }
         });
+    } else if (confirmResult.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire("취소", "댓글 삭제가 취소되었습니다.", "info");
     }
   };
 

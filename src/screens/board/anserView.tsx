@@ -8,6 +8,7 @@ import axios from "axios";
 import userStore from "../../stores/UserStore";
 import AnswerDeail from "../../components/board/answer-detail";
 import LoadingScreen from "../../components/board/loadingscreen";
+import Swal from "sweetalert2";
 
 // 유저 정보 타입 정의
 export type UserInfo = {
@@ -87,7 +88,7 @@ const AnswerView = () => {
   const accessToken = localStorage.getItem("accessToken");
   const [reviewContent, setReviewContent] = useState("");
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // 추가
+  const [loading, setLoading] = useState(true);
 
   const modules = useMemo(() => {
     return {
@@ -122,25 +123,39 @@ const AnswerView = () => {
   };
 
   const handleDeletePost = () => {
-    const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
-    if (confirmDelete) {
-      axios
-        .delete(`https://titto.store/questions/${postId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Accept: "application/json;charset=UTF-8",
-          },
-        })
-        .then((response) => {
-          alert("게시글이 성공적으로 삭제되었습니다.");
-          navigate(`/board/lists/${boardId}/1`);
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            alert("채택된 글은 삭제가 불가능 합니다");
-          }
-        });
-    }
+    Swal.fire({
+      title: "게시글 삭제",
+      text: "게시글을 삭제하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`https://titto.store/questions/${postId}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Accept: "application/json;charset=UTF-8",
+            },
+          })
+          .then((response) => {
+            Swal.fire("게시글 삭제", "게시글이 삭제되었습니다.", "success");
+            navigate(`/board/lists/${boardId}/1`);
+          })
+          .catch((error) => {
+            if (error.response.status === 400) {
+              Swal.fire(
+                "삭제 실패",
+                "채택된 글은 삭제가 불가능합니다.",
+                "error"
+              );
+            }
+          });
+      }
+    });
   };
   const getPostData = async () => {
     try {

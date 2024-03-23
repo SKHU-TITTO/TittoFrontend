@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { MessageDetail } from "./content-message";
+import Swal from "sweetalert2"; // SweetAlert2 라이브러리 추가
 
 interface NewMessageProps {
   onCancel: () => void;
@@ -31,13 +32,14 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
       );
 
       const newMessage = response.data;
-      // 새로운 메시지를 화면에 추가하기 위해 상태를 업데이트합니다.
       onMessageSent(newMessage);
 
       onCancel();
+
+      Swal.fire("성공", "메시지를 전송했습니다.", "success");
     } catch (error) {
       console.error(error);
-      alert("잘못된 시도입니다.");
+      Swal.fire("전송 실패", "유저를 선택해야 합니다.", "error");
     }
   };
 
