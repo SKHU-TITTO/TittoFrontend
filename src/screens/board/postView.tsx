@@ -7,6 +7,7 @@ import CommentDetail from "../../components/board/comment-detail";
 import ReactQuill from "react-quill";
 import axios from "axios";
 import LoadingScreen from "../../components/board/loadingscreen";
+import Swal from "sweetalert2";
 
 // 유저 정보 타입 정의
 export type UserInfo = {
@@ -176,28 +177,47 @@ const PostView = () => {
   };
 
   const handleDeletePost = () => {
-    const confirmDelete = window.confirm("게시글을 삭제하시겠습니까?");
-    if (confirmDelete) {
-      const matchingPostIdToDelete = postId;
-      axios
-        .delete(
-          `https://titto.store/matching-post/delete/${matchingPostIdToDelete}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              Accept: "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .then((response) => {
-          navigate(`/board/lists/${boardId}/1`);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    Swal.fire({
+      title: "게시글 삭제",
+      text: "게시글을 삭제하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const matchingPostIdToDelete = postId;
+        axios
+          .delete(
+            `https://titto.store/matching-post/delete/${matchingPostIdToDelete}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json;charset=UTF-8",
+              },
+            }
+          )
+          .then((response) => {
+            Swal.fire(
+              "삭제 완료",
+              "게시글이 성공적으로 삭제되었습니다.",
+              "success"
+            );
+            navigate(`/board/lists/${boardId}/1`);
+          })
+          .catch((error) => {
+            console.error(error);
+            Swal.fire(
+              "삭제 실패",
+              "게시글 삭제 중 오류가 발생했습니다.",
+              "error"
+            );
+          });
+      }
+    });
   };
-
   const handleToggleStatus = () => {
     const newStatus =
       status === "RECRUITING" ? "RECRUITMENT_COMPLETED" : "RECRUITING";

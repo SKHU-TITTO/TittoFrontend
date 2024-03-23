@@ -5,6 +5,7 @@ import axios from "axios";
 import { useMemo, useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AnswerDeail = ({
   answer,
@@ -25,65 +26,104 @@ const AnswerDeail = ({
       },
     };
   }, []);
-  const answerdelete = () => {
-    const confirm = window.confirm("정말 삭제하시겠습니까?");
-    if (confirm) {
-      axios
-        .delete(`https://titto.store/answers/${answer.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            Accept: "application/json;charset=UTF-8",
-          },
-        })
-        .then((res) => {
-          window.location.reload();
-        });
-    }
-  };
 
-  const answerSelection = () => {
-    const confirm = window.confirm(
-      "정말 채택하시겠습니까? 채택하면 다른 답변은 채택할 수 없습니다."
-    );
-    if (confirm) {
-      axios
-        .put(
-          `https://titto.store/answers/accept/${answer.id}?questionId=${answer.postId}`,
-          {},
-          {
+  const answerdelete = () => {
+    Swal.fire({
+      title: "답변 삭제",
+      text: "정말 삭제하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`https://titto.store/answers/${answer.id}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
               Accept: "application/json;charset=UTF-8",
             },
-          }
-        )
-        .then((res) => {
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-        });
-    }
+          })
+          .then((res) => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("Error deleting answer:", error);
+          });
+      }
+    });
+  };
+  const answerSelection = () => {
+    Swal.fire({
+      title: "답변 채택",
+      text: "정말 채택하시겠습니까? 채택하면 다른 답변은 채택할 수 없습니다.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "채택",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(
+            `https://titto.store/answers/accept/${answer.id}?questionId=${answer.postId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json;charset=UTF-8",
+              },
+            }
+          )
+          .then((res) => {
+            window.location.reload();
+          })
+          .catch((err) => {
+            Swal.fire({
+              title: "채택 오류",
+              text: "채택은 한 번만 가능합니다.",
+              icon: "error",
+            });
+            console.error("Error selecting answer:", err.response.data);
+          });
+      }
+    });
   };
 
   const handleModify = () => {
-    axios
-      .put(
-        `https://titto.store/answers/${answer.id}`,
-        {
-          questionId: answer.postId,
-          content: content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            Accept: "application/json;charset=UTF-8",
-          },
-        }
-      )
-      .then((res) => {
-        window.location.reload();
-      });
+    Swal.fire({
+      title: "답변 수정",
+      text: "수정된 내용을 저장하시겠습니까?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonText: "저장",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(
+            `https://titto.store/answers/${answer.id}`,
+            {
+              questionId: answer.postId,
+              content: content,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json;charset=UTF-8",
+              },
+            }
+          )
+          .then((res) => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("Error modifying answer:", error);
+          });
+      }
+    });
   };
 
   return (
