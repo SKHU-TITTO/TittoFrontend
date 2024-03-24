@@ -5,6 +5,7 @@ import QuillEditor from "../../components/board/QuillEditor";
 import ReactQuill from "react-quill";
 import axios from "axios";
 import Swal from "sweetalert2";
+import AccountRoute from "./../../routes/account-route";
 
 const PostForm = () => {
   const navigate = useNavigate();
@@ -275,14 +276,17 @@ const PostForm = () => {
             onChange={(e) => {
               setExp(Number(e.target.value));
             }}
+            value={exp}
           >
-            {Array.from({ length: 11 }, (_, i) => i * 10).map((num) => {
-              return (
-                <option key={num} value={num}>
-                  {num}
-                </option>
-              );
-            })}
+            {Array.from({ length: 11 }, (_, i) => i * 10).map((expValue) => (
+              <option
+                key={expValue}
+                value={expValue}
+                selected={exp === expValue}
+              >
+                {expValue}
+              </option>
+            ))}
           </select>
         </Point>
       ) : (
