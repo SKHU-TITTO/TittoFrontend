@@ -151,7 +151,7 @@ const PostForm = () => {
             title: "게시글이 수정되었습니다.",
             confirmButtonText: "확인",
           }).then(() => {
-            navigate(`/board/lists/${boardId}/1`);
+            navigate(`/board/view/qna/${postId}`);
           });
         } catch (error) {
           console.error(error);
@@ -207,7 +207,7 @@ const PostForm = () => {
             title: "게시글이 수정되었습니다.",
             confirmButtonText: "확인",
           }).then(() => {
-            navigate(`/board/lists/${boardId}/1`);
+            navigate(`/board/view/titto/${postId}`);
           });
         } catch (error) {
           console.error(error);
