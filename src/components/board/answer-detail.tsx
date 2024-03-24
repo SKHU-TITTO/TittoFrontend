@@ -90,8 +90,15 @@ const AnswerDeail = ({
       }
     });
   };
-
   const handleModify = () => {
+    if (!content.trim()) {
+      Swal.fire({
+        title: "내용을 입력해주세요",
+        icon: "warning",
+      });
+      return;
+    }
+
     Swal.fire({
       title: "답변 수정",
       text: "수정된 내용을 저장하시겠습니까?",

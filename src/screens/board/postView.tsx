@@ -151,6 +151,12 @@ const PostView = () => {
   }, [accessToken, postId]);
 
   const handleReviewSubmit = () => {
+    // 댓글 내용이 비어 있는지 확인
+    if (!reviewContent.trim()) {
+      Swal.fire("경고", "댓글 내용을 입력해주세요.", "warning");
+      return; // 댓글 내용이 비어 있으면 작업을 중지하고 함수 종료
+    }
+
     axios
       .post(
         `https://titto.store/matching-board-review/create`,
