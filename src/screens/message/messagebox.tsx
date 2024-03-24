@@ -112,6 +112,10 @@ const MessageBox = () => {
           );
 
           Swal.fire("삭제 완료", "모든 메시지가 삭제되었습니다.", "success");
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         }
       }
     } catch (error) {
