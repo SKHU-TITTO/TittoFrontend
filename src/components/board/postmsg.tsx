@@ -16,10 +16,19 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
   onMessageSent,
 }) => {
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
   const accessToken = localStorage.getItem("accessToken");
 
   const handleSend = async () => {
+    // 메시지 유효성 검사
+    if (!content.trim()) {
+      Swal.fire("전송 실패", "메시지를 입력해주세요.", "error");
+      return;
+    }
+
     try {
+      setLoading(true); // 로딩 시작
+
       const response = await axios.post(
         "https://titto.store/message/write",
         { content, receiverNickname: defaultReceiverNickname },
@@ -37,9 +46,15 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
       onCancel();
 
       Swal.fire("성공", "메시지를 전송했습니다.", "success");
+      //전송 성공 후 3초 뒤 새로고침
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } catch (error) {
       console.error(error);
-      Swal.fire("전송 실패", "유저를 선택해야 합니다.", "error");
+      Swal.fire("전송 실패", "메시지 전송 중 오류가 발생했습니다.", "error");
+    } finally {
+      setLoading(false); // 로딩 완료
     }
   };
 
@@ -57,7 +72,9 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
           />
           <ButtonContainer>
             <CancelButton onClick={onCancel}>취소</CancelButton>
-            <SendButton onClick={handleSend}>전송</SendButton>
+            <SendButton onClick={handleSend} disabled={loading}>
+              {loading ? "전송 중..." : "전송"}
+            </SendButton>
           </ButtonContainer>
         </PopupContent>
       </PopupContainer>
@@ -136,6 +153,10 @@ const SendButton = styled.button`
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
 `;
 
 export default NewMessagePopup;

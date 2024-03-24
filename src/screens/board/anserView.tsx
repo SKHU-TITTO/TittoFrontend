@@ -197,17 +197,18 @@ const AnswerView = () => {
   return (
     <Wrapper>
       {loading ? (
-        <LoadingScreen /> // 로딩 중일 때는 LoadingScreen을 표시
+        <LoadingScreen />
       ) : (
         <>
           <CategoryWrapper>
             <div className="categoryBox">
               {changeDepartment(view.department)}
             </div>
-            <div className="categoryBox">{view.sendExperience}</div>
+
             <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
               {view?.status == "UNSOLVED" ? "미해결" : "해결"}
             </div>
+            <div className="categoryBox">내공 : {view.sendExperience}</div>
           </CategoryWrapper>
           <TitleWrapper>{view?.title}</TitleWrapper>
           <ProfileWrapper>
@@ -313,26 +314,32 @@ const CategoryWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+
   .categoryBox {
-    width: fit-content;
     padding: 10px;
     background-color: #3e68ff;
     border-radius: 5px;
     color: white;
   }
+
   .nSolve {
-    width: fit-content;
     padding: 10px;
     border: 1px solid #bababa;
     border-radius: 5px;
     color: #bababa;
   }
+
   .Solve {
-    width: fit-content;
     padding: 10px;
     border: 1px solid black;
     border-radius: 5px;
     color: black;
+  }
+
+  .categoryBox:last-child {
+    margin-left: auto;
   }
 `;
 

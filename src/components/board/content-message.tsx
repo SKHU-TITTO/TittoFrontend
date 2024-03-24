@@ -34,12 +34,6 @@ const ContentMessage = ({
     }
   }, [selectedId]);
 
-  useEffect(() => {
-    if (selectedId !== null) {
-      fetchMessages(selectedId);
-    }
-  }, [messages]);
-
   const fetchMessages = async (id: number) => {
     try {
       const response = await axios.get(`https://titto.store/message/${id}`, {
