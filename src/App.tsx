@@ -33,8 +33,9 @@ const GlobalStyles = createGlobalStyle`
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
   .swal2-icon {
-    margin: 0 auto;
-  }
+    margin: 20px auto 0;
+}
+
 `;
 const router = createBrowserRouter([
   {

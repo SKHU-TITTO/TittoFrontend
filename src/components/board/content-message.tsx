@@ -16,13 +16,13 @@ export type MessageDetail = {
 interface ContentMessageProps {
   selectedId: number | null;
   onSelectedIdChange: (senderId: number | null) => void;
-  message: MessageDetail[]; // messages prop 추가
+  message: MessageDetail[];
 }
 
 const ContentMessage = ({
   selectedId,
   onSelectedIdChange,
-  message, // messages prop 추가
+  message,
 }: ContentMessageProps) => {
   const [messages, setMessages] = useState<MessageDetail[]>([]);
   const accessToken = localStorage.getItem("accessToken");
@@ -33,13 +33,6 @@ const ContentMessage = ({
       fetchMessages(selectedId);
     }
   }, [selectedId]);
-
-  useEffect(() => {
-    // 새로운 메시지를 받을 때마다 해당 발신자의 메시지를 다시 불러옵니다.
-    if (selectedId !== null) {
-      fetchMessages(selectedId);
-    }
-  }, [messages]); // messages 배열이 변경될 때마다 호출됩니다.
 
   const fetchMessages = async (id: number) => {
     try {

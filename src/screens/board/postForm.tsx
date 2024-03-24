@@ -104,6 +104,15 @@ const PostForm = () => {
   }, [postId]);
 
   const handleSubmit = async () => {
+    if (!title.trim() || !htmlContent.trim()) {
+      Swal.fire({
+        icon: "error",
+        title: "제목, 내용을 모두 입력해주세요.",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
     if (boardId === "qna") {
       const apiUrl = postId
         ? `https://titto.store/questions/update/${postId}`

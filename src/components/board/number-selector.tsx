@@ -84,7 +84,6 @@ const NumberSelect = styled.div`
 `;
 
 const NumDiv = styled.div`
-  background-color: #e8eef2;
   line-height: 2em;
   display: flex;
 `;

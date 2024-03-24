@@ -19,21 +19,17 @@ interface TitleMessageProps {
 
 const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
   const [messages, setMessages] = useState<UserMsgInfo[]>([]);
-  const [sortedMessages, setSortedMessages] = useState<UserMsgInfo[]>([]);
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const accessToken = localStorage.getItem("accessToken");
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!loading) {
-      fetchMessages();
-    }
-  }, [loading]);
+    fetchMessages();
+  }, []);
 
   const fetchMessages = async () => {
     try {
-      setLoading(true);
       const response = await axios.get("https://titto.store/message/all", {
         headers: {
           Accept: "application/json",
@@ -44,28 +40,18 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
       setMessages(data);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    const sorted = messages.slice().sort((a, b) => {
-      return b.id - a.id;
-    });
-    setSortedMessages(sorted);
-  }, [messages]);
-
   const handleClick = (id: number) => {
     setClickedIndex(id);
   };
 
   const renderMessages = () => {
-    if (sortedMessages.length === 0) {
+    if (messages.length === 0) {
       return <NoMessages>받은 메시지가 없습니다.</NoMessages>;
     }
 
-    return sortedMessages.map((message, id) => (
+    return messages.map((message, id) => (
       <div
         key={message.id}
         className={`items ${clickedIndex === id ? "active" : ""}`}
@@ -99,9 +85,9 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
               </time>
             </div>
           </div>
-          <div className="bottom">
+          {/* <div className="bottom">
             <p className="text">{message.content}</p>
-          </div>
+          </div> */}
         </MessageLink>
       </div>
     ));
