@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import userStore from "../../stores/UserStore";
+import AccountRoute from "./../../routes/account-route";
 
 export type UserMsgInfo = {
+  receiverNickname: string;
   receiverId: number;
   id: number;
   content: string;
@@ -21,8 +23,6 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
   const [messages, setMessages] = useState<UserMsgInfo[]>([]);
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const accessToken = localStorage.getItem("accessToken");
-
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchMessages();
@@ -77,7 +77,13 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
         >
           <div className="top">
             <div className="left">
-              <h3>{message.senderNickname}</h3>
+              <h3>
+                {userStore.getUser() &&
+                userStore.getUser()?.id === message.receiverId
+                  ? message.senderNickname
+                  : message.receiverNickname}
+                님과의 대화
+              </h3>
             </div>
             <div className="right">
               <time>
@@ -102,6 +108,10 @@ const MessageItems = styled.div`
     background-color: transparent;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
+    height: 80px;
+    vertical-align: middle;
+    justify-content: center;
   }
   h3 {
     font-weight: bold;
