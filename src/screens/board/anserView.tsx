@@ -209,7 +209,7 @@ const AnswerView = () => {
               {view?.status == "UNSOLVED" ? "미해결" : "해결"}
             </div>
           </CategoryWrapper>
-          <TitleWrapper>{view?.title}.</TitleWrapper>
+          <TitleWrapper>{view?.title}</TitleWrapper>
           <ProfileWrapper>
             <div className="profileBox">
               <img
