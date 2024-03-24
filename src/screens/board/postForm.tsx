@@ -134,6 +134,7 @@ const PostForm = () => {
               title: title,
               content: htmlContent,
               department: selectedCategory,
+              sendExperience: exp,
             },
             {
               headers: {
