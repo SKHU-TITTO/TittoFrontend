@@ -99,6 +99,14 @@ const AnswerView = () => {
   }, []);
 
   const handleAnswerSubmit = () => {
+    if (!reviewContent.trim()) {
+      Swal.fire({
+        title: "내용을 입력해주세요",
+        icon: "warning",
+      });
+      return;
+    }
+
     axios
       .post(
         `https://titto.store/answers/create`,
@@ -208,7 +216,7 @@ const AnswerView = () => {
             <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
               {view?.status == "UNSOLVED" ? "미해결" : "해결"}
             </div>
-            <div className="categoryBox">내공 : {view.sendExperience}</div>
+            <div className="exp">내공 : {view.sendExperience}</div>
           </CategoryWrapper>
           <TitleWrapper>{view?.title}</TitleWrapper>
           <ProfileWrapper>
@@ -313,9 +321,9 @@ const CategoryWrapper = styled.div`
   width: 100%;
   margin-top: 20px;
   display: flex;
-  gap: 10px;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 
   .categoryBox {
     padding: 10px;
@@ -338,8 +346,13 @@ const CategoryWrapper = styled.div`
     color: black;
   }
 
-  .categoryBox:last-child {
-    margin-left: auto;
+  .exp {
+    padding: 10px;
+    background-color: #3e68ff;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    margin-left: auto; /* 내공 요소를 오른쪽으로 이동 */
   }
 `;
 

@@ -93,13 +93,6 @@ const CommentDetail = ({ postId }: { postId: string }) => {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "삭제",
       cancelButtonText: "취소",
-      customClass: {
-        popup: "custom-popup-class",
-        title: "custom-title-class",
-        htmlContainer: "custom-html-container-class",
-        confirmButton: "custom-confirm-button-class",
-        cancelButton: "custom-cancel-button-class",
-      },
     });
 
     if (confirmResult.isConfirmed) {
