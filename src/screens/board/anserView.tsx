@@ -226,7 +226,7 @@ const AnswerView = () => {
                 </div>
               </div>
             </div>
-            {userStore.getUser()?.id === view.authorId ? (
+            {!view.accepted && userStore.getUser()?.id === view.authorId ? (
               <div>
                 <div>
                   <button
