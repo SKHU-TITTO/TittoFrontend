@@ -22,6 +22,12 @@ const Wrapper = styled.div`
       background-color: #7391ff;
     }
   }
+
+  img {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 `;
 
 const ContentBox = styled.div`
@@ -69,12 +75,6 @@ const Description = styled.p`
   margin-bottom: 15px;
   line-height: 1.5;
   text-align: left;
-  img {
-    width: 100%;
-    height: 700px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -118,19 +118,23 @@ const Slider2 = () => {
               게시판입니다.
             </SubHeader>
             <Description>
-              티토찾아요 게시판은 멘토, 멘티, 스터디, 어울림을 할 사람들을 찾는
-              게시판입니다. 여기서 당신의 멘토를 만나보세요! <br />이
-              게시판에서는 멘토링, 스터디 파트너, 함께 공부할 사람 등을 찾을 수
-              있습니다.
+              여기서 당신의 멘토를 만나보세요! <br />이 게시판에서는 멘토링,
+              스터디 파트너, 함께 공부할 사람 등을 찾을 수 있습니다.
               <br />
               1. 먼저 글쓰기를 누른 후, 원하는 카테고리를 선택합니다. <br />
+              <img src="/imgs/slider/s2detail/titto/1.png" alt="image" />
               2. 제목과 내용을 작성합니다. <br />
+              <img src="/imgs/slider/s2detail/titto/2.png" alt="image" />
               3. 글을 등록합니다. <br />
+              <img src="/imgs/slider/s2detail/titto/3.png" alt="image" />
               4. 다른 사용자들이 당신의 글을 확인하고 답장을 남겨줄 수 있습니다.
               <br />
+              <img src="/imgs/slider/s2detail/titto/4.png" alt="image" />
               5. 다른 사용자들의 글을 확인하고 답장을 남겨주세요!
               <br />
+              <img src="/imgs/slider/s2detail/titto/5.png" alt="image" />
               6. 모집이 완료되면 글쓴이는 모집완료 버튼을 눌러주세요!
+              <img src="/imgs/slider/s2detail/titto/6.png" alt="image" />
             </Description>
           </DetailContent>
         )}
@@ -142,23 +146,28 @@ const Slider2 = () => {
               도와주는 곳입니다.
             </SubHeader>
             <Description>
-              질문있어요 게시판은 여러분이 가지고 있는 궁금증을 해결할 수 있도록
-              도와주는 곳입니다. <br />
-              궁금한 점이 있다면 언제든지 질문해주세요! 다른 사용자들과 함께
-              문제를 해결하고 지식을 공유할 수 있습니다
+              궁금한 점이 있다면 언제든지 질문해주세요!
+              <br /> 다른 사용자들과 함께 문제를 해결하고 지식을 공유할 수
+              있습니다
               <br />
+              <img src="/imgs/slider/s2detail/qna/1.png" alt="image" />
+              <hr />
               1. 먼저 글쓰기를 누른 후, 원하는 카테고리와 내공을 선택합니다.
               <br />
               2. 제목과 내용을 작성합니다. <br />
+              <img src="/imgs/slider/s2detail/qna/2.png" alt="image" />
               3. 글을 등록합니다. <br />
+              <img src="/imgs/slider/s2detail/qna/3.png" alt="image" />
               4. 다른 사용자들이 당신의 글을 확인하고 답장을 남겨줄 수 있습니다.
               <br />
               5. 다른 사용자들의 글을 확인하고 답변을 남겨주세요!
               <br />
+              <img src="/imgs/slider/s2detail/qna/4.png" alt="image" />
               6. 답변이 도움이 되었다면 채택 버튼을 눌러주세요!
               <br />
               7. 문제가 해결되었다면 미해결에서 해결로 바뀝니다!
               <br />
+              <img src="/imgs/slider/s2detail/qna/5.png" alt="image" />
               <br />
               <SubHeader>주의사항</SubHeader>
               <p>
@@ -168,6 +177,7 @@ const Slider2 = () => {
                 3. 질문 게시판에서는 답변을 채택하면 답변한 유저에게 내공이
                 지급됩니다. <br />
                 4. 채택이 완료되면 그 게시글은 삭제할 수 없습니다. <br />
+                5. 채택은 한 번만 가능합니다. <br />
               </p>
             </Description>
           </DetailContent>
@@ -179,22 +189,24 @@ const Slider2 = () => {
               마이페이지는 유저의 정보를 확인하고 쪽지를 보낼 수 있는 곳입니다.
             </SubHeader>
             <Description>
-              1. 게시글을 쓴 유저, 답변을 달은 유저에게 궁금한 점이 있다면 유저
-              프로필에 들어가서 쪽지를 보낼 수 있습니다!
-              <img src="/imgs/mainimg/titto.png" alt="image" />
+              1. 게시글을 쓴 유저, 답변을 달은 유저에게 궁금한 점이 있다면,
+              <br />
+              유저 프로필에 들어가서 쪽지를 보낼 수 있습니다!
+              <img src="/imgs/slider/s2detail/mypage/1.png" alt="image" />
               <br />
               2. 마이페이지에서는 내가 쓴 글, 내가 쓴 답변을 확인할 수 있습니다.
-              <img src="/imgs/mainimg/titto.png" alt="image" />
               <br />
               3. 유저프로필에 답변한 글은 티토게시판에 답변이 아닌 질문게시판의
               답변 내용만 보여집니다.
-              <img src="/imgs/mainimg/titto.png" alt="image" />
               <br />
               4. 마이페이지는 내공, 레벨, 채택률, 보유 뱃지 등을 확인할 수
               있습니다.
-              <img src="/imgs/mainimg/titto.png" alt="image" />
               <br />
               5. 보유 뱃지는 티토에서 활동한 내역에 따라 지급됩니다.
+              <img src="/imgs/slider/s2detail/mypage/2.png" alt="image" />
+              6. 명예의전당에는 내공이 가장 많은 상위 10명의 유저들이
+              나타납니다.
+              <img src="/imgs/slider/s2detail/mypage/ranking.png" alt="image" />
             </Description>
           </DetailContent>
         )}
