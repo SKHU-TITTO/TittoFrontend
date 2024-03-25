@@ -145,18 +145,18 @@ const TitleWrapper = styled.tr<TitleWrapperProps>`
         margin: 0;
 
         dt {
-          margin-bottom: 5px;
-          font-size: 1.1em;
+          margin-bottom: 10px;
+          font-size: 1.2em;
           font-weight: bold;
         }
 
         dd {
           margin: 0;
-          font-size: 0.9em;
+          font-size: 0.8em;
           color: #666;
 
           span {
-            margin-right: 5px; /* 간격 조정 */
+            margin-right: 5px;
           }
         }
       }
