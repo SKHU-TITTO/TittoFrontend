@@ -7,6 +7,7 @@ import TTfooter from "./TTfooter";
 import { UserInfo } from "../screens/board/postView";
 import axios from "axios";
 import LoadingScreen from "./board/loadingscreen";
+import Swal from "sweetalert2";
 
 const TTlayout = () => {
   const navigate = useNavigate();
@@ -32,29 +33,42 @@ const TTlayout = () => {
   };
 
   const logout = () => {
-    axios
-      .post(
-        "https://titto.store/oauth/logout",
-        {
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Accept: "application/json;charset=UTF-8",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        }
-      )
-      .then((response) => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        navigate("/login/sign_in");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    Swal.fire({
+      title: "로그아웃",
+      text: "로그아웃 하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .post(
+            "https://titto.store/oauth/logout",
+            {
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json;charset=UTF-8",
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            }
+          )
+          .then((response) => {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            Swal.fire("성공", "로그아웃 되었습니다!", "success");
+            navigate("/login/sign_in");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    });
   };
 
   useEffect(() => {
@@ -108,7 +122,7 @@ const TTlayout = () => {
 
   return (
     <>
-      {isLoading ? ( // 로딩 중이면 LoadingScreen 컴포넌트 표시
+      {isLoading ? (
         <LoadingScreen />
       ) : (
         <>
@@ -126,7 +140,7 @@ const TTlayout = () => {
                 <Link to="/board/lists/qna/1">질문있어요 </Link>
               </NavLi>
               <NavLi>
-                <Link to="/ranking">명예의 전당! </Link>
+                <Link to="/ranking">명예의 전당 </Link>
               </NavLi>
 
               <NavProfile>
@@ -155,8 +169,8 @@ const TTlayout = () => {
                       <PopupMyPage onClick={() => navigate("/mypage")}>
                         마이페이지
                       </PopupMyPage>
-                      <PopupLogout onClick={logout}>로그아웃</PopupLogout>
                     </PopupContent>
+                    <PopupLogout onClick={logout}>로그아웃</PopupLogout>
                   </PopupContainer>
                 )}
               </NavProfile>
@@ -257,13 +271,12 @@ const Container = styled.div`
 
 const PopupContainer = styled.div`
   position: absolute;
-  top: 100%;
-  width: 150px;
+  top: 80%;
+  left: -50%;
+  width: 170px;
   background-color: #fff;
   border: 2px solid #ccc;
-
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 12px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   z-index: 10;
 `;
@@ -271,25 +284,36 @@ const PopupContainer = styled.div`
 const PopupContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
 `;
 
 const PopupProfile = styled.div`
   justify-content: center;
-  font-size: em;
+  font-size: 1em;
   font-weight: bold;
 `;
 
 const PopupMyPage = styled.div`
   color: #ccc;
+  &:hover {
+    color: black;
+  }
 `;
 
 const PopupLogout = styled.div`
   justify-content: center;
   text-align: center;
+
   font-size: 15px;
   cursor: pointer;
   background-color: #3e68ff;
   color: #fff;
-  padding: 10px;
+  padding: 15px;
+  border-radius: 0 0 10px 10px;
+
+  &:hover {
+    background-color: #e61919;
+  }
 `;

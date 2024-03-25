@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import userStore from "../../stores/UserStore";
-import AccountRoute from "./../../routes/account-route";
 
 export type UserMsgInfo = {
   receiverNickname: string;
@@ -28,6 +27,19 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
     fetchMessages();
   }, []);
 
+  const calculateTimeDifference = (sentAt: string | number | Date) => {
+    const sentTime = new Date(sentAt).getTime();
+    const currentTime = new Date().getTime();
+    const differenceInMs = currentTime - sentTime;
+    const differenceInHours = Math.floor(differenceInMs / (1000 * 60 * 60));
+
+    if (differenceInHours === 0) {
+      const differenceInMinutes = Math.floor(differenceInMs / (1000 * 60));
+      return `${differenceInMinutes}분 전`;
+    } else {
+      return `${differenceInHours}시간 전`;
+    }
+  };
   const fetchMessages = async () => {
     try {
       const response = await axios.get("https://titto.store/message/all", {
@@ -36,12 +48,19 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const data = response.data;
+      let data = response.data;
+      data.sort(
+        (
+          a: { sentAt: string | number | Date },
+          b: { sentAt: string | number | Date }
+        ) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()
+      );
       setMessages(data);
     } catch (error) {
       console.error(error);
     }
   };
+
   const handleClick = (id: number) => {
     setClickedIndex(id);
   };
@@ -82,13 +101,11 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
                 userStore.getUser()?.id === message.receiverId
                   ? message.senderNickname
                   : message.receiverNickname}
-                님과의 대화
+                님과의 쪽지
               </h3>
             </div>
             <div className="right">
-              <time>
-                {new Date(message.sentAt).toLocaleDateString("ko-KR")}
-              </time>
+              <time>{calculateTimeDifference(message.sentAt)}</time>
             </div>
           </div>
           {/* <div className="bottom">
