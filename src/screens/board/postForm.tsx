@@ -114,6 +114,21 @@ const PostForm = () => {
       return;
     }
 
+    // 이미지 업로드 관련 코드
+    const quill = quillRef.current?.getEditor();
+    const delta = quill?.getContents();
+
+    const imageCount =
+      delta?.ops?.filter((op) => op.insert && op.insert.image).length ?? 0;
+    if (imageCount > 1) {
+      Swal.fire({
+        icon: "error",
+        title: "이미지는 한 장만 업로드할 수 있습니다.",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
     if (boardId === "qna") {
       const apiUrl = postId
         ? `https://titto.store/questions/update/${postId}`
