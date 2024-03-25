@@ -5,7 +5,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const [errorcolor, setErrorcolor] = useState("red");
+  const [nickErrorColor, setNickErrorcolor] = useState("red");
+  const [noErrorColor, setNoErrorColor] = useState("red");
   const [isCheckNick, setIsCheckNick] = useState(false);
   const [isCheckStudentNo, setIsCheckStudentNo] = useState(false);
   const [nickname, setNickname] = useState("");
@@ -18,20 +19,31 @@ const SignUpPage = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   const handleNicknameCheck = async () => {
+    if (!nickname.trim()) {
+      setNicknameError("닉네임을 입력해주세요.");
+      setNickErrorcolor("red");
+      return;
+    }
+
     try {
-      const res = await axios.get("/user/check/nickname", {
+      const res = await axios.get("https://titto.store/user/check/nickname", {
         params: {
           nickname: nickname,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/json;charset=UTF-8",
         },
       });
       if (res.status === 200) {
         setNicknameError("사용 가능한 닉네임입니다.");
+        setNickErrorcolor("green");
         setIsCheckNick(true);
-        setErrorcolor("green");
       }
     } catch (error: any) {
       if (error.response.status === 409) {
         setNicknameError("이미 사용 중인 닉네임입니다.");
+        setNickErrorcolor("red");
       } else {
         setNicknameError("서버 에러가 발생했습니다.");
       }
@@ -39,20 +51,31 @@ const SignUpPage = () => {
   };
 
   const handleStudentNoCheck = async () => {
+    if (!studentNo.trim()) {
+      setStudentNoError("학번을 입력해주세요.");
+      setNoErrorColor("red");
+      return;
+    }
+
     try {
-      const res = await axios.get("/user/check/studentNo", {
+      const res = await axios.get("https://titto.store/user/check/studentNo", {
         params: {
           studentNo: studentNo,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/json;charset=UTF-8",
         },
       });
       if (res.status === 200) {
         setStudentNoError("사용 가능한 학번입니다.");
         setIsCheckStudentNo(true);
-        setErrorcolor("green");
+        setNoErrorColor("green");
       }
     } catch (error: any) {
       if (error.response.status === 409) {
         setStudentNoError("이미 사용 중인 학번입니다.");
+        setNoErrorColor("red");
       } else {
         setStudentNoError("서버 에러가 발생했습니다.");
       }
@@ -150,12 +173,25 @@ const SignUpPage = () => {
             },
           }
         );
+        Swal.fire({
+          icon: "success",
+          title: "회원가입이 완료되었습니다.",
+          confirmButtonText: "확인",
+        });
 
         if (res.status === 200) {
           navigate("/login/welcome", { state: { nickname } });
           handleSaveProfile();
         }
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 400) {
+          Swal.fire({
+            icon: "error",
+            title: "중복 오류",
+            text: "중복된 곳을 확인해주세요.",
+            confirmButtonText: "확인",
+          });
+        }
         console.error(error);
       }
     }
@@ -196,7 +232,7 @@ const SignUpPage = () => {
             중복확인
           </button>
         </SignUpInputContainer>
-        <SignUpError color={errorcolor}>{nicknameError}</SignUpError>
+        <SignUpError color={nickErrorColor}>{nicknameError}</SignUpError>
         <SignUpLabel>학번</SignUpLabel>
         <SignUpInputContainer>
           <input
@@ -210,7 +246,7 @@ const SignUpPage = () => {
             중복확인
           </button>
         </SignUpInputContainer>
-        <SignUpError color={errorcolor}>{studentNoError}</SignUpError>
+        <SignUpError color={noErrorColor}>{studentNoError}</SignUpError>
         <SignUpLabel>한 줄 소개</SignUpLabel>
         <SignUpInputContainer>
           <input
