@@ -61,31 +61,31 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <>
-      <LoginPageWrapper>
-        <LoginForm>
-          <LoginMainTitle>
-            <p>TITTO</p>
-            <p>더 나은 캠퍼스 라이프.</p>
-          </LoginMainTitle>
+    <LoginPageWrapper>
+      <LoginForm>
+        <LoginMainTitle>
+          <p>TITTO</p>
+          <p>더 나은 캠퍼스 라이프</p>
 
-          <LoginTitleContainer>
-            <LoginTitle>
-              <span>다음으로 로그인</span>
-              <hr />
-            </LoginTitle>
-            <LoginBtnContainer>
-              <div className="kakao" onClick={handleKakaoLogin}>
-                <img src="/imgs/kakaoimg.png" alt="kakao_logo" />
-                <button type="button" className="btn_login_kakao">
-                  <span>카카오 로그인</span>
-                </button>
-              </div>
-            </LoginBtnContainer>
-          </LoginTitleContainer>
-        </LoginForm>
-      </LoginPageWrapper>
-    </>
+          {/* <p>환영합니다.</p> */}
+        </LoginMainTitle>
+
+        <LoginTitleContainer>
+          {/* <LoginTitle>
+            <span>다음으로 로그인</span>
+            <hr />
+          </LoginTitle> */}
+          <LoginBtnContainer>
+            <div className="kakao" onClick={handleKakaoLogin}>
+              <img src="/imgs/kakaoimg.png" alt="kakao_logo" />
+              <button type="button" className="btn_login_kakao">
+                <span>카카오 로그인</span>
+              </button>
+            </div>
+          </LoginBtnContainer>
+        </LoginTitleContainer>
+      </LoginForm>
+    </LoginPageWrapper>
   );
 };
 
@@ -96,84 +96,109 @@ const LoginPageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: linear-gradient(
+    45deg,
+    rgba(66, 183, 245, 0.8) 0%,
+    rgba(66, 245, 189, 0.4) 100%
+  );
 `;
 
 const LoginForm = styled.form`
-  width: 450px;
+  width: 500px;
   margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const LoginMainTitle = styled.div`
   text-align: center;
+  margin-top: 30px;
   p:nth-child(1) {
     font-size: 64px;
     font-weight: bold;
     color: #3e68ff;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
   }
+
   p:nth-child(2) {
     font-size: 32px;
-    color: #c6c6c6;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: bold;
+    margin: 10px 0px 0px 10px;
+    margin-bottom: 20px;
+  }
+  p:nth-child(3) {
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.6);
     font-weight: bold;
     margin: 10px 0px 0px 0px;
   }
 `;
 
 const LoginTitleContainer = styled.div`
-  margin: 30px auto 0;
+  margin: 20px auto 0;
   padding: 20px 28px;
-  border: 1px solid #c6c6c6;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 5px 8px 0 rgba(68, 68, 68, 0.04);
   display: flex;
   flex-direction: column;
+  margin-top: 0px;
 `;
 
-const LoginTitle = styled.div`
-  text-align: center;
-  margin-bottom: 20px;
-  span {
-    color: #c6c6c6;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  hr {
-    border: 1px solid #c6c6c6;
-    margin: 8px 0;
-    margin-bottom: 20px;
-  }
-`;
+// const LoginTitle = styled.div`
+//   text-align: center;
+//   margin-bottom: 20px;
+
+//   span {
+//     color: rgba(0, 0, 0, 0.6);
+//     font-size: 18px;
+//     font-weight: bold;
+//   }
+
+//   hr {
+//     border: 1px solid rgba(0, 0, 0, 0.6);
+//     margin: 8px 0;
+//     margin-bottom: 20px;
+//   }
+// `;
+
 const LoginBtnContainer = styled.div`
   .kakao {
-    width: 100%;
+    width: 80%;
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    margin: 0 auto;
     border-radius: 12px;
     border: 1px solid #fae100;
     background-color: #fae100;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 
     img {
-      height: 70px;
-      margin-right: 10px;
-      display: flex;
+      height: 60px;
+      margin-right: 15px;
     }
   }
 
   button {
-    height: 70px;
+    height: 60px;
     padding: 13px 0;
     background-color: #fae100;
     justify-content: center;
     border: none;
     font-weight: bold;
     color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 
     span {
       font-size: 18px;
-      margin-left: 60px;
+      margin-left: 40px;
       text-align: center;
     }
   }
