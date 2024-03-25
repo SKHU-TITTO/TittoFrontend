@@ -30,9 +30,7 @@ const AccountManagementContent = () => {
   });
 
   const [isCheckNick, setIsCheckNick] = useState(false);
-  const [isCheckStudentNo, setIsCheckStudentNo] = useState(false);
   const [nicknameError, setNicknameError] = useState("");
-  const [studentNoError, setStudentNoError] = useState("");
   const accessToken = localStorage.getItem("accessToken");
   const [errorcolor, setErrorcolor] = useState("red");
   const handleEditClick = () => {
@@ -76,6 +74,12 @@ const AccountManagementContent = () => {
   };
 
   const handleNicknameCheck = async () => {
+    if (!userSignfo.nickname.trim()) {
+      setNicknameError("닉네임을 입력해주세요.");
+      setErrorcolor("red");
+      return;
+    }
+
     try {
       const res = await axios.get("https://titto.store/user/check/nickname", {
         params: {
@@ -101,41 +105,13 @@ const AccountManagementContent = () => {
     }
   };
 
-  const handleStudentNoCheck = async () => {
-    try {
-      const res = await axios.get("https://titto.store/user/check/studentNo", {
-        params: {
-          studentNo: userSignfo.studentNo,
-        },
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: "application/json;charset=UTF-8",
-        },
-      });
-      if (res.status === 200) {
-        setStudentNoError("사용 가능한 학번입니다.");
-        setIsCheckStudentNo(true);
-        setErrorcolor("green");
-      }
-    } catch (error: any) {
-      if (error.response.status === 409) {
-        setStudentNoError("이미 사용 중인 학번입니다.");
-        setErrorcolor("red");
-      } else {
-        setStudentNoError("서버 에러가 발생했습니다.");
-      }
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // 닉네임 또는 학번이 입력되지 않은 경우
-    if (!userSignfo.nickname || !userSignfo.studentNo) {
+    if (!userSignfo.nickname) {
       Swal.fire({
         icon: "error",
         title: "입력 오류",
-        text: "닉네임과 학번을 입력해주세요.",
+        text: "닉네임을 입력해주세요.",
         confirmButtonText: "확인",
       });
       return;
@@ -148,17 +124,11 @@ const AccountManagementContent = () => {
         updatedInfo.nickname = userSignfo.nickname;
       }
 
-      if (userSignfo.studentNo !== "") {
-        updatedInfo.studentNo = userSignfo.studentNo;
-      }
-
-      if (userSignfo.department !== "") {
-        updatedInfo.department = userSignfo.department;
-      }
-
       const res = await axios.put(
-        "https://titto.store/user/signup",
-        updatedInfo,
+        "https://titto.store/user/update",
+        {
+          newNickname: updatedInfo.nickname,
+        },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -177,8 +147,17 @@ const AccountManagementContent = () => {
           window.location.reload();
         });
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        Swal.fire({
+          icon: "error",
+          title: "중복 오류",
+          text: "이미 사용 중인 닉네임입니다.",
+          confirmButtonText: "확인",
+        });
+      } else {
+        console.error(error);
+      }
     }
   };
 
@@ -259,44 +238,6 @@ const AccountManagementContent = () => {
                 </InputContainer>
                 <FormError color={errorcolor}>{nicknameError}</FormError>
 
-                <p className="subname">
-                  학번 <span style={{ color: "red" }}>*</span>
-                </p>
-                <InputContainer>
-                  <input
-                    type="text"
-                    id="studentNo"
-                    placeholder={userSignfo.studentNo}
-                    value={userSignfo.studentNo}
-                    onChange={handleChange}
-                  />
-                  <button
-                    onClick={handleStudentNoCheck}
-                    type="button"
-                    className="checkbtn"
-                  >
-                    중복 확인
-                  </button>
-                </InputContainer>
-                <FormError color={errorcolor}>{studentNoError}</FormError>
-
-                <p className="subname">
-                  학과 <span style={{ color: "red" }}>*</span>
-                </p>
-                <SelectDepartMent
-                  name="department"
-                  value={userSignfo.department}
-                  onChange={(e) =>
-                    setSignInfo({ ...userSignfo, department: e.target.value })
-                  }
-                >
-                  <option value="HUMANITIES">인문융합콘텐츠</option>
-                  <option value="MANAGEMENT">경영</option>
-                  <option value="SOCIETY">사회융합</option>
-                  <option value="MEDIA_CONTENT">미디어콘텐츠융합</option>
-                  <option value="FUTURE_FUSION">미래융합</option>
-                  <option value="SOFTWARE">소프트웨어융합</option>
-                </SelectDepartMent>
                 <div className="btn-container">
                   <button className="btn" type="submit">
                     저장
@@ -507,21 +448,6 @@ const FormError = styled.div`
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 20px;
-`;
-
-const SelectDepartMent = styled.select`
-  padding: 10px;
-  font-size: 16px;
-  width: 30%;
-  border: 1px solid #bababa;
-  border-radius: 7px;
-  cursor: pointer;
-  outline: none;
-
-  option {
-    background-color: #fff;
-    color: #333;
-  }
 `;
 
 export default AccountManagementContent;
