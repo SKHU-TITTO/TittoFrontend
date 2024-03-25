@@ -15,7 +15,7 @@ const TittoCategory = () => {
           window.location.href = "/board/lists/titto/1/?category=STUDY";
         }}
       >
-        스터디만만 보기
+        스터디만 보기
       </CategorySelect>
       <CategorySelect
         onClick={() => {
