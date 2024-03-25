@@ -76,29 +76,19 @@ const SliderWrap = styled.div`
   .slick-prev {
     left: 10px;
     z-index: 1;
-    width: 55px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     &:before {
       content: "";
-      width: 50px;
-      height: 50px;
-      background-color: #000;
-      opacity: 0.5;
-      border-radius: 50%;
     }
   }
   .slick-next {
     right: 10px;
     z-index: 1;
-    width: 55px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     &:before {
       content: "";
-      width: 50px;
-      height: 50px;
-      background-color: #000;
-      opacity: 0.5;
-      border-radius: 50%;
     }
   }
   .slick-prev:hover,
