@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import userStore from "../../stores/UserStore";
-import AccountRoute from "./../../routes/account-route";
 
 export type UserMsgInfo = {
   receiverNickname: string;
@@ -49,12 +48,19 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const data = response.data;
+      let data = response.data;
+      data.sort(
+        (
+          a: { sentAt: string | number | Date },
+          b: { sentAt: string | number | Date }
+        ) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()
+      );
       setMessages(data);
     } catch (error) {
       console.error(error);
     }
   };
+
   const handleClick = (id: number) => {
     setClickedIndex(id);
   };
@@ -95,7 +101,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
                 userStore.getUser()?.id === message.receiverId
                   ? message.senderNickname
                   : message.receiverNickname}
-                님과의 대화
+                님과의 쪽지
               </h3>
             </div>
             <div className="right">

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { MessageDetail } from "./content-message";
-import Swal from "sweetalert2"; // SweetAlert2 라이브러리 추가
+import Swal from "sweetalert2";
 
 interface NewMessageProps {
   onCancel: () => void;
@@ -16,18 +16,17 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
   onMessageSent,
 }) => {
   const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [loading, setLoading] = useState(false);
   const accessToken = localStorage.getItem("accessToken");
 
   const handleSend = async () => {
-    // 메시지 유효성 검사
     if (!content.trim()) {
       Swal.fire("전송 실패", "메시지를 입력해주세요.", "error");
       return;
     }
 
     try {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
 
       const response = await axios.post(
         "https://titto.store/message/write",
@@ -46,15 +45,14 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
       onCancel();
 
       Swal.fire("성공", "메시지를 전송했습니다.", "success");
-      //전송 성공 후 3초 뒤 새로고침
       setTimeout(() => {
         window.location.reload();
-      }, 3000);
+      }, 1000);
     } catch (error) {
       console.error(error);
       Swal.fire("전송 실패", "메시지 전송 중 오류가 발생했습니다.", "error");
     } finally {
-      setLoading(false); // 로딩 완료
+      setLoading(false);
     }
   };
 
