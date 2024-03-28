@@ -77,14 +77,14 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
             }
           );
           setPages(response.data.totalPages);
+
           const formattedPosts = response.data.content.map(
             (post: TITTOPost) => ({
               ...post,
-              createDate: new Date(
-                new Date(post.createDate).getTime()
-              ).toLocaleString(),
+              createDate: new Date(post.createDate).toISOString().split("T")[0],
             })
           );
+
           setPosts(formattedPosts);
         } else {
           const response = await axios.get(
@@ -100,9 +100,9 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
           const formattedPosts = response.data.content.map(
             (post: TITTOPost) => ({
               ...post,
-              createDate: new Date(
-                new Date(post.createDate).getTime()
-              ).toLocaleString(),
+              createDate: new Date(new Date(post.createDate).getTime())
+                .toISOString()
+                .split("T")[0],
             })
           );
           setPosts(formattedPosts);

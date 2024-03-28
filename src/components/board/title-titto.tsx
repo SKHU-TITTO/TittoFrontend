@@ -26,7 +26,7 @@ const TittoTitle = ({ title, author, date, postId, status }: TitleType) => {
       </td>
       <td>{title}</td>
       <td>{author}</td>
-      <td style={{ fontSize: "9px" }}>{date}</td>
+      <td style={{ fontSize: "15px" }}>{date}</td>
     </TitleWrapper>
   );
 };
