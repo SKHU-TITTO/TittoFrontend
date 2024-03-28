@@ -99,7 +99,6 @@ const Button = styled.button`
 
 const Slider2 = () => {
   const [tab, setTab] = useState(1);
-
   return (
     <Wrapper>
       <ContentBox>

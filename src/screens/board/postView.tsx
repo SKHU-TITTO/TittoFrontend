@@ -25,15 +25,15 @@ const PostView = () => {
   const [title, setTitles] = useState("");
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
-  const [detail, setDetail] = useState("");
+  const [detail, setDetail] = useState(""); // 글 내용
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [date, setDate] = useState("");
   const { boardId = "default", postId } = useParams();
   const [view, setView] = useState(0);
-  const [comment, setComment] = useState();
+  const [comment, setComment] = useState(); //댓글 수
   const accessToken = localStorage.getItem("accessToken");
-  const [reviewContent, setReviewContent] = useState("");
+  const [reviewContent, setReviewContent] = useState(""); // 댓글 내용
   const [userMyfo, setMyInfo] = useState<UserInfo>({
     name: "",
     profileImg: "",
@@ -235,7 +235,7 @@ const PostView = () => {
         {
           category: category,
           title: title,
-          content: reviewContent,
+          content: detail,
           status: newStatus,
         },
         {
