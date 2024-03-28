@@ -282,9 +282,7 @@ const AccountManagementContent = () => {
           <AccountDeleteDiv>
             <p>계정 삭제</p>
             <div className="DeleteContainer">
-              <p className="subname">
-                계정 삭제 시 프로필 및 정보가 삭제 됩니다.
-              </p>
+              <p className="etc">계정 삭제 시 프로필 및 정보가 삭제 됩니다.</p>
               <button className="btn" onClick={handleDeleteAccount}>
                 삭제
               </button>
@@ -354,12 +352,15 @@ const AccountOauthDiv = styled.div`
 
 const AccountDeleteDiv = styled.div`
   margin-top: 30px;
+
   p {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+    display: inline-block;
   }
-  & .DeleteContainer {
+
+  .DeleteContainer {
     width: 100%;
     border: 1px solid #bababa;
     border-radius: 5px;
@@ -369,6 +370,11 @@ const AccountDeleteDiv = styled.div`
     align-items: center;
     display: flex;
     justify-content: space-between;
+  }
+  .etc {
+    font-size: 20px;
+    color: #bababa;
+    text-align: left;
   }
 `;
 
