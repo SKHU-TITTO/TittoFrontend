@@ -57,12 +57,6 @@ COVID-19 팬데믹 이후, 우리의 삶이 대부분 정상화되었지만, 학
 
 ## 🖥️ Preview
 
-| -                                                                                                                                                                 | -                                                                                                                                               | -                                                                                                                                                       |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 로그인<img width="1552" alt="로그인" src="https://github.com/SKHUMEET/.github/assets/53474999/c967706b-2022-4d16-9d4a-801e978b20d3">                          | 회원가입<img width="1440" alt="회원가입" src="https://github.com/SKHUMEET/.github/assets/53474999/f61e6a28-5a5b-4022-91cf-faeebce057ec">  | 메인페이지 <img width="1552" alt="메인" src="https://github.com/SKHUMEET/.github/assets/53474999/756d89b9-80a9-4094-98ac-eb5c103cd90a">              |
-| 리스트뷰<img width="1552" alt="리스트아이템" src="https://github.com/SKHUMEET/.github/assets/53474999/bf9460cb-cdd0-4745-b68b-6e4a73187122">               | 카트뷰<img width="1552" alt="카드아이템" src="https://github.com/SKHUMEET/.github/assets/53474999/c5077665-bc9b-4578-be25-e50107969db3">  | 작성<img width="1552" alt="작성페이지 에이터" src="https://github.com/SKHUMEET/.github/assets/53474999/9cd703ae-0d31-4e21-9424-47cf2cec45e6"> |
-| 디테일페이지 <img width="1552" alt="댓글입력, 북마크" src="https://github.com/SKHUMEET/.github/assets/53474999/ca3bf1d2-52a7-4411-8af7-9d1405d3591a"> | 정보수정 <img width="1552" alt="정보수정" src="https://github.com/SKHUMEET/.github/assets/53474999/f773fc57-18ed-4cb3-a928-2d6164770eb7"> | ![skhumeet](https://github.com/SKHUMEET/.github/assets/53474999/ee359120-caf2-4ded-9395-8853f8664139)                                                   |
-
 <table>
 <tbody>
   <tr>
