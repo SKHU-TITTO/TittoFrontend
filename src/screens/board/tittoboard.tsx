@@ -59,9 +59,7 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
           const formattedPosts = response.data.content.map(
             (post: TITTOPost) => ({
               ...post,
-              createDate: new Date(
-                new Date(post.createDate).getTime()
-              ).toLocaleString(),
+              createDate: new Date(post.createDate).toISOString().split("T")[0],
             })
           );
           setPosts(formattedPosts);
@@ -142,7 +140,7 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
                       window.location.reload();
                     }}
                   >
-                    <SearchIcon style={{ fontSize: "43px" }}></SearchIcon>
+                    <SearchIcon style={{ fontSize: "40px" }}></SearchIcon>
                   </button>
                 </SearchDiv>
                 <span
@@ -217,15 +215,17 @@ const MainDiv = styled.div`
 `;
 const SearchDiv = styled.div`
   width: 100%;
+  display: flex;
+  align-items: center;
   border: 1px solid #bababa;
   border-radius: 10px;
   text-align: left;
   height: 50px;
-
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 10px;
+
   input {
-    width: 90%;
+    width: calc(100% - 50px);
     height: 40px;
     margin-left: 10px;
     font-size: 20px;
@@ -234,19 +234,28 @@ const SearchDiv = styled.div`
     border: none;
     text-align: left;
   }
+
   input:focus {
     outline: none;
     color: black;
   }
+
   input:focus::placeholder {
     opacity: 0;
   }
 
   button {
-    vertical-align: middle;
     border: none;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    align-items: center;
+    width: 40px;
+    height: 100%;
+    cursor: pointer;
   }
+
   button:hover {
     cursor: pointer;
   }
