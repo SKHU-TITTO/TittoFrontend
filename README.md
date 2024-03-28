@@ -1,12 +1,15 @@
 <div align="center">
-<h1>제16회 소프트웨어 경진대회 <br/> Team <b>TITTO</b> FrontEnd</h1>
+<h1>제16회 소프트웨어 경진대회 <br/> Team <b>TITTO</b></h1>
 
 <i><b>2024. 2. 01 ~ 2024. 04. 01</b></i>
 <br/><br/>
-<a href="https://titto.world/"><img src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/bca57760-6e71-425b-ab35-b29f74c61faf" width=50% /></a></br>
+<a href="https://titto.world/"><img src="https://github.com/SKHU-TITTO/.github/assets/49172536/60afe27c-b94e-48c0-a542-53cf89e38ae1" width="80%"/>
+</a></br>
 <br/><br/>
 
-### [우리만의 세계 TITTO World로 바로가기](https://titto.world/)
+### 우리만의 세계 TITTO World
+
+## https://titto.world
 
 </div>
 
@@ -34,25 +37,26 @@ COVID-19 팬데믹 이후, 우리의 삶이 대부분 정상화되었지만, 학
 ## 🛢 Database ERD
 
 <div align="center">
-  <img width="100%" alt="ERD" src="https://github.com/SKHU-TITTO/TittoFrontend/assets/49172536/8cc391e1-0793-4c91-828a-c844aaddf494">
+
+  <img width="100%" alt="ERD" src="https://github.com/SKHU-TITTO/.github/assets/49172536/7a5dbea4-312b-4fe8-971a-cfbc0088dbb0">
 </div>
 
 ## 📱 API
 
-- TITTO Swagger (https://titto.store/swagger-ui/index.html)
+- TITTO Swagger </br> https://titto.store/swagger-ui/index.html
   <br/><br/>
 
 ## 🎨 Design
 
-- TITTO FIGMA(https://www.figma.com/file/bespMbQS0xJlfC1lYVAaYH/Titto?type=design&node-id=0%3A1&mode=dev&t=tz7AkiylK6DLnyuz-1)
+- TITTO FIGMA </br> https://www.figma.com/file/bespMbQS0xJlfC1lYVAaYH/Titto?type=design&node-id=0%3A1&mode=dev&t=tz7AkiylK6DLnyuz-1
   <br/><br/>
 
 ## 🗂 Repositories
 
 - [Frontend Repository]
-  </br> (https://github.com/SKHU-TITTO/TittoFrontend)
+  </br> https://github.com/SKHU-TITTO/TittoFrontend
 - [Backend Repository]
-  </br>(https://github.com/SKHU-TITTO/TittoBackend)
+  </br> https://github.com/SKHU-TITTO/TittoBackend
   <br/><br/>
 
 ## 🖥️ Preview
@@ -164,7 +168,7 @@ COVID-19 팬데믹 이후, 우리의 삶이 대부분 정상화되었지만, 학
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/kdc9050">@kdc9050</a></td>
-    <td align="center"><a href="https://github.com/Zvackaya">@Zvackaya</a></td>
+    <td align="center"><a href="https://github.com/Zvckaya">@Zvackaya</a></td>
     <td align="center"><a href="https://github.com/dd-jiyun">@dd-jiyun</a></td>
     <td align="center"><a href="https://github.com/dongkyun0713">@dongkyun0713</a></td>
   </tr>
