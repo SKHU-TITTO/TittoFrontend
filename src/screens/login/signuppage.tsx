@@ -200,7 +200,7 @@ const SignUpPage = () => {
   return (
     <SignUpWrapper>
       <SignUpTitle>
-        <p>더 나은 캠퍼스 라이프.</p>
+        <p>더 나은 캠퍼스 라이프</p>
         <p>
           TITTO <span>회원가입</span>
         </p>
