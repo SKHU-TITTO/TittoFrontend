@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [nickErrorColor, setNickErrorcolor] = useState("red");
@@ -198,121 +199,146 @@ const SignUpPage = () => {
   };
 
   return (
-    <SignUpWrapper>
-      <SignUpTitle>
-        <p>더 나은 캠퍼스 라이프</p>
-        <p>
-          TITTO <span>회원가입</span>
-        </p>
-        <hr />
-      </SignUpTitle>
-      <SignUpForm onSubmit={handleSubmit}>
-        <SignUpLabel>이름</SignUpLabel>
-        <SignUpInputContainer>
-          <input
-            id="name"
-            type="text"
-            placeholder="이름을 입력해주세요."
-            onChange={handleChange}
-            style={{ borderRadius: "7px" }}
-            maxLength={20}
-          />
-        </SignUpInputContainer>
-        <SignUpLabel>닉네임</SignUpLabel>
-        <SignUpInputContainer>
-          <input
-            id="nickname"
-            type="text"
-            placeholder="닉네임을 입력해주세요."
-            value={nickname}
-            maxLength={20}
-            onChange={handleChange}
-          />
-          <button type="button" onClick={handleNicknameCheck}>
-            중복확인
-          </button>
-        </SignUpInputContainer>
-        <SignUpError color={nickErrorColor}>{nicknameError}</SignUpError>
-        <SignUpLabel>학번</SignUpLabel>
-        <SignUpInputContainer>
-          <input
-            id="studentNo"
-            type="text"
-            placeholder="학번을 입력해주세요."
-            value={studentNo}
-            onChange={handleChange}
-          />
-          <button type="button" onClick={handleStudentNoCheck}>
-            중복확인
-          </button>
-        </SignUpInputContainer>
-        <SignUpError color={noErrorColor}>{studentNoError}</SignUpError>
-        <SignUpLabel>한 줄 소개</SignUpLabel>
-        <SignUpInputContainer>
-          <input
-            id="oneLineIntro"
-            type="text"
-            placeholder="한 줄 소개를 입력해주세요."
-            value={oneLineIntro}
-            maxLength={15}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setOneLineIntro(event.target.value)
-            }
-          />
-        </SignUpInputContainer>
-        <SignUpLabel>자기소개</SignUpLabel>
-        <SignUpInputContainer>
-          <input
-            id="selfIntro"
-            type="text"
-            placeholder="자기소개를 입력해주세요."
-            value={selfIntro}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setSelfIntro(event.target.value)
-            }
-            maxLength={100}
-          />
-        </SignUpInputContainer>
+    <BackgroundWrapper>
+      <SignUpWrapper>
+        <SignUpTitle>
+          <p>더 나은 캠퍼스 라이프</p>
+          <p>
+            TITTO <span>회원가입</span>
+          </p>
+          <hr />
+        </SignUpTitle>
+        <SignUpForm onSubmit={handleSubmit}>
+          <SignUpLabel>이름</SignUpLabel>
+          <SignUpInputContainer>
+            <input
+              id="name"
+              type="text"
+              placeholder="이름을 입력해주세요."
+              onChange={handleChange}
+              style={{ borderRadius: "7px" }}
+              maxLength={20}
+            />
+          </SignUpInputContainer>
+          <SignUpLabel>닉네임</SignUpLabel>
+          <SignUpInputContainer>
+            <input
+              id="nickname"
+              type="text"
+              placeholder="닉네임을 입력해주세요."
+              value={nickname}
+              maxLength={20}
+              onChange={handleChange}
+            />
+            <button type="button" onClick={handleNicknameCheck}>
+              중복확인
+            </button>
+          </SignUpInputContainer>
+          <SignUpError color={nickErrorColor}>{nicknameError}</SignUpError>
+          <SignUpLabel>학번</SignUpLabel>
+          <SignUpInputContainer>
+            <input
+              id="studentNo"
+              type="text"
+              placeholder="학번을 입력해주세요."
+              value={studentNo}
+              onChange={handleChange}
+            />
+            <button type="button" onClick={handleStudentNoCheck}>
+              중복확인
+            </button>
+          </SignUpInputContainer>
+          <SignUpError color={noErrorColor}>{studentNoError}</SignUpError>
+          <SignUpLabel>한 줄 소개</SignUpLabel>
+          <SignUpInputContainer>
+            <input
+              id="oneLineIntro"
+              type="text"
+              placeholder="한 줄 소개를 입력해주세요."
+              value={oneLineIntro}
+              maxLength={15}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setOneLineIntro(event.target.value)
+              }
+            />
+          </SignUpInputContainer>
+          <SignUpLabel>자기소개</SignUpLabel>
+          <SignUpInputContainer>
+            <input
+              id="selfIntro"
+              type="text"
+              placeholder="자기소개를 입력해주세요."
+              value={selfIntro}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setSelfIntro(event.target.value)
+              }
+              maxLength={100}
+            />
+          </SignUpInputContainer>
 
-        <SignUpLabel>소속</SignUpLabel>
-        <SignUpSelect name="department">
-          <option value="HUMANITIES">인문융합콘텐츠</option>
-          <option value="MANAGEMENT">경영</option>
-          <option value="SOCIETY">사회융합</option>
-          <option value="MEDIA_CONTENT">미디어콘텐츠융합</option>
-          <option value="FUTURE_FUSION">미래융합</option>
-          <option value="SOFTWARE">소프트웨어융합</option>
-        </SignUpSelect>
-        <SignUpBtnContainer>
-          <button
-            type="submit"
-            disabled={
-              !isCheckNick || !isCheckStudentNo || !oneLineIntro || !selfIntro
-            }
-          >
-            다음으로
-          </button>
-        </SignUpBtnContainer>
-      </SignUpForm>
-    </SignUpWrapper>
+          <SignUpLabel>소속</SignUpLabel>
+          <SignUpSelect name="department">
+            <option value="HUMANITIES">인문융합콘텐츠</option>
+            <option value="MANAGEMENT">경영</option>
+            <option value="SOCIETY">사회융합</option>
+            <option value="MEDIA_CONTENT">미디어콘텐츠융합</option>
+            <option value="FUTURE_FUSION">미래융합</option>
+            <option value="SOFTWARE">소프트웨어융합</option>
+          </SignUpSelect>
+          <SignUpBtnContainer>
+            <button
+              type="submit"
+              disabled={
+                !isCheckNick || !isCheckStudentNo || !oneLineIntro || !selfIntro
+              }
+            >
+              다음으로
+            </button>
+          </SignUpBtnContainer>
+        </SignUpForm>
+      </SignUpWrapper>
+    </BackgroundWrapper>
   );
 };
 
 export default SignUpPage;
 
+const BackgroundWrapper = styled.div`
+  background: linear-gradient(
+    45deg,
+    rgba(66, 183, 245, 0.8) 0%,
+    rgba(66, 245, 189, 0.4) 100%
+  );
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (max-width: 1440px) and (max-height: 900px) {
+    min-height: auto;
+  }
+`;
+
 const SignUpWrapper = styled.div`
-  width: 800px;
-  height: 100vh;
+  background-color: #fff;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 800px;
+
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
 `;
 
 const SignUpTitle = styled.div`
   text-align: left;
-
+  width: 80%;
   p:nth-child(1) {
     font-size: 32px;
     color: #c6c6c6;
@@ -336,12 +362,13 @@ const SignUpTitle = styled.div`
   hr {
     border: 1px solid #c6c6c6;
     margin: 20px auto;
-    width: 700px;
+    width: 100%;
   }
 `;
 
 const SignUpForm = styled.form`
-  width: 600px;
+  width: 90%;
+  max-width: 600px;
 `;
 
 const SignUpInputContainer = styled.div`
@@ -368,11 +395,16 @@ const SignUpInputContainer = styled.div`
     border: 1px solid #3e68ff;
     border-radius: 0 7px 7px 0;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #2e55d6;
   }
 `;
 
 const SignUpBtnContainer = styled.div`
-  width: 600px;
+  width: 90%;
+  max-width: 600px;
   text-align: center;
 
   button {
@@ -387,10 +419,16 @@ const SignUpBtnContainer = styled.div`
     border-radius: 7px;
     cursor: pointer;
     margin-top: 20px;
+    transition: background-color 0.3s ease;
 
     &:disabled {
       background-color: #bababa;
       cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    &:not(:disabled):hover {
+      background-color: #2e55d6;
     }
   }
 `;
