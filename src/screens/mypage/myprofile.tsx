@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import MyPageCategory from "../../components/board/mypage-category";
 import AccountManagementContent from "./accountmanagement";
 import ProfileManagementContent from "./profilesmanagement";
+import QuestionsContent from "./questionsconent";
 
 const MyProfile = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -25,6 +26,7 @@ const MyProfile = () => {
       <MainDiv>
         {selectedCategory === "계정 관리" && <AccountManagementContent />}
         {selectedCategory === "프로필 관리" && <ProfileManagementContent />}
+        {selectedCategory === "문의사항" && <QuestionsContent />}
       </MainDiv>
     </MyProfileWrapper>
   );
