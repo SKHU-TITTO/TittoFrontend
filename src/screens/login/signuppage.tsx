@@ -311,14 +311,9 @@ const BackgroundWrapper = styled.div`
   );
   width: 100%;
   min-height: 100vh;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media screen and (max-width: 1440px) and (max-height: 900px) {
-    min-height: auto;
-  }
 `;
 
 const SignUpWrapper = styled.div`
@@ -372,10 +367,10 @@ const SignUpForm = styled.form`
 `;
 
 const SignUpInputContainer = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 1vw;
   text-align: left;
   display: flex;
-  height: 50px;
+  height: auto;
   input {
     flex-grow: 1;
     appearance: none;
@@ -383,22 +378,18 @@ const SignUpInputContainer = styled.div`
     cursor: pointer;
     border-radius: 7px 0 0 7px;
     outline: 0;
-    padding: 10px;
+    padding: 1.1vw;
   }
 
   button {
-    font-size: 14px;
     color: #fff;
     font-weight: bold;
     background-color: #3e68ff;
-    height: 100%;
+    height: auto;
     border: 1px solid #3e68ff;
     border-radius: 0 7px 7px 0;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #2e55d6;
   }
 `;
 
@@ -435,7 +426,7 @@ const SignUpBtnContainer = styled.div`
 
 const SignUpLabel = styled.label`
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   margin-bottom: 8px;
 `;
@@ -456,9 +447,8 @@ const SignUpSelect = styled.select`
 `;
 
 const SignUpError = styled.div`
-  font-size: 14px;
+  font-size: 13px;
   color: ${(props) => props.color || "red"};
   font-weight: bold;
-  margin-top: -20px;
   margin-bottom: 20px;
 `;
