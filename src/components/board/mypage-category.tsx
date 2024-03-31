@@ -15,6 +15,10 @@ const MyPageCategory = ({ onCategoryChange }: MyPageCategoryProps) => {
       <CategorySelect onClick={() => handleCategoryClick("프로필 관리")}>
         프로필 관리
       </CategorySelect>
+      <CategoryTitle>티토 관리</CategoryTitle>
+      <CategorySelect onClick={() => handleCategoryClick("문의사항")}>
+        문의사항
+      </CategorySelect>
     </CategoryWrapper>
   );
 };
