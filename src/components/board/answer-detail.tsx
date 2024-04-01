@@ -11,10 +11,14 @@ const AnswerDeail = ({
   answer,
   accepted,
   authorId,
+  onAnswerUpdated,
+  onAnswerDeleted,
 }: {
   answer: AnswerInfo;
   accepted: boolean;
   authorId: number;
+  onAnswerUpdated: () => void;
+  onAnswerDeleted: () => void;
 }) => {
   const [isModify, setIsModify] = useState(false);
   const [content, setContent] = useState(answer.content);
@@ -45,8 +49,8 @@ const AnswerDeail = ({
               Accept: "application/json;charset=UTF-8",
             },
           })
-          .then((res) => {
-            window.location.reload();
+          .then(() => {
+            onAnswerDeleted();
           })
           .catch((error) => {
             console.error("Error deleting answer:", error);
@@ -54,6 +58,7 @@ const AnswerDeail = ({
       }
     });
   };
+
   const answerSelection = () => {
     Swal.fire({
       title: "답변 채택",
@@ -77,7 +82,7 @@ const AnswerDeail = ({
             }
           )
           .then((res) => {
-            window.location.reload();
+            onAnswerUpdated();
           })
           .catch((err) => {
             Swal.fire({
@@ -123,8 +128,8 @@ const AnswerDeail = ({
               },
             }
           )
-          .then((res) => {
-            window.location.reload();
+          .then(() => {
+            onAnswerUpdated();
           })
           .catch((error) => {
             console.error("Error modifying answer:", error);
