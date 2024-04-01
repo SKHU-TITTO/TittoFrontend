@@ -44,7 +44,6 @@ const QuestionsContent = () => {
     //           text: "문의사항이 성공적으로 전송되었습니다.",
     //           confirmButtonText: "확인",
     //         }).then(() => {
-    //           window.location.reload();
     //         });
     //       })
     //       .catch((error) => {
