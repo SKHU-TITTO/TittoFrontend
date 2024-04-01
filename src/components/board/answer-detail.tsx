@@ -51,6 +51,7 @@ const AnswerDeail = ({
           })
           .then(() => {
             onAnswerDeleted();
+            Swal.fire("삭제", "댓글이 삭제되었습니다.", "success");
           })
           .catch((error) => {
             console.error("Error deleting answer:", error);
@@ -96,7 +97,7 @@ const AnswerDeail = ({
     });
   };
   const handleModify = () => {
-    if (!content.trim()) {
+    if (!isModify && !content.trim()) {
       Swal.fire({
         title: "내용을 입력해주세요",
         icon: "warning",
@@ -130,6 +131,7 @@ const AnswerDeail = ({
           )
           .then(() => {
             onAnswerUpdated();
+            Swal.fire("성공", "댓글이 수정되었습니다.", "success");
           })
           .catch((error) => {
             console.error("Error modifying answer:", error);

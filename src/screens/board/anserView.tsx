@@ -230,11 +230,6 @@ const AnswerView = () => {
     onAnswerUpdated: handleAnswerUpdated,
     onAnswerDeleted: handleAnswerDeleted,
   };
-
-  useEffect(() => {
-    getPostData();
-  }, []);
-
   return (
     <Wrapper>
       {loading ? (
