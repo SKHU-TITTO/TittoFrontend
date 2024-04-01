@@ -35,13 +35,12 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
   const [pages, setPages] = useState(0);
   const [posts, setPosts] = useState<TITTOPost[]>([]);
   const [searchValue, setSearchValue] = useState("");
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchPosts = async () => {
-      setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
-
+      setLoading(true);
       try {
         if (searchParams.has("search")) {
           const response = await axios.get(
@@ -108,7 +107,7 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
+        setLoading(false);
       }
     };
 
@@ -119,7 +118,7 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
     <Wrapper>
       <>
         {loading ? (
-          <LoadingScreen /> // 로딩 중일 때는 LoadingScreen을 표시
+          <LoadingScreen />
         ) : (
           <>
             <MaxSlider></MaxSlider>
