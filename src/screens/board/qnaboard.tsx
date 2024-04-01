@@ -60,12 +60,12 @@ const QnaBoard = ({ id, page }: boardUrl) => {
   const [posts, setPost] = useState<QNAPost[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const accessToken = localStorage.getItem("accessToken");
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        setLoading(true); // 데이터를 가져올 때 로딩 상태를 true로 설정
+        setLoading(true);
 
         if (searchParmas.get("search")) {
           const searchKey = searchParmas.get("search");
@@ -148,7 +148,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false); // 데이터를 가져왔으면 로딩 상태를 false로 설정
+        setLoading(false);
       }
     };
 
@@ -157,7 +157,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
 
   return (
     <Wrapper>
-      {loading ? ( // 로딩 상태에 따라 LoadingScreen을 보여줄지 판단
+      {loading ? (
         <LoadingScreen />
       ) : (
         <BoardWrapper>
@@ -172,7 +172,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
                 className={status === 0 ? "select" : ""}
                 onClick={() => {
                   navigate(`/board/lists/qna/1`);
-                  window.location.reload();
+                  setStatus(0);
                 }}
               >
                 전체
@@ -181,7 +181,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
                 className={status === 1 ? "select" : ""}
                 onClick={() => {
                   navigate(`/board/lists/qna/1/?status=UNSOLVED`);
-                  window.location.reload();
+                  setStatus(1);
                 }}
               >
                 미해결
@@ -190,7 +190,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
                 className={status === 2 ? "select" : ""}
                 onClick={() => {
                   navigate(`/board/lists/qna/1/?status=SOLVED`);
-                  window.location.reload();
+                  setStatus(2);
                 }}
               >
                 해결
@@ -199,7 +199,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
             <SearchDiv>
               <input
                 type="text"
-                placeholder="제목 검색하기"
+                placeholder="제목으로 검색하기"
                 onChange={(e) => {
                   setSearchValue(e.target.value);
                 }}
@@ -207,7 +207,6 @@ const QnaBoard = ({ id, page }: boardUrl) => {
               <button
                 onClick={() => {
                   navigate(`/board/lists/qna/1/?search=${searchValue}`);
-                  window.location.reload();
                 }}
               >
                 검색

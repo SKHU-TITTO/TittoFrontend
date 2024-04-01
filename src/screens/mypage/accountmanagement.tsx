@@ -107,6 +107,16 @@ const AccountManagementContent = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isCheckNick) {
+      Swal.fire({
+        icon: "error",
+        title: "입력 오류",
+        text: "닉네임 중복을 통과해야합니다..",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
     if (!userSignfo.nickname) {
       Swal.fire({
         icon: "error",
@@ -144,7 +154,10 @@ const AccountManagementContent = () => {
           text: "회원 정보가 성공적으로 저장되었습니다.",
           confirmButtonText: "확인",
         }).then(() => {
-          window.location.reload();
+          setEditing(false);
+          setIsCheckNick(false);
+          setErrorcolor("red");
+          setNicknameError("");
         });
       }
     } catch (error: any) {
@@ -204,7 +217,7 @@ const AccountManagementContent = () => {
     if (accessToken) {
       loadUserData();
     }
-  }, [accessToken]);
+  }, [loadUserData, accessToken]);
   return (
     <>
       {isEditing ? (

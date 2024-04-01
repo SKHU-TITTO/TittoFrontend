@@ -45,9 +45,6 @@ const NewMessagePopup: React.FC<NewMessageProps> = ({
       onCancel();
 
       Swal.fire("성공", "메시지를 전송했습니다.", "success");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
     } catch (error) {
       console.error(error);
       Swal.fire("전송 실패", "메시지 전송 중 오류가 발생했습니다.", "error");

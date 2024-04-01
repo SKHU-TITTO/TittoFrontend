@@ -51,8 +51,8 @@ const ContentMessage = ({
 
   return (
     <MainContentMessage>
-      {messages.length > 0 ? (
-        messages.map((message) => (
+      {message.length > 0 ? (
+        message.map((message) => (
           <div key={message.id} className="item">
             <div className="top">
               <h3

@@ -69,9 +69,14 @@ const ProfileManagementContent = () => {
               title: "프로필 저장 완료",
               text: "프로필이 성공적으로 저장되었습니다.",
               confirmButtonText: "확인",
-            }).then(() => {
-              window.location.reload();
             });
+            // 프로필 정보 업데이트
+            setProInfo((prevInfo) => ({
+              ...prevInfo,
+              oneLineIntro,
+              selfIntro,
+            }));
+            navigate("/mypage");
           })
           .catch((error) => {
             console.error("Error saving profile:", error);
@@ -79,6 +84,7 @@ const ProfileManagementContent = () => {
       }
     });
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {

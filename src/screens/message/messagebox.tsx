@@ -21,19 +21,11 @@ const MessageBox = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    if (selectedSenderId !== null) {
-      fetchMessages(selectedSenderId);
-    } else {
-      setMessages([]);
-    }
-  }, [selectedSenderId]);
-
-  useEffect(() => {
     // 메시지를 보내고 나면 해당 발신자의 메시지 목록을 다시 가져옴.
     if (selectedSenderId !== null) {
       fetchMessages(selectedSenderId);
     }
-  }, [isSendingMessage]);
+  }, [selectedSenderId, isSendingMessage]);
 
   const openSendMessagePopup = () => {
     setIsSendingMessage(true);
@@ -106,16 +98,9 @@ const MessageBox = () => {
               },
             }
           );
-
-          setMessages(
-            messages.filter((message) => message.senderId !== selectedSenderId)
-          );
+          await fetchMessages(selectedSenderId);
 
           Swal.fire("삭제 완료", "모든 메시지가 삭제되었습니다.", "success");
-
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
         }
       }
     } catch (error) {
@@ -126,6 +111,7 @@ const MessageBox = () => {
 
   const handleSendMessage = async (newMessage: MessageDetail) => {
     setIsSendingMessage(false);
+    await fetchMessages(selectedSenderId);
   };
 
   return (

@@ -9,7 +9,6 @@ const QnaCategoty = () => {
       <CategorySelect
         onClick={() => {
           navigate("/board/lists/qna/1");
-          window.location.reload();
         }}
       >
         전체보기
@@ -17,7 +16,6 @@ const QnaCategoty = () => {
       <CategorySelect
         onClick={() => {
           navigate("/board/lists/qna/1/?category=HUMANITIES");
-          window.location.reload();
         }}
       >
         인문융합 콘텐츠
@@ -25,7 +23,6 @@ const QnaCategoty = () => {
       <CategorySelect
         onClick={() => {
           navigate("/board/lists/qna/1/?category=MANAGEMENT");
-          window.location.reload();
         }}
       >
         경영
@@ -33,7 +30,6 @@ const QnaCategoty = () => {
       <CategorySelect
         onClick={() => {
           navigate("/board/lists/qna/1/?category=SOCIETY");
-          window.location.reload();
         }}
       >
         사회융합
@@ -41,7 +37,6 @@ const QnaCategoty = () => {
       <CategorySelect
         onClick={() => {
           navigate("/board/lists/qna/1/?category=MEDIA_CONTENT");
-          window.location.reload();
         }}
       >
         미디어콘텐츠융합
@@ -49,7 +44,6 @@ const QnaCategoty = () => {
       <CategorySelect
         onClick={() => {
           navigate("/board/lists/qna/1/?category=FUTURE_FUSION");
-          window.location.reload();
         }}
       >
         미래융합
@@ -57,7 +51,6 @@ const QnaCategoty = () => {
       <CategorySelect
         onClick={() => {
           navigate("/board/lists/qna/1/?category=SOFTWARE");
-          window.location.reload();
         }}
       >
         소프트웨어융합
