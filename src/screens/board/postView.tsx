@@ -23,7 +23,7 @@ export type UserInfo = {
 
 const PostView = () => {
   const [title, setTitles] = useState("");
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
 
   const [detail, setDetail] = useState(""); // 글 내용
   const [category, setCategory] = useState("");
@@ -31,7 +31,7 @@ const PostView = () => {
   const [date, setDate] = useState("");
   const { boardId = "default", postId } = useParams();
   const [view, setView] = useState(0);
-  const [comment, setComment] = useState(); //댓글 수
+  const [comment, setComment] = useState<number>(0);
   const accessToken = localStorage.getItem("accessToken");
   const [reviewContent, setReviewContent] = useState(""); // 댓글 내용
   const [userMyfo, setMyInfo] = useState<UserInfo>({
@@ -83,8 +83,11 @@ const PostView = () => {
     };
   }, []);
 
+  const updateCommentCount = () => {
+    setComment(comment - 1);
+  };
   const loadUserData = () => {
-    setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
+    setLoading(true);
 
     axios
       .get(`https://titto.store/user/info`, {
@@ -102,16 +105,16 @@ const PostView = () => {
           id: userData.id,
           email: userData.email,
         });
-        setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
-        setLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정
+        setLoading(false);
       });
   };
 
   const loadPostData = () => {
-    setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
+    setLoading(true);
 
     axios
       .get(`https://titto.store/matching-post/get/${postId}`, {
@@ -137,11 +140,11 @@ const PostView = () => {
           email: "email",
           matchingPostAuthorId: data.matchingPostAuthorId,
         });
-        setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
-        setLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정
+        setLoading(false);
       });
   };
 
@@ -151,10 +154,9 @@ const PostView = () => {
   }, [accessToken, postId]);
 
   const handleReviewSubmit = () => {
-    // 댓글 내용이 비어 있는지 확인
     if (!reviewContent.trim()) {
       Swal.fire("경고", "댓글 내용을 입력해주세요.", "warning");
-      return; // 댓글 내용이 비어 있으면 작업을 중지하고 함수 종료
+      return;
     }
 
     axios
@@ -173,9 +175,10 @@ const PostView = () => {
         }
       )
       .then((response) => {
+        setComment((prevCount) => prevCount + 1);
         loadPostData();
         setReviewContent("");
-        window.location.reload();
+        Swal.fire("성공", "댓글이 등록되었습니다.", "success");
       })
       .catch((error) => {
         console.error(error);
@@ -254,7 +257,7 @@ const PostView = () => {
 
   return (
     <Wrapper>
-      {loading ? ( // 로딩 중인 경우
+      {loading ? (
         <LoadingScreen />
       ) : (
         <>
@@ -320,7 +323,11 @@ const PostView = () => {
               댓글 {comment}개
             </span>
           </CommentWrapper>
-          <CommentDetail postId={postId || ""} />
+          <CommentDetail
+            postId={postId!}
+            onCommentDelete={updateCommentCount}
+          />
+
           <QuillWrapper>
             <ReactQuill
               modules={modules}

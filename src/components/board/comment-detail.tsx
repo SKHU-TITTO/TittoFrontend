@@ -3,7 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 import { UserInfo } from "../../screens/board/postView";
 import ReactQuill from "react-quill";
-import { values } from "mobx";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -19,7 +18,13 @@ export type CommentInfo = {
   reviewAuthorId: number;
 };
 
-const CommentDetail = ({ postId }: { postId: string }) => {
+const CommentDetail = ({
+  postId,
+  onCommentDelete,
+}: {
+  postId: string;
+  onCommentDelete: () => void;
+}) => {
   const [comments, setComments] = useState<CommentInfo[]>([]);
   const accessToken = localStorage.getItem("accessToken");
   const [isModify, setIsModify] = useState<boolean>(false);
@@ -83,6 +88,7 @@ const CommentDetail = ({ postId }: { postId: string }) => {
       console.error(error);
     }
   };
+
   const handleDeleteComment = async (reviewId: number, postId: number) => {
     const confirmResult = await Swal.fire({
       title: "정말 삭제하시겠습니까?",
@@ -94,10 +100,9 @@ const CommentDetail = ({ postId }: { postId: string }) => {
       confirmButtonText: "삭제",
       cancelButtonText: "취소",
     });
-
     if (confirmResult.isConfirmed) {
-      await axios
-        .delete(
+      try {
+        await axios.delete(
           `https://titto.store/matching-board-review/delete/${reviewId}`,
           {
             headers: {
@@ -109,25 +114,20 @@ const CommentDetail = ({ postId }: { postId: string }) => {
               reviewId: reviewId,
             },
           }
-        )
-        .then((response: { status: number }) => {
-          if (response.status === 200) {
-            setComments((prevComments) =>
-              prevComments.filter((comment) => comment.reviewId !== reviewId)
-            );
-
-            Swal.fire("성공", "댓글이 삭제되었습니다.", "success");
-            window.location.reload();
-          } else {
-            Swal.fire(
-              "실패",
-              "댓글 삭제에 실패했습니다. 다시 시도해주세요.",
-              "error"
-            );
-          }
-        });
-    } else if (confirmResult.dismiss === Swal.DismissReason.cancel) {
-      Swal.fire("취소", "댓글 삭제가 취소되었습니다.", "info");
+        );
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.reviewId !== reviewId)
+        );
+        Swal.fire("성공", "댓글이 삭제되었습니다.", "success");
+        onCommentDelete();
+      } catch (error) {
+        console.error(error);
+        Swal.fire(
+          "실패",
+          "댓글 삭제에 실패했습니다. 다시 시도해주세요.",
+          "error"
+        );
+      }
     }
   };
 
@@ -136,8 +136,8 @@ const CommentDetail = ({ postId }: { postId: string }) => {
     postId: number,
     content: string
   ) => {
-    await axios
-      .put(
+    try {
+      await axios.put(
         `https://titto.store/matching-board-review/update/${reviewId}`,
         {
           postId: postId,
@@ -150,16 +150,14 @@ const CommentDetail = ({ postId }: { postId: string }) => {
             Accept: "application/json;charset=UTF-8",
           },
         }
-      )
-      .then((response) => {
-        setIsModify(false);
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error("댓글 수정 중 에러가 발생했습니다:", error);
-      });
-  };
+      );
+      setIsModify(false);
 
+      Swal.fire("성공", "댓글이 수정되었습니다.", "success");
+    } catch (error) {
+      console.error("댓글 수정 중 에러가 발생했습니다:", error);
+    }
+  };
   return (
     <>
       {comments.map((comment) => (
@@ -220,6 +218,7 @@ const CommentDetail = ({ postId }: { postId: string }) => {
                     parseInt(postId),
                     comment.content
                   );
+                  comment.modify = false;
                 }}
               >
                 수정하기
