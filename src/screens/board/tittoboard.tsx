@@ -137,7 +137,6 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
                   <button
                     onClick={() => {
                       navigate(`/board/lists/titto/1/?search=${searchValue}`);
-                      window.location.reload();
                     }}
                   >
                     <SearchIcon style={{ fontSize: "40px" }}></SearchIcon>
