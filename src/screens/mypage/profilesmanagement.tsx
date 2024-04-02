@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 
 const ProfileManagementContent = () => {
   const navigate = useNavigate();
-
   const [oneLineIntro, setOneLineIntro] = useState("");
   const [selfIntro, setSelfIntro] = useState("");
   const accessToken = localStorage.getItem("accessToken");
@@ -39,6 +38,16 @@ const ProfileManagementContent = () => {
     level: 0,
   }); // 프로필 유저 정보
   const handleSaveProfile = () => {
+    if (!oneLineIntro.trim() || !selfIntro.trim()) {
+      Swal.fire({
+        icon: "error",
+        title: "프로필 저장 실패",
+        text: "한줄 소개와 자기 소개글을 입력해주세요.",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
     Swal.fire({
       icon: "info",
       title: "프로필 저장",
@@ -70,7 +79,6 @@ const ProfileManagementContent = () => {
               text: "프로필이 성공적으로 저장되었습니다.",
               confirmButtonText: "확인",
             });
-            // 프로필 정보 업데이트
             setProInfo((prevInfo) => ({
               ...prevInfo,
               oneLineIntro,
@@ -107,7 +115,7 @@ const ProfileManagementContent = () => {
         }
         setProInfo(response.data);
       } catch (error) {
-        console.error("Error fetching user profile:", error);
+        console.error(error);
       }
     };
 
@@ -161,7 +169,7 @@ const ProfileManagementContent = () => {
       </ProfileManagementDiv>
       <ProfileBadgeDiv>
         <div className="BadgeContainer">
-          <h2 className="subname">획득 뱃지</h2>{" "}
+          <h2 className="subname">획득 뱃지</h2>
           <BadgeList
             badges={userProfo.badges}
             badgeImageMap={badgeImageMap}
