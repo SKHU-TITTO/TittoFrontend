@@ -15,8 +15,6 @@ const MyProfile = () => {
   const handleCategoryChange = (category: SetStateAction<string>) => {
     setSelectedCategory(category);
   };
-  const navigate = useNavigate();
-
   return (
     <MyProfileWrapper>
       <CategoryDiv>
@@ -26,7 +24,7 @@ const MyProfile = () => {
       <MainDiv>
         {selectedCategory === "계정 관리" && <AccountManagementContent />}
         {selectedCategory === "프로필 관리" && <ProfileManagementContent />}
-        {selectedCategory === "문의사항" && <QuestionsContent />}
+        {selectedCategory === "피드백" && <QuestionsContent />}
       </MainDiv>
     </MyProfileWrapper>
   );

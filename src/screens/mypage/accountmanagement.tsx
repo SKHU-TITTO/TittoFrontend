@@ -3,9 +3,11 @@ import styled from "styled-components";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { UserInfo } from "../board/postView";
 import Swal from "sweetalert2";
-export type UserSignfo = {
+import { UserInfo } from "../board/postView";
+import LoadingScreen from "../../components/board/loadingscreen";
+
+export type UserSignInfo = {
   department: string;
   studentNo: string;
   nickname: string;
@@ -15,14 +17,15 @@ export type UserSignfo = {
 const AccountManagementContent = () => {
   const navigate = useNavigate();
   const [isEditing, setEditing] = useState(false);
-  const [userMyfo, setMyInfo] = useState<UserInfo>({
+  const [isLoading, setIsLoading] = useState(false);
+  const [userMyInfo, setMyInfo] = useState<UserInfo>({
     name: "",
     profileImg: "",
     lv: 1,
     id: "",
     email: "",
   });
-  const [userSignfo, setSignInfo] = useState<UserSignfo>({
+  const [userSignInfo, setSignInfo] = useState<UserSignInfo>({
     name: "",
     nickname: "",
     studentNo: "",
@@ -32,25 +35,29 @@ const AccountManagementContent = () => {
   const [isCheckNick, setIsCheckNick] = useState(false);
   const [nicknameError, setNicknameError] = useState("");
   const accessToken = localStorage.getItem("accessToken");
-  const [errorcolor, setErrorcolor] = useState("red");
+  const [errorColor, setErrorColor] = useState("red");
+
   const handleEditClick = () => {
+    if (isLoading) return;
     setEditing((prevEditing) => !prevEditing);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id === "nickname") {
-      setSignInfo({ ...userSignfo, nickname: value });
+      setSignInfo({ ...userSignInfo, nickname: value });
     } else if (id === "studentNo") {
       const onlyNums = value.replace(/[^0-9]/g, "");
       if (onlyNums.length <= 9) {
-        setSignInfo({ ...userSignfo, studentNo: onlyNums });
+        setSignInfo({ ...userSignInfo, studentNo: onlyNums });
       }
     } else if (id === "name") {
-      setMyInfo({ ...userMyfo, name: value });
+      setMyInfo({ ...userMyInfo, name: value });
     }
   };
+
   const loadUserData = () => {
+    setIsLoading(true);
     axios
       .get(`https://titto.store/user/info`, {
         headers: {
@@ -67,23 +74,25 @@ const AccountManagementContent = () => {
           id: userData.id,
           email: userData.email,
         });
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
+        setIsLoading(false);
       });
   };
 
   const handleNicknameCheck = async () => {
-    if (!userSignfo.nickname.trim()) {
+    if (!userSignInfo.nickname.trim()) {
       setNicknameError("닉네임을 입력해주세요.");
-      setErrorcolor("red");
+      setErrorColor("red");
       return;
     }
 
     try {
       const res = await axios.get("https://titto.store/user/check/nickname", {
         params: {
-          nickname: userSignfo.nickname,
+          nickname: userSignInfo.nickname,
         },
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -92,13 +101,13 @@ const AccountManagementContent = () => {
       });
       if (res.status === 200) {
         setNicknameError("사용 가능한 닉네임입니다.");
-        setErrorcolor("green");
+        setErrorColor("green");
         setIsCheckNick(true);
       }
     } catch (error: any) {
       if (error.response.status === 409) {
         setNicknameError("이미 사용 중인 닉네임입니다.");
-        setErrorcolor("red");
+        setErrorColor("red");
       } else {
         setNicknameError("서버 에러가 발생했습니다.");
       }
@@ -107,31 +116,36 @@ const AccountManagementContent = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isLoading) return;
+    setIsLoading(true);
+
     if (!isCheckNick) {
       Swal.fire({
         icon: "error",
         title: "입력 오류",
-        text: "닉네임 중복을 통과해야합니다..",
+        text: "닉네임 중복을 통과해야합니다.",
         confirmButtonText: "확인",
       });
+      setIsLoading(false);
       return;
     }
 
-    if (!userSignfo.nickname) {
+    if (!userSignInfo.nickname) {
       Swal.fire({
         icon: "error",
         title: "입력 오류",
         text: "닉네임을 입력해주세요.",
         confirmButtonText: "확인",
       });
+      setIsLoading(false);
       return;
     }
 
     try {
-      const updatedInfo: Partial<UserSignfo> = {};
+      const updatedInfo: Partial<UserSignInfo> = {};
 
-      if (userSignfo.nickname !== "") {
-        updatedInfo.nickname = userSignfo.nickname;
+      if (userSignInfo.nickname !== "") {
+        updatedInfo.nickname = userSignInfo.nickname;
       }
 
       const res = await axios.put(
@@ -156,10 +170,11 @@ const AccountManagementContent = () => {
         }).then(() => {
           setEditing(false);
           setIsCheckNick(false);
-          setErrorcolor("red");
+          setErrorColor("red");
           setNicknameError("");
         });
       }
+      setIsLoading(false);
     } catch (error: any) {
       if (error.response.status === 400) {
         Swal.fire({
@@ -171,10 +186,14 @@ const AccountManagementContent = () => {
       } else {
         console.error(error);
       }
+      setIsLoading(false);
     }
   };
 
   const handleDeleteAccount = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     Swal.fire({
       title: "회원 탈퇴",
       text: "티토 회원 탈퇴하시겠습니까?",
@@ -187,7 +206,7 @@ const AccountManagementContent = () => {
       if (result.isConfirmed) {
         try {
           const res = await axios.delete(
-            `https://titto.store/user/${userMyfo.id}`,
+            `https://titto.store/user/${userMyInfo.id}`,
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -210,6 +229,7 @@ const AccountManagementContent = () => {
           console.error("Error deleting account:", error);
         }
       }
+      setIsLoading(false);
     });
   };
 
@@ -217,90 +237,96 @@ const AccountManagementContent = () => {
     if (accessToken) {
       loadUserData();
     }
-  }, [loadUserData, accessToken]);
+  }, [accessToken]);
+
   return (
     <>
-      {isEditing ? (
-        <>
-          <AccountManagementDiv>
-            <p>계정 관리</p>
-            <p className="subname">기본 정보</p>
-            <EditAccountDiv onClick={(e) => e.stopPropagation()}>
-              <img src={userMyfo.profileImg} alt="User-Profile" />
-
-              <FormContainer onSubmit={handleSubmit}>
-                <p className="subname">
-                  닉네임 <span style={{ color: "red" }}>*</span>
-                </p>
-                <InputContainer>
-                  <input
-                    type="text"
-                    id="nickname"
-                    placeholder={userSignfo.nickname}
-                    value={userSignfo.nickname}
-                    onChange={handleChange}
-                    maxLength={9}
-                  />
-                  <button
-                    onClick={handleNicknameCheck}
-                    type="button"
-                    className="checkbtn"
-                  >
-                    중복 확인
-                  </button>
-                </InputContainer>
-                <FormError color={errorcolor}>{nicknameError}</FormError>
-
-                <div className="btn-container">
-                  <button className="btn" type="submit">
-                    저장
-                  </button>
-                  <button onClick={handleEditClick} className="btn">
-                    취소
-                  </button>
-                </div>
-              </FormContainer>
-            </EditAccountDiv>
-          </AccountManagementDiv>
-        </>
+      {isLoading ? (
+        <LoadingScreen />
       ) : (
         <>
-          <AccountManagementDiv>
-            <p className="p1">계정 관리</p>
-            <p className="subname">기본 정보</p>
-            <div className="ManagementContainer">
-              <img src={userMyfo.profileImg} alt="User-Profile" />
-              <p>{userMyfo.name}</p>
-              <p className="subname">
-                {userMyfo.email}
-                <span className="icon">
-                  <CheckCircleIcon style={{ color: "#3e68ff" }} />
-                </span>
-                <span>인증완료</span>
-              </p>
-              <div className="btncontainer">
-                <button className="btn" onClick={handleEditClick}>
-                  수정
-                </button>
-              </div>
-            </div>
-          </AccountManagementDiv>
-          <AccountOauthDiv>
-            <p>계정 연동</p>
-            <div className="OauthContainer">
-              <img src="/imgs/kakaoimg.png" alt="User-Profile" />
-              <p>KaKao로 가입했어요</p>
-            </div>
-          </AccountOauthDiv>
-          <AccountDeleteDiv>
-            <p>계정 삭제</p>
-            <div className="DeleteContainer">
-              <p className="etc">계정 삭제 시 프로필 및 정보가 삭제 됩니다.</p>
-              <button className="btn" onClick={handleDeleteAccount}>
-                삭제
-              </button>
-            </div>
-          </AccountDeleteDiv>
+          {isEditing ? (
+            <AccountManagementDiv>
+              <p>계정 관리</p>
+              <p className="subname">기본 정보</p>
+              <EditAccountDiv onClick={(e) => e.stopPropagation()}>
+                <img src={userMyInfo.profileImg} alt="User-Profile" />
+                <FormContainer onSubmit={handleSubmit}>
+                  <p className="subname">
+                    닉네임 <span style={{ color: "red" }}>*</span>
+                  </p>
+                  <InputContainer>
+                    <input
+                      type="text"
+                      id="nickname"
+                      placeholder={userSignInfo.nickname}
+                      value={userSignInfo.nickname}
+                      onChange={handleChange}
+                      maxLength={9}
+                    />
+                    <button
+                      onClick={handleNicknameCheck}
+                      type="button"
+                      className="checkbtn"
+                    >
+                      중복 확인
+                    </button>
+                  </InputContainer>
+                  <FormError color={errorColor}>{nicknameError}</FormError>
+
+                  <div className="btn-container">
+                    <button className="btn" type="submit">
+                      저장
+                    </button>
+                    <button onClick={handleEditClick} className="btn">
+                      취소
+                    </button>
+                  </div>
+                </FormContainer>
+              </EditAccountDiv>
+            </AccountManagementDiv>
+          ) : (
+            <>
+              <AccountManagementDiv>
+                <p className="p1">계정 관리</p>
+                <p className="subname">기본 정보</p>
+                <div className="ManagementContainer">
+                  <img src={userMyInfo.profileImg} alt="User-Profile" />
+                  <p>{userMyInfo.name}</p>
+                  <p className="subname">
+                    {userMyInfo.email}
+                    <span className="icon">
+                      <CheckCircleIcon style={{ color: "#3e68ff" }} />
+                    </span>
+                    <span>인증완료</span>
+                  </p>
+                  <div className="btncontainer">
+                    <button className="btn" onClick={handleEditClick}>
+                      수정
+                    </button>
+                  </div>
+                </div>
+              </AccountManagementDiv>
+              <AccountOauthDiv>
+                <p>계정 연동</p>
+                <div className="OauthContainer">
+                  <img src="/imgs/kakaoimg.png" alt="User-Profile" />
+                  <p>KaKao로 가입했어요</p>
+                </div>
+              </AccountOauthDiv>
+              <AccountDeleteDiv>
+                <p>계정 삭제</p>
+                <div className="DeleteContainer">
+                  <p className="etc">
+                    계정 삭제 시 프로필 및 정보가 삭제 됩니다.
+                  </p>
+                  <button className="btn" onClick={handleDeleteAccount}>
+                    삭제
+                  </button>
+                </div>
+              </AccountDeleteDiv>
+            </>
+          )}
         </>
       )}
     </>

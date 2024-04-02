@@ -71,7 +71,7 @@ const UserProfile = () => {
   const [max, setMax] = useState(0);
   const levelStandard = [100, 300, 600, 1000, Infinity];
   const [isMaxLevel, setIsMaxLevel] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태를 추적하는 상태 변수
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const checkNextLevel = (totalExp: number, userLevel: number) => {
     switch (userLevel) {
@@ -170,7 +170,7 @@ const UserProfile = () => {
       } catch (error) {
         console.error("Error fetching user profile:", error);
       } finally {
-        setIsLoading(false); // 데이터 로딩이 끝났으므로 로딩 상태 변경
+        setIsLoading(false);
       }
     };
 
@@ -325,8 +325,8 @@ const LoadingScreen = styled.div`
   align-items: center;
   height: 100vh;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.8); /* 흰색 배경에 투명도 부여 */
-  position: fixed; /* 화면에 고정 */
+  background-color: rgba(255, 255, 255, 0.8);
+  position: fixed;
   top: 0;
   left: 0;
 `;
@@ -494,9 +494,7 @@ const UserProfileSubContainer = styled.div`
 
 const UserProfileStudyContainer = styled.div`
   border: 2px solid #ccc;
-
   border-radius: 10px;
-
   margin-right: 20px;
   flex: 2.6;
   .wirteanswer {
@@ -526,7 +524,6 @@ const UserProfileWritePostInner = styled.div`
 const UserProfileAcceptInner = styled.div`
   height: 500px;
   overflow-y: auto;
-
   margin-bottom: 20px;
 `;
 export default UserProfile;

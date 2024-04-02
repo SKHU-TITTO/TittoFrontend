@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -68,6 +68,7 @@ const changeDepartment = (department: string) => {
 };
 
 const AnswerView = () => {
+  const quillRef = useRef(null);
   const [view, setView] = useState<AnswerViewProps>({
     accepted: false,
     authorId: 0,
@@ -89,7 +90,11 @@ const AnswerView = () => {
   const [reviewContent, setReviewContent] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
+  useEffect(() => {
+    getPostData();
+  }, [refresh]);
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -103,6 +108,22 @@ const AnswerView = () => {
       Swal.fire({
         title: "내용을 입력해주세요",
         icon: "warning",
+      });
+      return;
+    }
+
+    const quill = (quillRef.current as any)?.getEditor();
+    const delta = quill?.getContents();
+    const imageCount =
+      delta?.ops?.filter(
+        (op: { insert: { image: any } }) => op.insert && op.insert.image
+      ).length ?? 0;
+
+    if (imageCount > 1) {
+      Swal.fire({
+        icon: "error",
+        title: "이미지는 한 장만 업로드할 수 있습니다.",
+        confirmButtonText: "확인",
       });
       return;
     }
@@ -123,7 +144,9 @@ const AnswerView = () => {
         }
       )
       .then((res) => {
-        window.location.reload();
+        setRefresh(!refresh);
+        setReviewContent("");
+        Swal.fire("성공", "댓글이 등록되었습니다.", "success");
       })
       .catch((error) => {
         console.error(error);
@@ -167,7 +190,7 @@ const AnswerView = () => {
   };
   const getPostData = async () => {
     try {
-      setLoading(true); // 데이터를 가져오기 전에 로딩 상태를 true로 설정
+      setLoading(true);
       const response = await axios
         .get(`https://titto.store/questions/${postId}`, {
           headers: {
@@ -191,17 +214,22 @@ const AnswerView = () => {
             accepted: res.data.accepted,
             answerList: res.data.answerList,
           });
-          setLoading(false); // 데이터를 가져온 후에 로딩 상태를 false로 설정
+          setLoading(false);
         });
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    getPostData();
-  }, []);
-
+  const handleAnswerUpdated = () => {
+    setRefresh(!refresh);
+  };
+  const handleAnswerDeleted = () => {
+    setRefresh(!refresh);
+  };
+  const answerDetailProps = {
+    onAnswerUpdated: handleAnswerUpdated,
+    onAnswerDeleted: handleAnswerDeleted,
+  };
   return (
     <Wrapper>
       {loading ? (
@@ -277,6 +305,7 @@ const AnswerView = () => {
             )
             .map((answer) => (
               <AnswerDeail
+                {...answerDetailProps}
                 key={answer.id}
                 answer={answer}
                 authorId={view.authorId}
@@ -289,6 +318,7 @@ const AnswerView = () => {
             <div>
               <QuillWrapper>
                 <ReactQuill
+                  ref={quillRef}
                   modules={modules}
                   style={{ height: "200px" }}
                   value={reviewContent}
@@ -352,7 +382,7 @@ const CategoryWrapper = styled.div`
     border-radius: 5px;
     color: white;
     font-weight: bold;
-    margin-left: auto; /* 내공 요소를 오른쪽으로 이동 */
+    margin-left: auto;
   }
 `;
 

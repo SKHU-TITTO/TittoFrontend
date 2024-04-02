@@ -11,10 +11,14 @@ const AnswerDeail = ({
   answer,
   accepted,
   authorId,
+  onAnswerUpdated,
+  onAnswerDeleted,
 }: {
   answer: AnswerInfo;
   accepted: boolean;
   authorId: number;
+  onAnswerUpdated: () => void;
+  onAnswerDeleted: () => void;
 }) => {
   const [isModify, setIsModify] = useState(false);
   const [content, setContent] = useState(answer.content);
@@ -45,8 +49,9 @@ const AnswerDeail = ({
               Accept: "application/json;charset=UTF-8",
             },
           })
-          .then((res) => {
-            window.location.reload();
+          .then(() => {
+            onAnswerDeleted();
+            Swal.fire("삭제", "댓글이 삭제되었습니다.", "success");
           })
           .catch((error) => {
             console.error("Error deleting answer:", error);
@@ -54,6 +59,7 @@ const AnswerDeail = ({
       }
     });
   };
+
   const answerSelection = () => {
     Swal.fire({
       title: "답변 채택",
@@ -77,7 +83,7 @@ const AnswerDeail = ({
             }
           )
           .then((res) => {
-            window.location.reload();
+            onAnswerUpdated();
           })
           .catch((err) => {
             Swal.fire({
@@ -91,7 +97,7 @@ const AnswerDeail = ({
     });
   };
   const handleModify = () => {
-    if (!content.trim()) {
+    if (!isModify && !content.trim()) {
       Swal.fire({
         title: "내용을 입력해주세요",
         icon: "warning",
@@ -123,8 +129,9 @@ const AnswerDeail = ({
               },
             }
           )
-          .then((res) => {
-            window.location.reload();
+          .then(() => {
+            onAnswerUpdated();
+            Swal.fire("성공", "댓글이 수정되었습니다.", "success");
           })
           .catch((error) => {
             console.error("Error modifying answer:", error);
