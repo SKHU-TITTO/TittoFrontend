@@ -91,7 +91,7 @@ const AnswerDeail = ({
               text: "채택은 한 번만 가능합니다.",
               icon: "error",
             });
-            console.error("Error selecting answer:", err.response.data);
+            console.error(err.response.data);
           });
       }
     });
@@ -134,7 +134,7 @@ const AnswerDeail = ({
             Swal.fire("성공", "댓글이 수정되었습니다.", "success");
           })
           .catch((error) => {
-            console.error("Error modifying answer:", error);
+            console.error(error);
           });
       }
     });

@@ -66,7 +66,6 @@ const QnaBoard = ({ id, page }: boardUrl) => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-
         if (searchParmas.get("search")) {
           const searchKey = searchParmas.get("search");
           const res = await axios.get(
@@ -239,7 +238,6 @@ const QnaBoard = ({ id, page }: boardUrl) => {
             </SubmitWrapper>
             <NumberSelector id={id} page={page} pages={pages} />
           </MainDiv>
-
           <CategoryDiv>
             <QnaCategoty />
           </CategoryDiv>
@@ -272,11 +270,9 @@ const MainDiv = styled.div`
 
 const SolveDiv = styled.div`
   margin-top: 10px;
-
   width: 100%;
   border-bottom: 1px solid #bababa;
   display: flex;
-
   .select {
     color: black;
     border-bottom: 2px solid #3e68ff;
@@ -288,7 +284,6 @@ const SolveTitle = styled.div`
   font-size: 20px;
   color: #bababa;
   font-weight: bold;
-
   &:hover {
     cursor: pointer;
     color: black;
@@ -299,9 +294,7 @@ const SearchDiv = styled.div`
   display: flex;
   padding: 10px 0 10px 0;
   justify-content: space-between;
-
   border-bottom: 1px solid #bababa;
-
   input {
     border: 1px solid #bababa;
     border-radius: 5px;
@@ -309,7 +302,6 @@ const SearchDiv = styled.div`
     padding-left: 10px;
     font-size: 20px;
   }
-
   input:focus {
     outline: none;
     color: black;

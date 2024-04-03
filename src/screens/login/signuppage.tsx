@@ -101,7 +101,6 @@ const SignUpPage = () => {
 
   const handleSaveProfile = () => {
     const accessToken = localStorage.getItem("accessToken");
-
     axios
       .put(
         "https://titto.store/user/profile",
@@ -321,7 +320,6 @@ const SignUpWrapper = styled.div`
   border-radius: 15px;
   width: 80%;
   max-width: 800px;
-
   padding: 30px;
   display: flex;
   flex-direction: column;

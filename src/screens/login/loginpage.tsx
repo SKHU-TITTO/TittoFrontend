@@ -19,21 +19,18 @@ const LoginPage = () => {
 
   const handleKakaoCallback = async () => {
     const code = new URLSearchParams(window.location.search).get("code");
-
     try {
       const res = await axios.get(`https://titto.store/oauth/kakao`, {
         params: {
           code: code,
         },
       });
-
       const kakaoAccessToken = res.data.kakaoAccessToken;
-      console.log("엑세스 토큰:", kakaoAccessToken);
+      console.log("엑세스 토큰:", kakaoAccessToken); // 찐 나중에 삭제해야 됨
       const dataraw = {
         kakaoAccessToken: kakaoAccessToken,
       };
       const raw = JSON.stringify(dataraw);
-
       const loginRes = await axios.post(
         "https://titto.store/oauth/kakao/login",
         raw,
@@ -66,15 +63,8 @@ const LoginPage = () => {
         <LoginMainTitle>
           <p>TITTO</p>
           <p>더 나은 캠퍼스 라이프</p>
-
-          {/* <p>환영합니다.</p> */}
         </LoginMainTitle>
-
         <LoginTitleContainer>
-          {/* <LoginTitle>
-            <span>다음으로 로그인</span>
-            <hr />
-          </LoginTitle> */}
           <LoginBtnContainer>
             <div className="kakao" onClick={handleKakaoLogin}>
               <img src="/imgs/kakaoimg.png" alt="kakao_logo" />
@@ -147,30 +137,12 @@ const LoginTitleContainer = styled.div`
   margin-top: 0px;
 `;
 
-// const LoginTitle = styled.div`
-//   text-align: center;
-//   margin-bottom: 20px;
-
-//   span {
-//     color: rgba(0, 0, 0, 0.6);
-//     font-size: 18px;
-//     font-weight: bold;
-//   }
-
-//   hr {
-//     border: 1px solid rgba(0, 0, 0, 0.6);
-//     margin: 8px 0;
-//     margin-bottom: 20px;
-//   }
-// `;
-
 const LoginBtnContainer = styled.div`
   .kakao {
     width: 80%;
     display: flex;
     flex-direction: row;
     align-items: center;
-
     margin: 0 auto;
     border-radius: 12px;
     border: 1px solid #fae100;
@@ -178,7 +150,6 @@ const LoginBtnContainer = styled.div`
     margin-bottom: 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-
     img {
       height: 60px;
       margin-right: 15px;

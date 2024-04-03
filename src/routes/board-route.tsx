@@ -1,4 +1,3 @@
-// BoardRoutes 컴포넌트
 import React from "react";
 import { Routes, Route, useParams } from "react-router-dom";
 import BoardScreen from "../screens/board-screen";

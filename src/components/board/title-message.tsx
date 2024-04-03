@@ -108,9 +108,6 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
               <time>{calculateTimeDifference(message.sentAt)}</time>
             </div>
           </div>
-          {/* <div className="bottom">
-            <p className="text">{message.content}</p>
-          </div> */}
         </MessageLink>
       </div>
     ));
