@@ -36,7 +36,7 @@ const ProfileManagementContent = () => {
     countAnswer: 0,
     countAccept: 0,
     level: 0,
-  }); // 프로필 유저 정보
+  });
   const handleSaveProfile = () => {
     if (!oneLineIntro.trim() || !selfIntro.trim()) {
       Swal.fire({
@@ -87,7 +87,7 @@ const ProfileManagementContent = () => {
             navigate("/mypage");
           })
           .catch((error) => {
-            console.error("Error saving profile:", error);
+            console.error(error);
           });
       }
     });
@@ -232,7 +232,6 @@ const ManyLineDiv = styled.div`
 
 const QuillWrapper = styled.div`
   width: 100%;
-
   text-align: left;
 `;
 

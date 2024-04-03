@@ -116,7 +116,7 @@ const UserProfile = () => {
       );
       setUserPosts(response.data);
     } catch (error) {
-      console.error("Error fetching user posts:", error);
+      console.error(error);
     }
   };
 
@@ -135,7 +135,7 @@ const UserProfile = () => {
       );
       setUserAnswers(response.data);
     } catch (error) {
-      console.error("Error fetching user posts:", error);
+      console.error(error);
     }
   };
 
@@ -168,7 +168,7 @@ const UserProfile = () => {
         setMax(maxValue);
         setIsMaxLevel(response.data.level === levelStandard.length);
       } catch (error) {
-        console.error("Error fetching user profile:", error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }

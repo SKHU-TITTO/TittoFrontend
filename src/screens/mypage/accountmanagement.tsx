@@ -226,7 +226,7 @@ const AccountManagementContent = () => {
             });
           }
         } catch (error) {
-          console.error("Error deleting account:", error);
+          console.error(error);
         }
       }
       setIsLoading(false);
