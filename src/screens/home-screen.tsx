@@ -76,7 +76,7 @@ const BoardDetail = styled.div`
 const HomeScreen = () => {
   const [tittoList, setTittoList] = useState<TITTOPost[]>([]);
   const [qnaList, setQnaList] = useState<QNAPost[]>([]);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
 
   const getTITTOBoardList = async () => {
     try {
@@ -91,10 +91,10 @@ const HomeScreen = () => {
 
       const formattedPosts = res.data.content.slice(0, 3);
       setTittoList(formattedPosts);
-      setLoading(false); // 데이터 로딩 후 로딩 상태 변경
+      setLoading(false);
     } catch (e) {
       console.log(e);
-      setLoading(false); // 에러 발생 시에도 로딩 상태 변경
+      setLoading(false);
     }
   };
 
@@ -110,10 +110,10 @@ const HomeScreen = () => {
       );
       const formattedPosts = res.data.content.slice(0, 3);
       setQnaList(formattedPosts);
-      setLoading(false); // 데이터 로딩 후 로딩 상태 변경
+      setLoading(false);
     } catch (e) {
       console.log(e);
-      setLoading(false); // 에러 발생 시에도 로딩 상태 변경
+      setLoading(false);
     }
   };
 
@@ -125,7 +125,7 @@ const HomeScreen = () => {
   const navigate = useNavigate();
   return (
     <Wrapper>
-      {loading ? ( // 로딩 중인 경우
+      {loading ? (
         <LoadingScreen />
       ) : (
         <>
