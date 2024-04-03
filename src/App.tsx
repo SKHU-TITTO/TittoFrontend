@@ -26,8 +26,30 @@ const GlobalStyles = createGlobalStyle`
   ${reset}
   * {
     box-sizing: border-box;
-
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: none; 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c2c2c2;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:active {
+      background: #6b98ff;
+    }
+    ::-webkit-scrollbar-thumb:active {
+      background: #4b7fff;
+    }
+    ::-webkit-scrollbar-corner {
+      background: #f0f0f0;
+    }
+    
+    
   }
+  
   body {
     
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -35,6 +57,13 @@ const GlobalStyles = createGlobalStyle`
   .swal2-icon {
     margin: 20px auto 0;
 }
+.ql-editor.ql-blank::before {
+  content: attr(data-placeholder);
+  font-style: normal;
+  pointer-events: none;
+  position: absolute;
+}
+
 
 `;
 const router = createBrowserRouter([
