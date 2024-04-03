@@ -17,11 +17,10 @@ const TTlayout = () => {
     lv: 0,
     id: "",
     email: "",
-  }); // 로그인 유저 정보
+  });
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
-
+  const [isLoading, setIsLoading] = useState(true);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const togglePopup = (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
@@ -89,7 +88,7 @@ const TTlayout = () => {
             id: userData.id,
             email: userData.email,
           });
-          setIsLoading(false); // 데이터 로드 후 로딩 상태 변경
+          setIsLoading(false);
         })
 
         .catch((error) => {
