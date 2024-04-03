@@ -10,6 +10,7 @@ import ContentMessage, {
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
+import LoadingScreen from "../../components/board/loadingscreen";
 
 const MessageBox = () => {
   const [isSendingMessage, setIsSendingMessage] = useState(false);
@@ -19,6 +20,7 @@ const MessageBox = () => {
   >(null);
   const [messages, setMessages] = useState<MessageDetail[]>([]);
   const accessToken = localStorage.getItem("accessToken");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // 메시지를 보내고 나면 해당 발신자의 메시지 목록을 다시 가져옴.
@@ -35,8 +37,13 @@ const MessageBox = () => {
     setIsSendingMessage(false);
   };
 
-  const handleRefresh = () => {
-    window.location.reload();
+  const handleRefresh = async () => {
+    try {
+      setIsLoading(true);
+      await fetchMessages(selectedSenderId);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSelectMessage = (senderId: number, senderNickname: string) => {
@@ -69,7 +76,7 @@ const MessageBox = () => {
         setMessages([]);
       }
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error(error);
     }
   };
 
@@ -104,7 +111,7 @@ const MessageBox = () => {
         }
       }
     } catch (error) {
-      console.error("Error deleting message:", error);
+      console.error(error);
       Swal.fire("삭제 실패", "메시지 삭제 중 오류가 발생했습니다.", "error");
     }
   };
@@ -131,11 +138,15 @@ const MessageBox = () => {
             </IconsContainer>
           </TitleArea>
 
-          <ContentMessage
-            selectedId={selectedSenderId}
-            onSelectedIdChange={setSelectedSenderId}
-            message={messages}
-          />
+          {isLoading ? (
+            <LoadingScreen />
+          ) : (
+            <ContentMessage
+              selectedId={selectedSenderId}
+              onSelectedIdChange={setSelectedSenderId}
+              message={messages}
+            />
+          )}
         </UserMessageRightContainer>
       </UserMessageSubContainer>
       {isSendingMessage && (
@@ -186,13 +197,13 @@ const UserMessageRightContainer = styled.div`
 const TitleArea = styled.div`
   display: flex;
   align-items: center;
-
   justify-content: space-between;
 `;
 
 const IconsContainer = styled.div`
   display: flex;
   gap: 10px;
+  cursor: pointer;
   margin-right: 20px;
 `;
 
