@@ -184,7 +184,6 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
                 </SubmitWrapper>
                 <NumberSelector id={id} page={page} pages={pages} />
               </MainDiv>
-
               <CategoryDiv>
                 <TittoCategory />
               </CategoryDiv>

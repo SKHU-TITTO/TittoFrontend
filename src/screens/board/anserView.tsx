@@ -10,7 +10,6 @@ import AnswerDeail from "../../components/board/answer-detail";
 import LoadingScreen from "../../components/board/loadingscreen";
 import Swal from "sweetalert2";
 
-// 유저 정보 타입 정의
 export type UserInfo = {
   name: string;
   profileImg: string;

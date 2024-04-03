@@ -9,7 +9,6 @@ import axios from "axios";
 import LoadingScreen from "../../components/board/loadingscreen";
 import Swal from "sweetalert2";
 
-// 유저 정보 타입 정의
 export type UserInfo = {
   name: string;
   profileImg: string;
@@ -24,8 +23,6 @@ export type UserInfo = {
 const PostView = () => {
   const [title, setTitles] = useState("");
   const [loading, setLoading] = useState(true);
-
-  const [detail, setDetail] = useState(""); // 글 내용
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [date, setDate] = useState("");
@@ -33,14 +30,15 @@ const PostView = () => {
   const [view, setView] = useState(0);
   const [comment, setComment] = useState<number>(0);
   const accessToken = localStorage.getItem("accessToken");
-  const [reviewContent, setReviewContent] = useState(""); // 댓글 내용
+  const [reviewContent, setReviewContent] = useState(""); // 댓글
+  const [detail, setDetail] = useState(""); // 글
   const [userMyfo, setMyInfo] = useState<UserInfo>({
     name: "",
     profileImg: "",
     lv: 1,
     id: "",
     email: "",
-  }); // 로그인 유저 정보
+  });
 
   const [userWriteInfo, setWriteInfo] = useState<UserInfo>({
     name: "",
@@ -50,7 +48,7 @@ const PostView = () => {
     matchingPostAuthorId: 0,
     email: "",
     id: 1,
-  }); // 글 유저 정보
+  }); // 글유저
 
   interface statusMapping {
     RECRUITING: string;
@@ -327,7 +325,6 @@ const PostView = () => {
             postId={postId!}
             onCommentDelete={updateCommentCount}
           />
-
           <QuillWrapper>
             <ReactQuill
               modules={modules}
@@ -484,7 +481,6 @@ const CommentWrapper = styled.div`
   margin-top: 20px;
   padding-top: 30px;
   border-top: 2px solid #bababa;
-
   text-align: left;
 `;
 

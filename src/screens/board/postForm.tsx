@@ -90,7 +90,6 @@ const PostForm = () => {
           })
           .then((response) => {
             const postData = response.data;
-
             setSelectedCategory(postData.department);
             setTitles(postData.title);
             setContents(postData.content);
@@ -113,11 +112,8 @@ const PostForm = () => {
       });
       return;
     }
-
-    // 이미지 업로드 관련 코드
     const quill = quillRef.current?.getEditor();
     const delta = quill?.getContents();
-
     const imageCount =
       delta?.ops?.filter((op) => op.insert && op.insert.image).length ?? 0;
     if (imageCount > 1) {
