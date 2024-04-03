@@ -40,7 +40,7 @@ const CommentDetail = ({
     lv: 1,
     id: "",
     email: "",
-  }); // 로그인 유저 정보
+  });
 
   useEffect(() => {
     fetchComments();
@@ -155,7 +155,7 @@ const CommentDetail = ({
 
       Swal.fire("성공", "댓글이 수정되었습니다.", "success");
     } catch (error) {
-      console.error("댓글 수정 중 에러가 발생했습니다:", error);
+      console.error(error);
     }
   };
   return (
