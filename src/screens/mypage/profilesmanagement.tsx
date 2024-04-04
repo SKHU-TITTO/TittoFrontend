@@ -213,11 +213,10 @@ const ProfileBadgeDiv = styled.div`
     padding: 20px;
 
     img {
-      width: 80px;
-      height: 80px;
-      border-radius: 10%;
+      width: 70px;
+      height: 70px;
       margin-right: 20px;
-      margin-top: 20px;
+      margin-top: 10px;
     }
   }
 `;

@@ -315,10 +315,14 @@ const SearchDiv = styled.div`
     background-color: #3e68ff;
     color: white;
     padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
     border-radius: 5px;
+    transition: background-color 0.3s;
   }
   button:hover {
     cursor: pointer;
+    background-color: #7391ff;
   }
 `;
 
@@ -343,5 +347,10 @@ const SubmitWrapper = styled.div`
     font-size: 15px;
     font-weight: bold;
     margin-left: 10px;
+    transition: background-color 0.3s;
+  }
+  .btn:hover {
+    cursor: pointer;
+    background-color: #7391ff;
   }
 `;

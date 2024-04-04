@@ -10,8 +10,6 @@ import BadgeList, {
   badgeComments,
   badgeImageMap,
 } from "../../components/board/badgeslist";
-
-// 유저 정보 타입 정의
 export type UserProfileInfo = {
   userId: number;
   profile: string;
@@ -67,12 +65,11 @@ const UserProfile = () => {
     countAnswer: 0,
     countAccept: 0,
     level: 0,
-  }); // 프로필 유저 정보
+  });
   const [max, setMax] = useState(0);
   const levelStandard = [100, 300, 600, 1000, Infinity];
   const [isMaxLevel, setIsMaxLevel] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
   const checkNextLevel = (totalExp: number, userLevel: number) => {
     switch (userLevel) {
       case 1:
@@ -223,8 +220,16 @@ const UserProfile = () => {
                 </h1>
                 <progress
                   className="gage"
-                  value={levelStandard[userProfo.level - 1] - max}
-                  max={levelStandard[userProfo.level - 1]}
+                  value={
+                    isMaxLevel
+                      ? userProfo.totalExperience
+                      : levelStandard[userProfo.level - 1] - max
+                  }
+                  max={
+                    isMaxLevel
+                      ? userProfo.totalExperience
+                      : levelStandard[userProfo.level - 1]
+                  }
                 ></progress>
 
                 <h2>
@@ -237,7 +242,7 @@ const UserProfile = () => {
               </div>
               <p>채택률</p>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h1>{acceptanceRate.toFixed(1)}%</h1>
+                <h1>{acceptanceRate.toFixed(0)}%</h1>
                 {userStore.getUser()?.id !== userProfo.userId && (
                   <div className="btn" onClick={openSendMessagePopup}>
                     쪽지 보내기
@@ -283,34 +288,30 @@ const UserProfile = () => {
             <UserProfileWritePostContainer>
               <p className="writepost">작성한 글</p>
               <UserProfileWritePostInner>
-                {Array.isArray(userPosts) &&
-                  userPosts.map(
-                    (
-                      post: {
-                        category: string;
-                        department: string;
-                        title: string;
-                        content: string;
-                        viewCount: number;
-                        reviewCount: number;
-                        answerCount: number;
-                        id: number;
-                      },
-                      index
-                    ) => (
-                      <WriteDetail
-                        key={post.id}
-                        postId={post.id}
-                        category={post.category}
-                        department={post.department}
-                        title={post.title}
-                        detail={post.content}
-                        view={post.viewCount}
-                        comment={post.reviewCount}
-                        answerCount={post.answerCount}
-                      />
-                    )
-                  )}
+                {userPosts.map(
+                  (post: {
+                    category: string;
+                    department: string;
+                    title: string;
+                    content: string;
+                    viewCount: number;
+                    reviewCount: number;
+                    answerCount: number;
+                    id: number;
+                  }) => (
+                    <WriteDetail
+                      key={post.id}
+                      postId={post.id}
+                      category={post.category}
+                      department={post.department}
+                      title={post.title}
+                      detail={post.content}
+                      view={post.viewCount}
+                      comment={post.reviewCount}
+                      answerCount={post.answerCount}
+                    />
+                  )
+                )}
               </UserProfileWritePostInner>
             </UserProfileWritePostContainer>
           </UserProfileSubContainer>
@@ -445,7 +446,7 @@ const UserProfileMainLevelContainer = styled.div`
   }
   progress {
     width: 300px;
-    height: 30px;
+    height: 50px;
     overflow: hidden;
     margin-bottom: 10px;
   }
@@ -463,12 +464,12 @@ const UserProfileMainLevelContainer = styled.div`
   h1 {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   h2 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   .btn {
     width: 100px;
@@ -480,9 +481,13 @@ const UserProfileMainLevelContainer = styled.div`
     background-color: #3e68ff;
     color: white;
     cursor: pointer;
-    font-size: 15px;
     font-weight: bold;
-    margin-left: 10px;
+
+    &:active,
+    &:hover {
+      background-color: #3e68ff;
+      opacity: 0.7;
+    }
   }
 `;
 const UserProfileSubContainer = styled.div`
@@ -526,4 +531,5 @@ const UserProfileAcceptInner = styled.div`
   overflow-y: auto;
   margin-bottom: 20px;
 `;
+
 export default UserProfile;
