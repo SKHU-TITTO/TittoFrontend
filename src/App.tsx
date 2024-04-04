@@ -15,6 +15,7 @@ import NotFound from "./screens/notfound";
 import axios from "axios";
 import SliderRoutes from "./routes/slider-route";
 import BestRanking from "./screens/rainking/bestranking";
+import ScrollToTop from "./scroll";
 
 axios.defaults.withCredentials = true;
 
@@ -48,10 +49,11 @@ const GlobalStyles = createGlobalStyle`
     }
     
     
+    
   }
   
   body {
-    
+    margin-top: 100px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
   .swal2-icon {
@@ -71,6 +73,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <ProtectedRoute>
+        <ScrollToTop />
         <TTlayout />
       </ProtectedRoute>
     ),

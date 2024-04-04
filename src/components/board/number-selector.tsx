@@ -53,7 +53,7 @@ const NumberSelector = ({ id, page, pages }: NumberSelectorProps) => {
 
   return (
     <NumberSelect>
-      <ArrowDiv onClick={() => handleArrowClick(-5)}>
+      <ArrowDiv onClick={() => handleArrowClick(-1)}>
         <ArrowBackIosIcon style={{ fontSize: "13px" }} />
       </ArrowDiv>
       <NumDiv>
@@ -67,7 +67,7 @@ const NumberSelector = ({ id, page, pages }: NumberSelectorProps) => {
           </NumSpan>
         ))}
       </NumDiv>
-      <ArrowDiv onClick={() => handleArrowClick(5)}>
+      <ArrowDiv onClick={() => handleArrowClick(1)}>
         <ArrowForwardIosIcon style={{ fontSize: "13px" }} />
       </ArrowDiv>
     </NumberSelect>

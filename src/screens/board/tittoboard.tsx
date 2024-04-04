@@ -313,6 +313,11 @@ const SubmitWrapper = styled.div`
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
+    transition: background-color 0.3s;
     margin-left: 10px;
+  }
+  .btn:hover {
+    cursor: pointer;
+    background-color: #7391ff;
   }
 `;

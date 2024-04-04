@@ -194,6 +194,10 @@ const NavWrapper = styled.nav`
   display: flex;
   justify-content: center;
   border-bottom: 2px solid #ccc;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 `;
 
 const NavUl = styled.ul`

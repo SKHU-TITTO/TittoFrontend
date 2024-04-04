@@ -1,4 +1,3 @@
-import { ref } from "firebase/storage";
 import { useMemo } from "react";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
@@ -7,21 +6,6 @@ type QuilEditorProps = {
   quillRef: React.MutableRefObject<ReactQuill | null>;
   htmlContent: string;
   setHtmlContent: React.Dispatch<React.SetStateAction<string>>;
-};
-
-const imageHandler = () => {
-  const input = document.createElement("input");
-  input.setAttribute("type", "file");
-  input.setAttribute("accept", "image/*");
-  input.click();
-
-  input.addEventListener("change", async () => {
-    const file = input.files?.[0];
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-  });
 };
 
 const QuilllEditor = ({
