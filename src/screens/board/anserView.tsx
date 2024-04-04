@@ -243,7 +243,7 @@ const AnswerView = () => {
             <div className={view?.status == "UNSOLVED" ? "nSolve" : "Solve"}>
               {view?.status == "UNSOLVED" ? "미해결" : "해결"}
             </div>
-            <div className="exp">내공 : {view.sendExperience}</div>
+            <div className="exp">티콩 : {view.sendExperience}</div>
           </CategoryWrapper>
           <TitleWrapper>{view?.title}</TitleWrapper>
           <ProfileWrapper>

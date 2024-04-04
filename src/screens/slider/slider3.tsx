@@ -116,7 +116,7 @@ const Slider3 = () => {
               <thead>
                 <tr>
                   <th>레벨</th>
-                  <th>경험치(쌓은 내공)</th>
+                  <th>경험치(쌓은 티콩)</th>
                   <th>비고</th>
                 </tr>
               </thead>
@@ -152,7 +152,7 @@ const Slider3 = () => {
             <table>
               <thead>
                 <tr>
-                  <th>내공 획득 방법</th>
+                  <th>티콩 획득 방법</th>
                   <th>획득 경험치</th>
                 </tr>
               </thead>
@@ -163,7 +163,7 @@ const Slider3 = () => {
                 </tr>
                 <tr>
                   <td>질문 게시글 채택</td>
-                  <td>35 + 질문자가 건 내공</td>
+                  <td>35 + 질문자가 건 티콩</td>
                 </tr>
               </tbody>
             </table>

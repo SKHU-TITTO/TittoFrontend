@@ -66,7 +66,7 @@ const BestRanking = () => {
             <StyledTh>순위</StyledTh>
             <StyledTh>유저 정보</StyledTh>
             <StyledTh>레벨</StyledTh>
-            <StyledTh>내공</StyledTh>
+            <StyledTh>티콩</StyledTh>
           </StyledTr>
         </thead>
         <tbody>

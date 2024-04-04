@@ -10,6 +10,7 @@ import BadgeList, {
   badgeComments,
   badgeImageMap,
 } from "../../components/board/badgeslist";
+import LoadingScreen from "../../components/board/loadingscreen";
 export type UserProfileInfo = {
   userId: number;
   profile: string;
@@ -215,8 +216,8 @@ const UserProfile = () => {
                 <p>다음 레벨까지</p>
                 <h1>
                   {isMaxLevel
-                    ? "남은 내공이 없습니다"
-                    : ` ${max} 내공남았어요.`}
+                    ? "남은 티콩이 없습니다"
+                    : ` ${max} 티콩남았어요.`}
                 </h1>
                 <progress
                   className="gage"
@@ -233,7 +234,7 @@ const UserProfile = () => {
                 ></progress>
 
                 <h2>
-                  현재 사용 가능한 내공은 {userProfo.currentExperience}입니다.
+                  현재 사용 가능한 티콩은 {userProfo.currentExperience}입니다.
                 </h2>
                 <p>답변한 글 수</p>
                 <h1>총 {userProfo.countAnswer}개 답변했어요.</h1>
@@ -320,17 +321,6 @@ const UserProfile = () => {
     </>
   );
 };
-const LoadingScreen = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  position: fixed;
-  top: 0;
-  left: 0;
-`;
 const UserProfileWrapper = styled.div`
   width: 100%;
   display: flex;
