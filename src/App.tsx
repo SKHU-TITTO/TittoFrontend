@@ -23,6 +23,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   min-width: 1100px;
 `;
+
 const GlobalStyles = createGlobalStyle`
   ${reset}
   * {
@@ -47,27 +48,28 @@ const GlobalStyles = createGlobalStyle`
     ::-webkit-scrollbar-corner {
       background: #f0f0f0;
     }
-    
-    
-    
   }
   
   body {
-    margin-top: 100px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+
+    margin-top: ${(props) =>
+      window.location.pathname.includes("/login") ? "0" : "100px"};
   }
+  
   .swal2-icon {
     margin: 20px auto 0;
-}
-.ql-editor.ql-blank::before {
-  content: attr(data-placeholder);
-  font-style: normal;
-  pointer-events: none;
-  position: absolute;
-}
-
-
+  }
+  
+  .ql-editor.ql-blank::before {
+    content: attr(data-placeholder);
+    font-style: normal;
+    pointer-events: none;
+    position: absolute;
+  }
 `;
+
 const router = createBrowserRouter([
   {
     path: "/",
