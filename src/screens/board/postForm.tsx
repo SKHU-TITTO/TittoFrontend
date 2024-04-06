@@ -188,7 +188,7 @@ const PostForm = () => {
             if (err.response.status === 400) {
               Swal.fire({
                 icon: "error",
-                title: "내공이 부족합니다.",
+                title: "티콩이 부족합니다.",
                 confirmButtonText: "확인",
               });
             }
@@ -282,7 +282,7 @@ const PostForm = () => {
       </Title>
       {boardId === "qna" ? (
         <Point>
-          내공 <span style={{ color: "red" }}>*</span>
+          티콩 <span style={{ color: "red" }}>*</span>
           <select
             onChange={(e) => {
               setExp(Number(e.target.value));
@@ -333,7 +333,7 @@ export default PostForm;
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 80px;
   text-align: left;
 `;
 

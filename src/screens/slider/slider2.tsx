@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 100px;
   border: 2px solid #bababa;
   border-radius: 5px;
   background-color: white;
@@ -151,7 +151,7 @@ const Slider2 = () => {
               <br />
               <img src="/imgs/slider/s2detail/qna/1.png" alt="image" />
               <hr />
-              1. 먼저 글쓰기를 누른 후, 원하는 카테고리와 내공을 선택합니다.
+              1. 먼저 글쓰기를 누른 후, 원하는 카테고리와 티콩을 선택합니다.
               <br />
               2. 제목과 내용을 작성합니다. <br />
               <img src="/imgs/slider/s2detail/qna/2.png" alt="image" />
@@ -173,7 +173,7 @@ const Slider2 = () => {
                 1. 질문 게시판에서 자신이 쓴 글에는 답변을 할 수 없습니다!{" "}
                 <br />
                 2. 질문 게시판에서는 답변을 채택할 수 있습니다. <br />
-                3. 질문 게시판에서는 답변을 채택하면 답변한 유저에게 내공이
+                3. 질문 게시판에서는 답변을 채택하면 답변한 유저에게 티콩이
                 지급됩니다. <br />
                 4. 채택이 완료되면 그 게시글은 삭제할 수 없습니다. <br />
                 5. 채택은 한 번만 가능합니다. <br />
@@ -198,12 +198,12 @@ const Slider2 = () => {
               3. 유저프로필에 답변한 글은 티토게시판에 답변이 아닌 질문게시판의
               답변 내용만 보여집니다.
               <br />
-              4. 마이페이지는 내공, 레벨, 채택률, 보유 뱃지 등을 확인할 수
+              4. 마이페이지는 티콩, 레벨, 채택률, 보유 뱃지 등을 확인할 수
               있습니다.
               <br />
               5. 보유 뱃지는 티토에서 활동한 내역에 따라 지급됩니다.
               <img src="/imgs/slider/s2detail/mypage/2.png" alt="image" />
-              6. 명예의전당에는 내공이 가장 많은 상위 10명의 유저들이
+              6. 명예의전당에는 티콩이 가장 많은 상위 10명의 유저들이
               나타납니다.
               <img src="/imgs/slider/s2detail/mypage/ranking.png" alt="image" />
             </Description>

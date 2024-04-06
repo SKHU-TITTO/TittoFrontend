@@ -5,7 +5,7 @@ import QnaBoard from "./board/qnaboard";
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 100px;
 `;
 
 const BoardScreen = () => {

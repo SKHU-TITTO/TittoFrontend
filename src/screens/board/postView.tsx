@@ -348,7 +348,7 @@ export default PostView;
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 100px;
   text-align: left;
   padding-bottom: 30px;
 `;
