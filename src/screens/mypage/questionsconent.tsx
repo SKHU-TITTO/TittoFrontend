@@ -96,6 +96,7 @@ const QuestionsContent = () => {
 export default QuestionsContent;
 
 const QuestionsManagementDiv = styled.div`
+  margin-top: 70px;
   & .ManagementContainer {
     width: 100%;
     margin: 0 auto;

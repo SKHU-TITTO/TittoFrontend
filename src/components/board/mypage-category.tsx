@@ -27,6 +27,8 @@ export default MyPageCategory;
 
 const CategoryWrapper = styled.div`
   width: 100%;
+
+  margin-top: 70px;
   border: 1px solid #bababa;
   border-radius: 5px;
   box-sizing: border-box;

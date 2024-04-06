@@ -53,10 +53,6 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
-
-    margin-top: ${(props) =>
-      window.location.pathname.includes("/login") ? "0" : "100px"};
-  }
   
   .swal2-icon {
     margin: 20px auto 0;

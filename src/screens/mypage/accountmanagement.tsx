@@ -334,6 +334,7 @@ const AccountManagementContent = () => {
 };
 
 const AccountManagementDiv = styled.div`
+  margin-top: 70px;
   & .ManagementContainer {
     width: 100%;
     margin: 0 auto;
@@ -342,7 +343,6 @@ const AccountManagementDiv = styled.div`
     box-sizing: border-box;
     padding: 10px;
     text-align: center;
-    margin-top: 30px;
     display: flex;
     align-items: center;
     flex-direction: column;

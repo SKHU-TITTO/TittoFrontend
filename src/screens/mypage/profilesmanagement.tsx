@@ -182,6 +182,7 @@ const ProfileManagementContent = () => {
 };
 
 const ProfileManagementDiv = styled.div`
+  margin-top: 70px;
   & .ManagementContainer {
     width: 100%;
     margin: 0 auto;

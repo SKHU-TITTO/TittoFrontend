@@ -95,7 +95,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 100px;
   background-color: white;
 `;
 

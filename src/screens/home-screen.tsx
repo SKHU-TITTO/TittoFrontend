@@ -12,6 +12,7 @@ import LoadingScreen from "../components/board/loadingscreen";
 
 const Wrapper = styled.div`
   width: 100%;
+  margin-top: 100px;
 `;
 
 const IconMenu = styled.div`

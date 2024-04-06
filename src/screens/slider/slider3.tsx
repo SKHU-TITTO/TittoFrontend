@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 100px;
   border: 2px solid #bababa;
   border-radius: 5px;
   background-color: white;
