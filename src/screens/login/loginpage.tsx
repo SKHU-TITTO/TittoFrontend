@@ -24,7 +24,6 @@ const LoginPage = () => {
         },
       });
       const kakaoAccessToken = res.data.kakaoAccessToken;
-      console.log("엑세스 토큰:", kakaoAccessToken); // 찐 나중에 삭제해야 됨
       const dataraw = {
         kakaoAccessToken: kakaoAccessToken,
       };
