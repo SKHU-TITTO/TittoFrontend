@@ -161,7 +161,7 @@ const MessageBox = () => {
 };
 
 const UserMessageMainContainer = styled.div`
-  height: 1000px;
+  height: 850px;
   margin-top: 100px;
 `;
 
