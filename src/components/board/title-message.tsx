@@ -56,9 +56,7 @@ const TitleMessage = ({ onSelectMessage }: TitleMessageProps) => {
         ) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()
       );
       setMessages(data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const handleClick = (id: number) => {

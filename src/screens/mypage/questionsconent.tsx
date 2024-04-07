@@ -54,9 +54,7 @@ const QuestionsContent = () => {
               confirmButtonText: "확인",
             });
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       }
     });
   };

@@ -44,9 +44,7 @@ const ContentMessage = ({
       });
       const data = response.data;
       setMessages(data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (

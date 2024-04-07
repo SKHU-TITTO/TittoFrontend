@@ -75,9 +75,7 @@ const MessageBox = () => {
       } else {
         setMessages([]);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const handleDeleteMessage = async () => {
@@ -111,7 +109,6 @@ const MessageBox = () => {
         }
       }
     } catch (error) {
-      console.error(error);
       Swal.fire("삭제 실패", "메시지 삭제 중 오류가 발생했습니다.", "error");
     }
   };
@@ -161,7 +158,7 @@ const MessageBox = () => {
 };
 
 const UserMessageMainContainer = styled.div`
-  height: 1000px;
+  height: 850px;
   margin-top: 100px;
 `;
 

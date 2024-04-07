@@ -105,7 +105,6 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
           setPosts(formattedPosts);
         }
       } catch (error) {
-        console.error(error);
       } finally {
         setLoading(false);
       }

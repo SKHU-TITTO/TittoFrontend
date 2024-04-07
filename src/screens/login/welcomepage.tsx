@@ -15,9 +15,7 @@ const WelcomePage = () => {
           },
         });
         setNickname(response.data.nickname || "");
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     fetchUserInfo();

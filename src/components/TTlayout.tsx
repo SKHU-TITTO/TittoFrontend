@@ -63,9 +63,7 @@ const TTlayout = () => {
             Swal.fire("성공", "로그아웃 되었습니다!", "success");
             navigate("/login/sign_in");
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       }
     });
   };
@@ -91,9 +89,7 @@ const TTlayout = () => {
           setIsLoading(false);
         })
 
-        .catch((error) => {
-          console.error(error);
-        });
+        .catch((error) => {});
     };
 
     loadUserData();

@@ -12,9 +12,7 @@ const LoginPage = () => {
   const handleKakaoLogin = () => {
     try {
       window.location.href = KAKAO_AUTH_URL;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const handleKakaoCallback = async () => {
@@ -26,7 +24,6 @@ const LoginPage = () => {
         },
       });
       const kakaoAccessToken = res.data.kakaoAccessToken;
-      console.log("엑세스 토큰:", kakaoAccessToken); // 찐 나중에 삭제해야 됨
       const dataraw = {
         kakaoAccessToken: kakaoAccessToken,
       };
@@ -46,9 +43,7 @@ const LoginPage = () => {
         localStorage.setItem("refreshToken", loginRes.data.refreshToken);
         navigate("/");
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

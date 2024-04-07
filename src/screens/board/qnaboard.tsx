@@ -145,7 +145,6 @@ const QnaBoard = ({ id, page }: boardUrl) => {
           setPost(formattedPost);
         }
       } catch (error) {
-        console.log(error);
       } finally {
         setLoading(false);
       }

@@ -65,9 +65,7 @@ const CommentDetail = ({
           email: userData.email,
         });
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   };
 
   const fetchComments = async () => {
@@ -84,9 +82,7 @@ const CommentDetail = ({
       if (response.data.length > 0) {
         setComments(response.data);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const handleDeleteComment = async (reviewId: number, postId: number) => {
@@ -121,7 +117,6 @@ const CommentDetail = ({
         Swal.fire("성공", "댓글이 삭제되었습니다.", "success");
         onCommentDelete();
       } catch (error) {
-        console.error(error);
         Swal.fire(
           "실패",
           "댓글 삭제에 실패했습니다. 다시 시도해주세요.",
@@ -154,9 +149,7 @@ const CommentDetail = ({
       setIsModify(false);
 
       Swal.fire("성공", "댓글이 수정되었습니다.", "success");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
   return (
     <>

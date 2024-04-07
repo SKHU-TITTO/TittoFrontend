@@ -106,7 +106,6 @@ const PostView = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
         setLoading(false);
       });
   };
@@ -141,7 +140,6 @@ const PostView = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
         setLoading(false);
       });
   };
@@ -178,9 +176,7 @@ const PostView = () => {
         setReviewContent("");
         Swal.fire("성공", "댓글이 등록되었습니다.", "success");
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   };
 
   const handleDeletePost = () => {
@@ -215,7 +211,6 @@ const PostView = () => {
             navigate(`/board/lists/${boardId}/1`);
           })
           .catch((error) => {
-            console.error(error);
             Swal.fire(
               "삭제 실패",
               "게시글 삭제 중 오류가 발생했습니다.",
@@ -248,9 +243,7 @@ const PostView = () => {
         }
       )
       .then((response) => {})
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   };
 
   return (
