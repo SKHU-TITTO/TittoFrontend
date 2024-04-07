@@ -94,7 +94,6 @@ const HomeScreen = () => {
       setTittoList(formattedPosts);
       setLoading(false);
     } catch (e) {
-      console.log(e);
       setLoading(false);
     }
   };
@@ -113,7 +112,6 @@ const HomeScreen = () => {
       setQnaList(formattedPosts);
       setLoading(false);
     } catch (e) {
-      console.log(e);
       setLoading(false);
     }
   };

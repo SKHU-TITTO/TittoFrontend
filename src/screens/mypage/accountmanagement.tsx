@@ -77,7 +77,6 @@ const AccountManagementContent = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
         setIsLoading(false);
       });
   };
@@ -184,7 +183,6 @@ const AccountManagementContent = () => {
           confirmButtonText: "확인",
         });
       } else {
-        console.error(error);
       }
       setIsLoading(false);
     }
@@ -225,9 +223,7 @@ const AccountManagementContent = () => {
               navigate("/login/sign_in");
             });
           }
-        } catch (error) {
-          console.error(error);
-        }
+        } catch (error) {}
       }
       setIsLoading(false);
     });

@@ -12,9 +12,7 @@ const LoginPage = () => {
   const handleKakaoLogin = () => {
     try {
       window.location.href = KAKAO_AUTH_URL;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const handleKakaoCallback = async () => {
@@ -46,9 +44,7 @@ const LoginPage = () => {
         localStorage.setItem("refreshToken", loginRes.data.refreshToken);
         navigate("/");
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

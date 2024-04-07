@@ -53,7 +53,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         navigate("/login/sign_in");
       }
     } catch (error) {
-      console.error(error);
       setIsLogin(false);
       navigate("/login/sign_in");
     }

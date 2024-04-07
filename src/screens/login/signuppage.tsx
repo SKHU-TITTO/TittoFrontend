@@ -116,9 +116,7 @@ const SignUpPage = () => {
         }
       )
       .then((response) => {})
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -192,7 +190,6 @@ const SignUpPage = () => {
             confirmButtonText: "확인",
           });
         }
-        console.error(error);
       }
     }
   };

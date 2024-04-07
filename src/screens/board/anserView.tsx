@@ -147,9 +147,7 @@ const AnswerView = () => {
         setReviewContent("");
         Swal.fire("성공", "댓글이 등록되었습니다.", "success");
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   };
 
   const handleDeletePost = () => {
@@ -215,9 +213,7 @@ const AnswerView = () => {
           });
           setLoading(false);
         });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
   const handleAnswerUpdated = () => {
     setRefresh(!refresh);

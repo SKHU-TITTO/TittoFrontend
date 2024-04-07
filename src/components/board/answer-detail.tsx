@@ -53,9 +53,7 @@ const AnswerDeail = ({
             onAnswerDeleted();
             Swal.fire("삭제", "댓글이 삭제되었습니다.", "success");
           })
-          .catch((error) => {
-            console.error("Error deleting answer:", error);
-          });
+          .catch((error) => {});
       }
     });
   };
@@ -91,7 +89,6 @@ const AnswerDeail = ({
               text: "채택은 한 번만 가능합니다.",
               icon: "error",
             });
-            console.error(err.response.data);
           });
       }
     });
@@ -133,9 +130,7 @@ const AnswerDeail = ({
             onAnswerUpdated();
             Swal.fire("성공", "댓글이 수정되었습니다.", "success");
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       }
     });
   };

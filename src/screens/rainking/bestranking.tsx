@@ -50,9 +50,7 @@ const BestRanking = () => {
           }
         );
         setUserRankings(response.data);
-      } catch (error) {
-        console.error("Error fetching user rankings:", error);
-      }
+      } catch (error) {}
     };
 
     fetchRankings();

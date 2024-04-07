@@ -113,9 +113,7 @@ const UserProfile = () => {
         }
       );
       setUserPosts(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const fetchUserAnswers = async (userId: string | undefined) => {
@@ -132,9 +130,7 @@ const UserProfile = () => {
         }
       );
       setUserAnswers(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -166,7 +162,6 @@ const UserProfile = () => {
         setMax(maxValue);
         setIsMaxLevel(response.data.level === levelStandard.length);
       } catch (error) {
-        console.error(error);
       } finally {
         setIsLoading(false);
       }

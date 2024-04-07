@@ -75,9 +75,7 @@ const PostForm = () => {
             setTitles(postData.title);
             setContents(postData.content);
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       }
     } else {
       if (postId) {
@@ -96,9 +94,7 @@ const PostForm = () => {
             setExp(postData.sendExperience);
             setStatus(postData.status);
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       }
     }
   }, [postId]);
@@ -164,9 +160,7 @@ const PostForm = () => {
           }).then(() => {
             navigate(`/board/view/qna/${postId}`);
           });
-        } catch (error) {
-          console.error(error);
-        }
+        } catch (error) {}
       } else {
         axios
           .post(apiUrl, requestBody, {
@@ -220,9 +214,7 @@ const PostForm = () => {
           }).then(() => {
             navigate(`/board/view/titto/${postId}`);
           });
-        } catch (error) {
-          console.error(error);
-        }
+        } catch (error) {}
       } else {
         try {
           const response = await axios.post(apiUrl, requestBody, {
@@ -239,9 +231,7 @@ const PostForm = () => {
           }).then(() => {
             navigate(`/board/lists/${boardId}/1`);
           });
-        } catch (error) {
-          console.error(error);
-        }
+        } catch (error) {}
       }
     }
   };

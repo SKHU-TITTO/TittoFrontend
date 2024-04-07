@@ -86,9 +86,7 @@ const ProfileManagementContent = () => {
             }));
             navigate("/mypage");
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       }
     });
   };
@@ -114,9 +112,7 @@ const ProfileManagementContent = () => {
           response.data.badges = badgesArray;
         }
         setProInfo(response.data);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     fetchData();
