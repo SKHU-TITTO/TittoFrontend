@@ -6,57 +6,6 @@ import userStore from "../stores/UserStore";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const navigate = useNavigate();
-  const fetchData = async () => {
-    try {
-      const refreshToken = localStorage.getItem("refreshToken");
-
-      if (refreshToken) {
-        const refData = {
-          accessToken: localStorage.getItem("accessToken"),
-          refreshToken: refreshToken,
-        };
-
-        const raw = JSON.stringify(refData);
-
-        const res = await axios.post("https://titto.store/oauth/refresh", raw, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        });
-
-        localStorage.setItem("accessToken", res.data.accessToken);
-
-        const userInfo = await axios.get("https://titto.store/user/info", {
-          headers: {
-            Authorization: `Bearer ${res.data.accessToken}`,
-          },
-        });
-
-        userStore.setUser({
-          nickname: userInfo.data.nickname,
-          email: userInfo.data.email,
-          socialType: userInfo.data.socialType,
-          profileImg: userInfo.data.profileImg,
-          currentExperience: userInfo.data.currentExperience,
-          totalExperience: userInfo.data.totalExperience,
-          id: userInfo.data.id,
-          level: userInfo.data.level,
-        });
-        checkLevelAndUpdate(userInfo.data.totalExperience, userInfo.data.level);
-        setIsLogin(true);
-        if (userInfo.data.nickname === null) {
-          navigate(`/login/sign_up/${userStore.user?.id}`);
-        }
-      } else {
-        setIsLogin(false);
-        navigate("/login/sign_in");
-      }
-    } catch (error) {
-      setIsLogin(false);
-      navigate("/login/sign_in");
-    }
-  };
 
   const checkLevelAndUpdate = async (currentExp: number, userLevel: number) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -86,6 +35,52 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        const refData = {
+          accessToken: localStorage.getItem("accessToken"),
+          refreshToken: refreshToken,
+        };
+        const raw = JSON.stringify(refData);
+        const res = await axios.post("https://titto.store/oauth/refresh", raw, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+        localStorage.setItem("accessToken", res.data.accessToken);
+        const userInfo = await axios.get("https://titto.store/user/info", {
+          headers: {
+            Authorization: `Bearer ${res.data.accessToken}`,
+          },
+        });
+        userStore.setUser({
+          nickname: userInfo.data.nickname,
+          email: userInfo.data.email,
+          socialType: userInfo.data.socialType,
+          profileImg: userInfo.data.profileImg,
+          currentExperience: userInfo.data.currentExperience,
+          totalExperience: userInfo.data.totalExperience,
+          id: userInfo.data.id,
+          level: userInfo.data.level,
+        });
+        checkLevelAndUpdate(userInfo.data.totalExperience, userInfo.data.level);
+        setIsLogin(true);
+        if (userInfo.data.nickname === null) {
+          navigate(`/login/sign_up/${userStore.user?.id}`);
+        }
+      } else {
+        setIsLogin(false);
+        navigate("/login/sign_in");
+      }
+    } catch (error) {
+      setIsLogin(false);
+      navigate("/login/sign_in");
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [isLogin]);
@@ -94,12 +89,10 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return null;
   } else if (isLogin === false) {
     navigate("/login/sign_in");
-
     return null;
   } else {
     return <>{children}</>;
   }
-  return <>{children}</>;
 };
 
 export default ProtectedRoute;
