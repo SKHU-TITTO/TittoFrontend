@@ -1,39 +1,37 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const TittoCategory = () => {
+  const navigate = useNavigate();
   return (
     <CategoryWrapper>
-      <CategoryTitle
-        onClick={() => {
-          window.location.href = "/board/lists/titto/1";
-        }}
-      >
+      <CategoryTitle onClick={() => navigate("/board/lists/titto/1")}>
         전체보기
       </CategoryTitle>
       <CategorySelect
         onClick={() => {
-          window.location.href = "/board/lists/titto/1/?category=STUDY";
+          navigate("/board/lists/titto/1/?category=STUDY");
         }}
       >
         스터디만 보기
       </CategorySelect>
       <CategorySelect
         onClick={() => {
-          window.location.href = "/board/lists/titto/1/?category=MENTOR";
+          navigate("/board/lists/titto/1/?category=MENTOR");
         }}
       >
         멘토만 보기
       </CategorySelect>
       <CategorySelect
         onClick={() => {
-          window.location.href = "/board/lists/titto/1/?category=MENTEE";
+          navigate("/board/lists/titto/1/?category=MENTEE");
         }}
       >
         멘티만 보기
       </CategorySelect>
       <CategorySelect
         onClick={() => {
-          window.location.href = "/board/lists/titto/1/?category=UHWOOLLEAM";
+          navigate("/board/lists/titto/1/?category=UHWOOLLEAM");
         }}
       >
         어울림만 보기
