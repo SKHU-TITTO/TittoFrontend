@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -8,43 +8,35 @@ type NumberSelectorProps = {
   id: string;
   page: number;
   pages: number;
+  filter: string;
 };
 
-const NumberSelector = ({ id, page, pages }: NumberSelectorProps) => {
+const NumberSelector = ({ id, page, pages, filter }: NumberSelectorProps) => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(page);
 
+  useEffect(() => {
+    setCurrentPage(page);
+  }, [page, filter]);
+
   const handleArrowClick = (increment: number) => {
     const newPage = currentPage + increment;
-    const currentPageGroup = Math.floor((currentPage - 1) / 5);
-
     if (newPage >= 1 && newPage <= pages) {
       setCurrentPage(newPage);
-      navigate(`/board/lists/${id}/${newPage}`);
-    } else if (newPage < 1 && currentPageGroup > 0) {
-      const lastPageOfPreviousGroup = currentPageGroup * 5;
-      setCurrentPage(lastPageOfPreviousGroup);
-      navigate(`/board/lists/${id}/${lastPageOfPreviousGroup}`);
-    } else if (
-      newPage > pages &&
-      currentPageGroup < Math.floor((pages - 1) / 5)
-    ) {
-      const firstPageOfNextGroup = (currentPageGroup + 1) * 5 + 1;
-      setCurrentPage(firstPageOfNextGroup);
-      navigate(`/board/lists/${id}/${firstPageOfNextGroup}`);
+      navigate(`/board/lists/${id}/${newPage}${filter ? `?${filter}` : ""}`);
     }
   };
 
   const handlePageClick = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    navigate(`/board/lists/${id}/${pageNumber}`);
+    navigate(`/board/lists/${id}/${pageNumber}${filter ? `?${filter}` : ""}`);
   };
+
   const renderPageNumbers = () => {
     const maxDisplayedPages = 5;
     const currentPageGroup = Math.floor((currentPage - 1) / 5);
     const startPage = currentPageGroup * maxDisplayedPages + 1;
     const endPage = Math.min(startPage + maxDisplayedPages - 1, pages);
-
     return Array.from(
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i

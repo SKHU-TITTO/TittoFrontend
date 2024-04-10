@@ -262,52 +262,56 @@ const UserProfile = () => {
             <UserProfileStudyContainer>
               <p className="wirteanswer">답변한 글</p>
               <UserProfileAcceptInner>
-                {userAnswers.map(
-                  (answer: {
-                    questionId: number;
-                    department: string;
-                    questionTitle: string;
-                    content: string;
-                    id: number;
-                  }) => (
-                    <WriteAnswerDetail
-                      key={answer.id}
-                      questionId={answer.questionId}
-                      department={answer.department}
-                      title={answer.questionTitle}
-                      detail={answer.content}
-                    />
+                {userAnswers
+                  .map(
+                    (answer: {
+                      questionId: number;
+                      department: string;
+                      questionTitle: string;
+                      content: string;
+                      id: number;
+                    }) => (
+                      <WriteAnswerDetail
+                        key={answer.id}
+                        questionId={answer.questionId}
+                        department={answer.department}
+                        title={answer.questionTitle}
+                        detail={answer.content}
+                      />
+                    )
                   )
-                )}
+                  .reverse()}
               </UserProfileAcceptInner>
             </UserProfileStudyContainer>
             <UserProfileWritePostContainer>
               <p className="writepost">작성한 글</p>
               <UserProfileWritePostInner>
-                {userPosts.map(
-                  (post: {
-                    category: string;
-                    department: string;
-                    title: string;
-                    content: string;
-                    viewCount: number;
-                    reviewCount: number;
-                    answerCount: number;
-                    id: number;
-                  }) => (
-                    <WriteDetail
-                      key={post.id}
-                      postId={post.id}
-                      category={post.category}
-                      department={post.department}
-                      title={post.title}
-                      detail={post.content}
-                      view={post.viewCount}
-                      comment={post.reviewCount}
-                      answerCount={post.answerCount}
-                    />
+                {userPosts
+                  .map(
+                    (post: {
+                      category: string;
+                      department: string;
+                      title: string;
+                      content: string;
+                      viewCount: number;
+                      reviewCount: number;
+                      answerCount: number;
+                      id: number;
+                    }) => (
+                      <WriteDetail
+                        key={post.id}
+                        postId={post.id}
+                        category={post.category}
+                        department={post.department}
+                        title={post.title}
+                        detail={post.content}
+                        view={post.viewCount}
+                        comment={post.reviewCount}
+                        answerCount={post.answerCount}
+                      />
+                    )
                   )
-                )}
+                  .reverse()}
               </UserProfileWritePostInner>
             </UserProfileWritePostContainer>
           </UserProfileSubContainer>

@@ -198,6 +198,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
               <input
                 type="text"
                 placeholder="제목으로 검색하기"
+                value={searchValue}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
                 }}
@@ -235,7 +236,12 @@ const QnaBoard = ({ id, page }: boardUrl) => {
                 글쓰기
               </div>
             </SubmitWrapper>
-            <NumberSelector id={id} page={page} pages={pages} />
+            <NumberSelector
+              id={id}
+              page={page}
+              pages={pages}
+              filter={searchParmas.toString()}
+            />
           </MainDiv>
           <CategoryDiv>
             <QnaCategoty />
