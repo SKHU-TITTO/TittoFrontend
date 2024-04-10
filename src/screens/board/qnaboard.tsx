@@ -198,6 +198,7 @@ const QnaBoard = ({ id, page }: boardUrl) => {
               <input
                 type="text"
                 placeholder="제목으로 검색하기"
+                value={searchValue}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
                 }}
