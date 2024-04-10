@@ -236,7 +236,12 @@ const QnaBoard = ({ id, page }: boardUrl) => {
                 글쓰기
               </div>
             </SubmitWrapper>
-            <NumberSelector id={id} page={page} pages={pages} />
+            <NumberSelector
+              id={id}
+              page={page}
+              pages={pages}
+              filter={searchParmas.toString()}
+            />
           </MainDiv>
           <CategoryDiv>
             <QnaCategoty />

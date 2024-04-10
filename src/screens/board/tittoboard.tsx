@@ -181,7 +181,12 @@ const TittoBoard = ({ id, page }: BoardUrl) => {
                     글쓰기
                   </div>
                 </SubmitWrapper>
-                <NumberSelector id={id} page={page} pages={pages} />
+                <NumberSelector
+                  id={id}
+                  page={page}
+                  pages={pages}
+                  filter={searchParams.toString()}
+                />
               </MainDiv>
               <CategoryDiv>
                 <TittoCategory />
