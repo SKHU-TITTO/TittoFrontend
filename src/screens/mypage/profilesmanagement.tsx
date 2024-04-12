@@ -112,6 +112,8 @@ const ProfileManagementContent = () => {
           response.data.badges = badgesArray;
         }
         setProInfo(response.data);
+        setOneLineIntro(response.data.oneLineIntro);
+        setSelfIntro(response.data.selfIntro);
       } catch (error) {}
     };
 
