@@ -161,6 +161,7 @@ const AccountManagementContent = () => {
       );
 
       if (res.status === 200) {
+        await loadUserData();
         Swal.fire({
           icon: "success",
           title: "저장 완료",
