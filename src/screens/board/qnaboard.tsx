@@ -79,11 +79,13 @@ const QnaBoard = ({ id, page }: boardUrl) => {
             }
           );
           setPages(res.data.totalPages);
-          const formattedPost = res.data.content.map((post: QNAPost) => ({
-            ...post,
-            content: sliceContent(post.content),
-            department: changeDepartment(post.department),
-          }));
+          const formattedPost = res.data.content
+            .map((post: QNAPost) => ({
+              ...post,
+              content: sliceContent(post.content),
+              department: changeDepartment(post.department),
+            }))
+            .reverse();
           setPost(formattedPost);
         } else if (searchParmas.get("status")) {
           const status = searchParmas.get("status");
@@ -101,11 +103,13 @@ const QnaBoard = ({ id, page }: boardUrl) => {
             }
           );
           setPages(res.data.totalPages);
-          const formattedPost = res.data.content.map((post: QNAPost) => ({
-            ...post,
-            content: sliceContent(post.content),
-            department: changeDepartment(post.department),
-          }));
+          const formattedPost = res.data.content
+            .map((post: QNAPost) => ({
+              ...post,
+              content: sliceContent(post.content),
+              department: changeDepartment(post.department),
+            }))
+            .reverse();
           setPost(formattedPost);
         } else if (searchParmas.get("category")) {
           const category = searchParmas.get("category");
