@@ -314,9 +314,9 @@ const AccountManagementContent = () => {
               <AccountDeleteDiv>
                 <p>계정 삭제</p>
                 <div className="DeleteContainer">
-                  <p className="etc">
+                  <h1 className="etc">
                     계정 삭제 시 프로필 및 정보가 삭제 됩니다.
-                  </p>
+                  </h1>
                   <button className="btn" onClick={handleDeleteAccount}>
                     삭제
                   </button>
@@ -411,6 +411,7 @@ const AccountDeleteDiv = styled.div`
     font-size: 20px;
     color: #bababa;
     text-align: left;
+    font-weight: bold;
   }
 `;
 

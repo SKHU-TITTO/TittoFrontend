@@ -265,6 +265,7 @@ const Wrapper = styled.div`
 const BoardWrapper = styled.div`
   display: flex;
   margin-top: 10px;
+
   justify-content: space-between;
 `;
 
